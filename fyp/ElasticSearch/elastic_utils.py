@@ -1,8 +1,9 @@
 from datetime import datetime
 from elasticsearch import Elasticsearch
 
-es_host = {"host" : "localhost", "port" : 9200}
+es_host = {"host" : "35.167.254.88", "port" : 9200}
 es = Elasticsearch(hosts=[es_host])
+
 
 """Creates an elastic search index. Reads in name as a parameter and outputs if it fails or not."""
 def create_index(name):
@@ -35,5 +36,7 @@ def add_entry(index_name, id, body):
     res = es.index(index=index_name, doc_type="tweet", id=id, body=body)
     if (res['created'] == False):
         print (" Something went wrong! Does an entry with the ID already exist?")
+
+
 
 
