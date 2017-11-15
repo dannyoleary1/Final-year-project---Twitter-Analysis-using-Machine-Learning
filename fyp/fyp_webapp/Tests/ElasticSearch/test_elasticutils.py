@@ -1,5 +1,6 @@
 from django.test import TestCase
 import fyp_webapp.ElasticSearch.elastic_utils as es
+import time
 
 class ElasticUtilsTest(TestCase):
     def setUp(self):
@@ -33,6 +34,7 @@ class ElasticUtilsTest(TestCase):
         res = es.add_entry(index_name="test", id=1, body=doc) #This should fail since its the same id
         self.assertEqual(False, res['created'])
 
+
     def test_delete_entry(self):
         #Add entry first
         doc = {"name": "test"}
@@ -42,3 +44,14 @@ class ElasticUtilsTest(TestCase):
         self.assertEqual('deleted', res['result'])
         #Now test when it doesn't exist
         self.assertRaises(Exception, es.delete_entry(index_name="test", id=1))
+
+    def test_search_index(self):
+        # Add entry first along with the index
+        doc = {"name": "test"}
+        es.create_index("searching")
+        es.add_entry(index_name="searching", id=1, body=doc)
+        time.sleep(1)
+        res = es.search_index(index_name="searching")
+        print (res['hits']['hits'][0]['_source'])
+        self.assertIn('test', res['hits']['hits'][0]['_source']['name'])
+        es.delete_index("searching")
