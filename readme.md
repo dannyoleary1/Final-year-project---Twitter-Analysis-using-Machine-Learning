@@ -18,3 +18,11 @@ Using tensorflow as the library for Machine Learning. This will be responsible f
 ## Django as a web application framework
 Django will be used as the web application framework and will be responsible for providing a place to view all the analysis that has been carried out. The breakdown of this will be discussed further below just as a blueprint to aim for.
 
+
+
+List of current technologies that need to be installed. This will be updated as I go and also will include installation links:
+Django
+Python3
+Tensorflow
+NLTK
+ElasticSearch/Elasticpy
