@@ -12,7 +12,6 @@ def create_index(name):
     if es.indices.exists(name):
         return ("Index already exists!")
     else:
-        print("creating '%s' index..." % (name))
         res = es.indices.create(index=name)
         return (" response: '%s'" % (res))
 
@@ -20,7 +19,6 @@ def create_index(name):
 """Deletes an elasticsearch index. Reads in name as a parameter."""
 def delete_index(name):
     if es.indices.exists(name):
-        print("Deleting '%s index..." % name)
         res = es.indices.delete(index=name)
         return (" response: %s'" % (res))
     else:
@@ -34,9 +32,13 @@ def list_all_indexes():
 """Create an entry into an existing index. Uses a unique ID to identify. Body is the data entry in question"""
 def add_entry(index_name, id, body):
     res = es.index(index=index_name, doc_type="tweet", id=id, body=body)
-    if (res['created'] == False):
-        return res
-    else:
-        return res
+    return res
 
-
+"""Delete an entry from an existing index. Uses the ID to locate"""
+def delete_entry(index_name, id):
+    try:
+        res = es.delete(index=index_name, doc_type="tweet", id=id)
+        return res
+    except Exception as e:
+        print ("Unexpected error: %s", e)
+        return e

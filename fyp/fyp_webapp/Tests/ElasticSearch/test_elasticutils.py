@@ -32,3 +32,13 @@ class ElasticUtilsTest(TestCase):
         self.assertEqual(True, res['created'])
         res = es.add_entry(index_name="test", id=1, body=doc) #This should fail since its the same id
         self.assertEqual(False, res['created'])
+
+    def test_delete_entry(self):
+        #Add entry first
+        doc = {"name": "test"}
+        res = es.add_entry(index_name="test", id=1, body=doc)
+        #Now Delete
+        res = es.delete_entry(index_name="test", id=1)
+        self.assertEqual('deleted', res['result'])
+        #Now test when it doesn't exist
+        self.assertRaises(Exception, es.delete_entry(index_name="test", id=1))
