@@ -1,6 +1,6 @@
 import json
 from collections import Counter
-import preprocessor
+from .preprocessor import Preprocessor
 import nltk
 import string
 
@@ -8,9 +8,10 @@ import string
 
 class TermFrequency:
     def __init__(self):
-        nltk.download('stopwords')
+        stopwords = nltk.download('stopwords')
+
         self.punctuation = list(string.punctuation)
-        self.stop = stopwords.words('english') + punctuation + ['rt', 'via', '…', 'I', '’', 'The', '!']
+        self.stop = stopwords.words('english') + self.punctuation + ['rt', 'via', '…', 'I', '’', 'The', '!']
 
     def max_tweet_sentence_size(self,filename):
         #TODO need to add new function to support elasticsearch first
