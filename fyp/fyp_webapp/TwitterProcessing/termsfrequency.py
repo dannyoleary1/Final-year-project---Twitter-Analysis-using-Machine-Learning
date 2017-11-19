@@ -6,7 +6,8 @@ import string
 
 #TODO Add docs
 
-class TermFrequency:
+"""Class used for getting rid of certain words that wont be relevant in a tweet."""
+class TermFrequency():
     def __init__(self):
         stopwords = nltk.download('stopwords')
 

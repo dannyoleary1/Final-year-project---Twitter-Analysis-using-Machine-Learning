@@ -3,7 +3,7 @@ import re
 class Preprocessor():
 
     #TODO Add docs
-
+    #Picks up on the following regex
     emoticons_str = r"""
                     (?:
                         [:=;] # Eyes
@@ -27,9 +27,11 @@ class Preprocessor():
     tokens_re = re.compile(r'(' + '|'.join(regex_str)+')', re.VERBOSE | re.IGNORECASE)
     emoticon_re = re.compile(r'^' + emoticons_str + '$', re.VERBOSE | re.IGNORECASE)
 
+    #Tokenize the data
     def tokenize(self, s):
         return self.tokens_re.findall(s)
 
+    #Process the data
     def preprocess(self, s, lowercase=True):
         tokens = self.tokenize(s)
         if lowercase:
