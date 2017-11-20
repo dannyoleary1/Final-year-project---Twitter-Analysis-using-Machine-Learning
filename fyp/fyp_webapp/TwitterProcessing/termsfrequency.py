@@ -24,6 +24,7 @@ def execute_all_term_functions(self, index, number_word_frequency_results=10):
     res = es.iterate_search(index_name=index)
     for entry in res:
         #Step 1. Get the max sentence size as we go.
+        print (entry)
         current_tweet = preprocessor.preprocess(entry['_source']['text'])
         if (len(current_tweet) > current_max_sentence_size):
             current_max_sentence_size = len(current_tweet)
