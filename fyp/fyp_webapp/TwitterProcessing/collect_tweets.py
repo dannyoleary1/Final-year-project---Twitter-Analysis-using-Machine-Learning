@@ -6,26 +6,31 @@ from textblob import TextBlob
 from nltk.tokenize import word_tokenize
 import re
 import preprocessor
-#import fyp_webapp.ElasticSearch.elastic_utils as es
 import fyp_webapp.config as cfg
+from fyp_webapp.ElasticSearch import elastic_utils as es
 
+id = 1
 
 class StreamListener(tweepy.StreamListener):
-
     def on_status(self, status):
+
         if hasattr(status, 'retweeted_status'):
             return #this filters out retweets
-        elif (id<100000):
+        else:
+            global id
+            id += 1
             dict = {"description":str(status.user.description), "loc":str(status.user.location), "text":str(status.text),"coords":str(status.coordinates),
                     "name": str(status.user.screen_name), "user_created":str(status.user.created_at), "followers":str(status.user.followers_count),
                     "id_str":str(status.id_str),"created":str(status.created_at), "retweets":str(status.retweet_count)}
+            print (id)
             es.add_entry(cfg.twitter_credentials['topic'], id, dict)
-            id += 1
+
 
     def on_error(self, status_code):
         print(status_code)
         if status_code == 420:
             return True
+
 
 if __name__ == '__main__':
 

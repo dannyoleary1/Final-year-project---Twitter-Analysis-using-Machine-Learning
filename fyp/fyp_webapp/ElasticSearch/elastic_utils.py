@@ -2,6 +2,8 @@ from elasticsearch import Elasticsearch
 import time
 import fyp_webapp.config as cfg
 
+
+
 #es_host = {"host" : "52.40.244.208", "port" : 9200}
 es = Elasticsearch(hosts=[cfg.es_host])
 
