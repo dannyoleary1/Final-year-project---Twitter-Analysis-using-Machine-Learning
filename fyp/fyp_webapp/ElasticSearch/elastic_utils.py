@@ -1,4 +1,4 @@
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, helpers
 import time
 import fyp_webapp.config as cfg
 
@@ -50,3 +50,13 @@ def delete_entry(index_name, id):
 def search_index(index_name, query='{"query":{"match_all":{}}}'):
     res = es.search(index=index_name, body=query)
     return res
+
+"""TODO needs to be tested"""
+def iterate_search(index_name, query={"query":{"match_all":{}}}):
+    res = helpers.scan(
+        client=es,
+        scroll='2m',
+        query=query,
+        index=index_name)
+    return res
+

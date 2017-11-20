@@ -10,6 +10,8 @@ class ElasticUtilsTest(TestCase):
         es.delete_index("test")
 
     def test_create_index(self):
+        es.delete_index("testcase")
+        time.sleep(1)
         self.assertIn(" \'index\': \'testcase\'", es.create_index("testcase")) #An index is made
         es.delete_index("testcase")
 
@@ -55,3 +57,4 @@ class ElasticUtilsTest(TestCase):
         print (res['hits']['hits'][0]['_source'])
         self.assertIn('test', res['hits']['hits'][0]['_source']['name'])
         es.delete_index("searching")
+

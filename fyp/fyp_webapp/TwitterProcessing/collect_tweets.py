@@ -9,7 +9,11 @@ import preprocessor
 import fyp_webapp.config as cfg
 from fyp_webapp.ElasticSearch import elastic_utils as es
 
-id = 1
+res = es.search_index(cfg.twitter_credentials['topic'])
+if (res['hits']['total'] is None):
+    id = 0
+else:
+    id = res['hits']['total']
 
 class StreamListener(tweepy.StreamListener):
     def on_status(self, status):
