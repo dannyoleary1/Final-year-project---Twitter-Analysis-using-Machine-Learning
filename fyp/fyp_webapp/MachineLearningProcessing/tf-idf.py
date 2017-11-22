@@ -28,4 +28,6 @@ print (tfidf_vector)
 
 km=KMeans(n_clusters=4, init='k-means++',n_init=100, verbose=1)
 km.fit(tfidf_vector)
-print(km.labels_)
+
+for text, label in zip(texts, km.labels_):
+    print (text, label)
