@@ -12,7 +12,6 @@ from fyp_webapp.ElasticSearch import elastic_utils
 import time
 
 
-sess = tf.Session()
 batch_size = 500
 max_features = 10000
 
@@ -28,6 +27,4 @@ print (tfidf_vector)
 
 km=KMeans(n_clusters=4, init='k-means++',n_init=100, verbose=1)
 km.fit(tfidf_vector)
-
-for text, label in zip(texts, km.labels_):
-    print (text, label)
+print (type(tfidf_vector))
