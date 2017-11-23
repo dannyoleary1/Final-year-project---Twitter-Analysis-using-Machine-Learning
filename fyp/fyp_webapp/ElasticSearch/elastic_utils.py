@@ -60,3 +60,10 @@ def iterate_search(index_name, query={"query":{"match_all":{}}}):
         index=index_name)
     return res
 
+""""""
+def last_id(index_name):
+    res = search_index(index_name)
+    if (res['hits']['total'] is None):
+        return 0
+    else:
+        return res['hits']['total']
