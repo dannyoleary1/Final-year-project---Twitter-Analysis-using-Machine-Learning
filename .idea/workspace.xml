@@ -2,7 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6b7b91f7-70e6-42b2-843f-c664f1a67d24" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fyp/fyp_webapp/static/js/jquery-3.2.1.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fyp/fyp_webapp/templates/base.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fyp/fyp_webapp/templates/fyp/CollectTweets/index.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fyp/fyp_webapp/templates/fyp/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fyp/db.sqlite3" afterPath="$PROJECT_DIR$/fyp/db.sqlite3" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/final year project - Twitter Analysis using Machine Learning.iml" afterPath="$PROJECT_DIR$/.idea/final year project - Twitter Analysis using Machine Learning.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fyp/fyp/settings.py" afterPath="$PROJECT_DIR$/fyp/fyp/settings.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fyp/fyp/urls.py" afterPath="$PROJECT_DIR$/fyp/fyp/urls.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fyp/fyp_webapp/ElasticSearch/Untitled.ipynb" afterPath="$PROJECT_DIR$/fyp/fyp_webapp/ElasticSearch/Untitled.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fyp/fyp_webapp/ElasticSearch/notebook.tex" afterPath="$PROJECT_DIR$/fyp/fyp_webapp/ElasticSearch/notebook.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fyp/fyp_webapp/MachineLearningProcessing/tf-idf.py" afterPath="$PROJECT_DIR$/fyp/fyp_webapp/MachineLearningProcessing/tf-idf.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fyp/fyp_webapp/admin.py" afterPath="$PROJECT_DIR$/fyp/fyp_webapp/admin.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fyp/fyp_webapp/config.py" afterPath="$PROJECT_DIR$/fyp/fyp_webapp/config.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fyp/fyp_webapp/models.py" afterPath="$PROJECT_DIR$/fyp/fyp_webapp/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fyp/fyp_webapp/urls.py" afterPath="$PROJECT_DIR$/fyp/fyp_webapp/urls.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fyp/fyp_webapp/views.py" afterPath="$PROJECT_DIR$/fyp/fyp_webapp/views.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -12,14 +29,86 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf>
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="10" column="26" lean-forward="false" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
+              <folding>
+                <element signature="e#0#36#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/templates/fyp/CollectTweets/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="162">
+              <caret line="9" column="7" lean-forward="true" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="wsgi.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fyp/fyp/wsgi.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fyp/fyp/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="159">
+              <caret line="12" column="9" lean-forward="false" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fyp/fyp/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="324">
+              <caret line="18" column="42" lean-forward="false" selection-start-line="18" selection-start-column="42" selection-end-line="18" selection-end-column="42" />
+              <folding>
+                <element signature="e#637#678#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="collect_tweets.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/TwitterProcessing/collect_tweets.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>reque</find>
+      <find>os</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -31,17 +120,30 @@
         <option value="$PROJECT_DIR$/fyp/Tests/ElasticSearch/ElasticUtilsTest.py" />
         <option value="$PROJECT_DIR$/fyp/Tests/ElasticSearch/elasticutilstest.py" />
         <option value="$PROJECT_DIR$/TwitterAnalysisProject/TwitterAnalysisProject/Tests/ElasticSearch/elasticutilstest.py" />
-        <option value="$PROJECT_DIR$/fyp/fyp_webapp/views.py" />
-        <option value="$PROJECT_DIR$/fyp/fyp_webapp/urls.py" />
-        <option value="$PROJECT_DIR$/fyp/fyp/urls.py" />
         <option value="$PROJECT_DIR$/fyp/fyp_webapp/ElasticSearch/__init__.py" />
         <option value="$PROJECT_DIR$/fyp/fyp_webapp/Tests/ElasticSearch/__init__.py" />
         <option value="$PROJECT_DIR$/fyp/fyp_webapp/Tests/__init__.py" />
-        <option value="$PROJECT_DIR$/fyp/fyp/settings.py" />
         <option value="$PROJECT_DIR$/fyp/__init__.py" />
         <option value="$PROJECT_DIR$/fyp/fyp_webapp/__init__.py" />
-        <option value="$PROJECT_DIR$/fyp/fyp_webapp/ElasticSearch/elastic_utils.py" />
         <option value="$PROJECT_DIR$/fyp/fyp_webapp/Tests/ElasticSearch/test_elasticutils.py" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/TwitterProcessing/termsfrequency.py" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/TwitterProcessing/collect_tweets.py" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/ElasticSearch/elastic_utils.py" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/TwitterProcessing/preprocessor.py" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/MachineLearningProcessing/test.py" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/config.py" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/MachineLearningProcessing/tf-idf.py" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/admin.py" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/models.py" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/urls.py" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/Templates/fyp/index.html" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/Templates/base.html" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/Templates/fyp/CollectTweets/index.html" />
+        <option value="$PROJECT_DIR$/fyp/fyp/settings.py" />
+        <option value="$PROJECT_DIR$/fyp/fyp/urls.py" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/templates/base.html" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/views.py" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/templates/fyp/CollectTweets/index.html" />
       </list>
     </option>
   </component>
@@ -72,75 +174,69 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="final year project - Twitter Analysis using Machine Learning" type="b2602c69:ProjectViewProjectNode" />
-              <item name="final year project - Twitter Analysis using Machine Learning" type="462c0819:PsiDirectoryNode" />
+              <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="final year project - Twitter Analysis using Machine Learning" type="b2602c69:ProjectViewProjectNode" />
-              <item name="final year project - Twitter Analysis using Machine Learning" type="462c0819:PsiDirectoryNode" />
+              <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="462c0819:PsiDirectoryNode" />
               <item name="fyp" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="final year project - Twitter Analysis using Machine Learning" type="b2602c69:ProjectViewProjectNode" />
-              <item name="final year project - Twitter Analysis using Machine Learning" type="462c0819:PsiDirectoryNode" />
+              <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="462c0819:PsiDirectoryNode" />
               <item name="fyp" type="462c0819:PsiDirectoryNode" />
               <item name="fyp" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="final year project - Twitter Analysis using Machine Learning" type="b2602c69:ProjectViewProjectNode" />
-              <item name="final year project - Twitter Analysis using Machine Learning" type="462c0819:PsiDirectoryNode" />
+              <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="462c0819:PsiDirectoryNode" />
               <item name="fyp" type="462c0819:PsiDirectoryNode" />
               <item name="fyp_webapp" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="final year project - Twitter Analysis using Machine Learning" type="b2602c69:ProjectViewProjectNode" />
-              <item name="final year project - Twitter Analysis using Machine Learning" type="462c0819:PsiDirectoryNode" />
+              <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="462c0819:PsiDirectoryNode" />
               <item name="fyp" type="462c0819:PsiDirectoryNode" />
               <item name="fyp_webapp" type="462c0819:PsiDirectoryNode" />
               <item name="ElasticSearch" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="final year project - Twitter Analysis using Machine Learning" type="b2602c69:ProjectViewProjectNode" />
-              <item name="final year project - Twitter Analysis using Machine Learning" type="462c0819:PsiDirectoryNode" />
+              <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="462c0819:PsiDirectoryNode" />
               <item name="fyp" type="462c0819:PsiDirectoryNode" />
               <item name="fyp_webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="Tests" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="final year project - Twitter Analysis using Machine Learning" type="b2602c69:ProjectViewProjectNode" />
-              <item name="final year project - Twitter Analysis using Machine Learning" type="462c0819:PsiDirectoryNode" />
-              <item name="fyp" type="462c0819:PsiDirectoryNode" />
-              <item name="fyp_webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="Tests" type="462c0819:PsiDirectoryNode" />
-              <item name="ElasticSearch" type="462c0819:PsiDirectoryNode" />
+              <item name="TwitterProcessing" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/fyp/fyp_webapp/Tests/ElasticSearch" />
-      <recent name="$PROJECT_DIR$/fyp/fyp_webapp" />
-      <recent name="$PROJECT_DIR$/TwitterAnalysisProject/TwitterAnalysisProject" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/fyp/fyp_webapp" />
+      <recent name="$PROJECT_DIR$/fyp/fyp_webapp/static" />
       <recent name="$PROJECT_DIR$/fyp/fyp_webapp/Tests" />
       <recent name="$PROJECT_DIR$/fyp/fyp_webapp/Tests/ElasticSearch" />
       <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/TwitterAnalysisProject/TwitterAnalysisProject/Tests" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/fyp/fyp_webapp/Tests/ElasticSearch" />
+      <recent name="$PROJECT_DIR$/fyp/fyp_webapp" />
       <recent name="$PROJECT_DIR$/TwitterAnalysisProject/TwitterAnalysisProject" />
     </key>
   </component>
@@ -170,27 +266,40 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="2493" height="1285" extended-state="6" />
+    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24709186" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5398773" sideWeight="0.5018868" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4243354" sideWeight="0.49811321" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2458221" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32924336" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5398773" sideWeight="0.5018868" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5408998" sideWeight="0.49811321" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24709186" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32924336" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -233,6 +342,87 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="52" lean-forward="false" selection-start-line="4" selection-start-column="52" selection-end-line="4" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="18" lean-forward="true" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" column="39" lean-forward="false" selection-start-line="19" selection-start-column="39" selection-end-line="19" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/Tests/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/Tests/ElasticSearch/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/Tests/ElasticSearch/test_elasticutils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="268">
+          <caret line="55" column="23" lean-forward="false" selection-start-line="55" selection-start-column="23" selection-end-line="55" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#32#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/ElasticSearch/elastic_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="14" column="31" lean-forward="true" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#48#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="39" column="24" lean-forward="false" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/TwitterProcessing/termsfrequency.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="48" column="36" lean-forward="false" selection-start-line="48" selection-start-column="36" selection-end-line="48" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#11#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/Tests/ElasticSearch/test_elasticutils.py" />
     <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/ElasticSearch/elastic_utils.py" />
     <entry file="file://$PROJECT_DIR$/fyp/TwitterAnalysis/tests.py" />
@@ -245,27 +435,206 @@
     <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/tests.py" />
     <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/Tests/ElasticSearch/test_elasticutils.py" />
     <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/ElasticSearch/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/views.py" />
-    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/urls.py" />
-    <entry file="file://$PROJECT_DIR$/fyp/fyp/urls.py">
+    <entry file="file://$PROJECT_DIR$/fyp/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/Tests/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/Tests/ElasticSearch/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/Tests/ElasticSearch/test_elasticutils.py" />
+    <entry file="file://$PROJECT_DIR$/fyp/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="1" lean-forward="false" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/TwitterProcessing/preprocessor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="590">
+          <caret line="36" column="17" lean-forward="false" selection-start-line="36" selection-start-column="17" selection-end-line="36" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/ElasticSearch/elastic_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="446">
+          <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="60" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#48#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/MachineLearningProcessing/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="433">
+          <caret line="72" column="0" lean-forward="false" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="91" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/temp_spam_data.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/migrations/0001_initial.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/migrations/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="34" lean-forward="false" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="3" column="44" lean-forward="false" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#32#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/migrations/0003_tf_idfmodel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/MachineLearningProcessing/tf-idf.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="342">
-          <caret line="19" column="39" lean-forward="false" selection-start-line="19" selection-start-column="39" selection-end-line="19" selection-end-column="39" />
+          <caret line="19" column="10" lean-forward="true" selection-start-line="19" selection-start-column="10" selection-end-line="19" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#23#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="16" column="33" lean-forward="true" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#28#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/static/jquery-3.2.1.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp/wsgi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/templates/fyp/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="16" lean-forward="false" selection-start-line="4" selection-start-column="16" selection-end-line="4" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="18" column="42" lean-forward="false" selection-start-line="18" selection-start-column="42" selection-end-line="18" selection-end-column="42" />
+          <folding>
+            <element signature="e#637#678#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/static/js/jquery-3.2.1.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="55" lean-forward="false" selection-start-line="4" selection-start-column="55" selection-end-line="4" selection-end-column="55" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fyp/fyp/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="39" column="10" lean-forward="false" selection-start-line="39" selection-start-column="10" selection-end-line="39" selection-end-column="10" />
+        <state relative-caret-position="159">
+          <caret line="12" column="9" lean-forward="false" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fyp/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/Tests/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/Tests/ElasticSearch/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/ElasticSearch/elastic_utils.py" />
-    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/Tests/ElasticSearch/test_elasticutils.py" />
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/templates/fyp/CollectTweets/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="9" column="7" lean-forward="true" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="10" column="26" lean-forward="false" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/TwitterProcessing/collect_tweets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>

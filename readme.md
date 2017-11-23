@@ -26,3 +26,4 @@ Python3
 Tensorflow
 NLTK
 ElasticSearch/Elasticpy
+Jquery
