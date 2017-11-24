@@ -3,9 +3,34 @@
     <head>
         {% load staticfiles %}
         <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/fyp.css' %}">
     </head>
 
     <body>
-    {% block content %}{% endblock content %}
+    <!--
+dark inverse
+-->
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar3">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse" id="navbar3">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/fyp/index">Index</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/fyp/collect">Collect</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+    {% block content %}
+
+    {% endblock content %}
     </body>
 </html>

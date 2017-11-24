@@ -8,7 +8,13 @@
 <body>
     {% block content %}
     <form action="#" method="get">
-     <button value="Click" id="collect_tweets" name="collect_tweets" type="submit">Collect Tweets!</button>
+     <button value="Click" class="btn btn-success"
+             id="collect_tweets" name="collect_tweets" type="submit">Collect Tweets! <i class="fa fa-twitter"></i></button>
+    </form>
+    <form action="#" method="get">
+        <button value="Click" class="btn btn-danger"
+                id="disconnect_tweets" name="disconnect_tweets" type="submit">Disconnect! <i class="fa fa-times"></i>
+        </button>
     </form>
      <script>
 
