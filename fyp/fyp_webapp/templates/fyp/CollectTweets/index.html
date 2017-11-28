@@ -7,6 +7,9 @@
 </head>
 <body>
     {% block content %}
+
+
+
     <form action="#" method="get">
      <button value="Click" class="btn btn-success"
              id="collect_tweets" name="collect_tweets" type="submit">Collect Tweets! <i class="fa fa-twitter"></i></button>
@@ -16,9 +19,16 @@
                 id="disconnect_tweets" name="disconnect_tweets" type="submit">Disconnect! <i class="fa fa-times"></i>
         </button>
     </form>
-     <script>
 
-     </script>
+     <script>
+        setInterval(function(){
+            console.log("Appears every 20 seconds.")
+        }, 20000);
+    </script>
+
     {% endblock content %}
+
+
+
 </body>
 </html>

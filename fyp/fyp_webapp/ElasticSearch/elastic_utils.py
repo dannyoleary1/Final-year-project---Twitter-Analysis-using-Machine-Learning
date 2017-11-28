@@ -67,3 +67,19 @@ def last_id(index_name):
         return 0
     else:
         return res['hits']['total']
+
+def last_n_in_index(index_name, number):
+    query = {
+            "query": {
+            "match_all": {}
+            },
+            "size": number,
+            "sort": [
+            {
+            "created.keyword": {
+            "order": "desc"
+            }
+            }
+            ]
+        }
+    return search_index(index_name, query)
