@@ -19,10 +19,24 @@
                 id="disconnect_tweets" name="disconnect_tweets" type="submit">Disconnect! <i class="fa fa-times"></i>
         </button>
     </form>
+    <div id="latest_tweets">
+
+    </div>
 
      <script>
+
+
+         function collect_latest_tweets(){
+           $.ajax({
+            url: "{% url 'latesttweets' %}",
+            success: function(data) {
+            $('#latest_tweets').html(data);
+            }
+            });
+        }
+
         setInterval(function(){
-            console.log("Appears every 20 seconds.")
+            collect_latest_tweets()
         }, 20000);
     </script>
 

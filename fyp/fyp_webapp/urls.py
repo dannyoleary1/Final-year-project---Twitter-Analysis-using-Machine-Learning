@@ -5,4 +5,5 @@ from . import views
 urlpatterns = [
     url(r'^$', views.fyp, name='fyp'),
     url(r'^collect', views.tweetcollector, name='tweetcollector'),
+    url(r'^latesttweets', views.latesttweets, name="latesttweets"),
 ]
