@@ -12,7 +12,10 @@ def fyp(request):
 
 def tweetcollector(request):
     if (request.GET.get('collect_tweets')):
-       stream = collect_tweets.create_stream()
+        topic = cfg.twitter_credentials['topic'].replace(" ", "")
+        if es.check_index_exists(topic) == False:
+            es.create_index(topic)
+        stream = collect_tweets.create_stream()
     if (request.GET.get('disconnect_tweets')):
         stream.disconnect()
 
@@ -20,7 +23,8 @@ def tweetcollector(request):
 
 
 def latesttweets(request):
-    res = es.last_n_in_index(cfg.twitter_credentials['topic'], number=10)
+    topic = cfg.twitter_credentials['topic'].replace(" ", "")
+    res = es.last_n_in_index(topic, number=10)
     res = res['hits']['hits']
     resultList = []
     for result in res:

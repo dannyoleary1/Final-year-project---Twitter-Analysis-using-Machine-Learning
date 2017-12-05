@@ -18,6 +18,10 @@ class ElasticUtilsTest(TestCase):
     def test_delete_index(self):
         self.assertIn("\'acknowledged\': True", es.delete_index("test"))
 
+    def check_index_exists(self):
+        self.assertIn(True, es.check_index_exists("test"))
+        self.assertIn(False, es.check_index_exists("fakeindex"))
+
     def test_list_all_index(self):
         es.create_index("list_all")
         res = es.list_all_indexes()
