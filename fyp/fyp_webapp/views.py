@@ -5,6 +5,7 @@ from fyp_webapp import config as cfg
 from fyp_webapp.TwitterProcessing import collect_tweets
 import tweepy
 from django.views.decorators.csrf import csrf_protect
+from fyp_webapp.MachineLearningProcessing import tf_idf as tf
 
 
 def fyp(request):
@@ -30,3 +31,13 @@ def latesttweets(request):
     for result in res:
         resultList.append(result['_source']['text'])
     return render_to_response('fyp/CollectTweets/latesttweets.html', {'res':resultList})
+
+def trainmodel(request):
+    return render(request, 'fyp/TrainModel/index.html')
+
+def trainedmodel(request):
+    result = tf.run_tf_idf()
+    for label,entry in zip(result['model'].labels_,result['texts']):
+        if (label ==1):
+            print (label, entry)
+    return render(request, 'fyp/TrainModel/index.html')

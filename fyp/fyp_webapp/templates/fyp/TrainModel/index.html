@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends "base.html" %}
+    <meta charset="UTF-8">
+    <title>Tweet Collector</title>
+</head>
+<body>
+    {% block content %}
+     <button value="Click" class="btn btn-success"
+             id="train_model" name="train_model" type="submit">Train Model! </button>
+
+    <div id="trained_model">
+
+    </div>
+
+    <script>
+        $( "#train_model" ).on( "click", function() {
+            $.ajax({
+            url: "{% url 'trainedmodel' %}",
+            success: function(data) {
+            $('#latest_tweets').html(data);
+            }
+            });
+        });
+
+    </script>
+    {% endblock content %}
+</body>
+</html>
