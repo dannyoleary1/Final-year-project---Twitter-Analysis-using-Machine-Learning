@@ -10,6 +10,7 @@ from fyp_webapp.TwitterProcessing import preprocessor
 from fyp_webapp.ElasticSearch import elastic_utils
 import time
 from fyp_webapp import config as cfg
+import pickle
 
 
 def run_tf_idf():
@@ -29,4 +30,5 @@ def run_tf_idf():
     km=KMeans(n_clusters=2, init='k-means++',n_init=100, verbose=1)
     km.fit(tfidf_vector)
     result = {"model": km, "texts": texts}
+    pickle.dump(result, open("save.p", "wb"))
     return result

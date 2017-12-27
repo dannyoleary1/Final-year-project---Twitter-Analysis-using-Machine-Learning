@@ -9,6 +9,7 @@
     {% block content %}
      <button value="Click" class="btn btn-success"
              id="train_model" name="train_model" type="submit">Train Model! </button>
+    <button value="Click" class="btn btn-success" id="test-lda" name="test-lda" type="submit">Test LDA! </button>
 
     <div id="trained_model">
 
@@ -22,6 +23,14 @@
             $('#latest_tweets').html(data);
             }
             });
+        });
+        $("#test-lda").on("click", function () {
+            $.ajax({
+                url: "{% url 'testlda' %}",
+                success: function (data) {
+                    $('#test-lda').html(data);
+                }
+            })
         });
 
     </script>

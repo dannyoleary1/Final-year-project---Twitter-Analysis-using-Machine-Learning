@@ -6,6 +6,7 @@ from fyp_webapp.TwitterProcessing import collect_tweets
 import tweepy
 from django.views.decorators.csrf import csrf_protect
 from fyp_webapp.MachineLearningProcessing import tf_idf as tf
+from fyp_webapp.MachineLearningProcessing import lda as lda
 
 
 def fyp(request):
@@ -40,4 +41,8 @@ def trainedmodel(request):
     for label,entry in zip(result['model'].labels_,result['texts']):
         if (label ==1):
             print (label, entry)
+    return render(request, 'fyp/TrainModel/index.html')
+
+def testlda(request):
+    lda.run_lda("save.p")
     return render(request, 'fyp/TrainModel/index.html')
