@@ -26,7 +26,7 @@ def print_top_words(model, feature_names, n_top_words):
 # only one document or in at least 95% of the documents are removed.
 
 
-def run_lda(filename):
+def run_lda():
     n_samples = 2000
     n_features = 1000
     n_components = 3
@@ -98,8 +98,5 @@ def run_lda(filename):
     tf_feature_names = tf_vectorizer.get_feature_names()
     print_top_words(lda, tf_feature_names, n_top_words)
     predict = lda.transform(tf)
-    f = open("test.txt", 'w')
-    for label,entry in zip(predict,texts):
-        thing = (label, entry)
-        f.write(''.join([str(i) for i in thing])+"\n")
-    f.close()
+    result = {"predictions": predict, "text": texts}
+    return result

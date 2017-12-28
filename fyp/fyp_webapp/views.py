@@ -7,6 +7,7 @@ import tweepy
 from django.views.decorators.csrf import csrf_protect
 from fyp_webapp.MachineLearningProcessing import tf_idf as tf
 from fyp_webapp.MachineLearningProcessing import lda as lda
+import numpy as np
 
 
 def fyp(request):
@@ -44,5 +45,7 @@ def trainedmodel(request):
     return render(request, 'fyp/TrainModel/index.html')
 
 def testlda(request):
-    lda.run_lda("save.p")
+    result = lda.run_lda()
+    for label in (result['predictions']):
+        print (np.argmax(label), label)
     return render(request, 'fyp/TrainModel/index.html')
