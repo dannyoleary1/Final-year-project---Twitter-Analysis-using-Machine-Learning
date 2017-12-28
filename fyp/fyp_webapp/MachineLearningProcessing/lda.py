@@ -12,12 +12,15 @@ from fyp_webapp import config as cfg
 
 
 def print_top_words(model, feature_names, n_top_words):
+    final_res = []
     for topic_idx, topic in enumerate(model.components_):
         message = "Topic #%d: " % topic_idx
         message += " ".join([feature_names[i]
                              for i in topic.argsort()[:-n_top_words - 1:-1]])
         print(message)
+        final_res.append(message)
     print()
+    return final_res
 
 
 # Load the 20 newsgroups dataset and vectorize it. We use a few heuristics
@@ -96,7 +99,7 @@ def run_lda():
 
     print("\nTopics in LDA model:")
     tf_feature_names = tf_vectorizer.get_feature_names()
-    print_top_words(lda, tf_feature_names, n_top_words)
+    categories = print_top_words(lda, tf_feature_names, n_top_words)
     predict = lda.transform(tf)
-    result = {"predictions": predict, "text": texts}
+    result = {"predictions": predict, "text": texts, "categories": categories}
     return result

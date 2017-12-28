@@ -46,6 +46,8 @@ def trainedmodel(request):
 
 def testlda(request):
     result = lda.run_lda()
-    for label in (result['predictions']):
-        print (np.argmax(label), label)
+    info = [()]
+    for label,entry in zip(result['predictions'], result['text']):
+        info.append((np.argmax(label), entry))
+    print (info)
     return render(request, 'fyp/TrainModel/index.html')

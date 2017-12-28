@@ -7,13 +7,19 @@
 </head>
 <body>
     {% block content %}
-     <button value="Click" class="btn btn-success"
+    <div class="row">
+    <div id="kmeans-train" class="col">
+        <button value="Click" class="btn btn-success"
              id="train_model" name="train_model" type="submit">Train Model! </button>
+    </div>
+    <div id="lda-train" class="col">
     <button value="Click" class="btn btn-success" id="test-lda" name="test-lda" type="submit">Test LDA! </button>
+    </div>
 
     <div id="trained_model">
 
     </div>
+        </div>
 
     <script>
         $( "#train_model" ).on( "click", function() {
@@ -28,7 +34,7 @@
             $.ajax({
                 url: "{% url 'testlda' %}",
                 success: function (data) {
-                    $('#test-lda').html(data);
+                    $('#trained_model').html(data);
                 }
             })
         });
