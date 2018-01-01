@@ -33,11 +33,20 @@ def trainmodel(request):
                 components = lda_form.cleaned_data['components']
                 top_words = lda_form.cleaned_data['top_words']
                 result = lda.run_lda(sample, features, components, top_words)
+                list1 = []
+                list2 = []
+                list3 = [] #TODO THIS MAY NEED TO BE A MORE DYNAMIC APPROACH
                 info = [()]
                 for label, entry in zip(result['predictions'], result['text']):
-                    info.append((np.argmax(label), entry))
+                    if(np.argmax(label) == 0):
+                        list1.append(entry)
+                    elif(np.argmax(label) == 1):
+                        list2.append(entry)
+                    else:
+                        list3.append(entry)
+
             return render(request, 'fyp/TrainModel/index.html', {'LDAForm':lda_form, 'KMeansForm':kmeans_form,
-                                                                 'nbar':'trainmodel', 'info': info})
+                                                                 'nbar':'trainmodel', 'list1': list1, 'list2':list2,'list3':list3})
     else:
         lda_form = forms.LDAForm()
         kmeans_form = forms.KMeansForm()

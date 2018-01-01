@@ -10,5 +10,4 @@ urlpatterns = [
     url(r'^collect', collect.tweetcollector, name='tweetcollector'),
     url(r'^latesttweets', collect.latesttweets, name="latesttweets"),
     url(r'^trainmodel', trainmodel.trainmodel, name="trainmodel"),
-    url(r'^trainedmodel', trainmodel.trainedmodel, name="trainedmodel")
 ]

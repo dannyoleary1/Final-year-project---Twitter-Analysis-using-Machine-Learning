@@ -24,8 +24,35 @@
             <button type="submit" name="lda-form">Submit</button>
         </form>
     </div>
-    <div id="trained_model">
+        <br>
+        <br>
     </div>
+    <div id="lda-trained_model">
+
+        <div class="row">
+            <div class="col">
+                <ul>
+                {% for c in list1|slice:":10" %}
+                    <li> {{ c }} </li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="col">
+                <ul>
+                    {% for c in list2|slice:":10" %}
+                        <li> {{ c }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col">
+                <ul>
+                    {% for c in list3|slice:":10" %}
+                    <li> {{ c }} </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
     </div>
 
     <script>
