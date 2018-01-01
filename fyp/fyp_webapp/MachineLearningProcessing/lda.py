@@ -29,11 +29,7 @@ def print_top_words(model, feature_names, n_top_words):
 # only one document or in at least 95% of the documents are removed.
 
 
-def run_lda():
-    n_samples = 2000
-    n_features = 1000
-    n_components = 3
-    n_top_words = 5
+def run_lda(n_samples, n_features, n_components, n_top_words):
     texts = []
     res = elastic_utils.iterate_search(index_name=cfg.twitter_credentials['topic'])
     for i in res:

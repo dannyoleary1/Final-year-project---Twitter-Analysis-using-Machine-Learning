@@ -13,8 +13,7 @@ from fyp_webapp import config as cfg
 import pickle
 
 
-def run_tf_idf():
-    batch_size = 500
+def run_tf_idf(n_clusters, n_init, verbose):
     max_features = 10000
 
 

@@ -7,57 +7,44 @@
 </head>
 <body>
     {% block content %}
-
-</form>
     <div class="row">
     <div id="kmeans-train" class="col">
-        <button value="Click" class="btn btn-success"
-             id="train_model" name="train_model" type="submit">Train Model! </button>
-        <form id="kmeans-form">
+        <button value="Click" onclick="showformkmeans()" class="btn btn-success" id="display-kmeans-form" >Display KMeans </button>
+        <form id="kmeans-form" style="display:none;" action="{% url 'trainmodel' %}" method="post">
             {% csrf_token %}
             {{ KMeansForm }}
+            <button type="submit" name="kmeans-form">Submit</button>
         </form>
     </div>
     <div id="lda-train" class="col">
     <button value="Click" onclick="showformlda()" class="btn btn-success" id="display-lda-form">Display LDA</button>
-        <form id="lda-form" style="display:none;">
+        <form id="lda-form" style="display:none;" action="{% url 'trainmodel' %}" method="post">
             {% csrf_token %}
             {{ LDAForm }}
-            <button type="submit">Submit</button>
+            <button type="submit" name="lda-form">Submit</button>
         </form>
     </div>
-
     <div id="trained_model">
-
     </div>
-        </div>
+    </div>
 
     <script>
+        function showformkmeans(){
+            var x = document.getElementById("kmeans-form")
+            checkstyle(x)
+        }
         function showformlda() {
             var x = document.getElementById("lda-form");
+            checkstyle(x)
+        }
+        function checkstyle(x){
             if (x.style.display === "none") {
                 x.style.display = "block";
-            } else {
-            x.style.display = "none";
             }
+            else {
+                x.style.display = "none";
             }
-        $( "#train_model" ).on( "click", function() {
-            $.ajax({
-            url: "{% url 'trainedmodel' %}",
-            success: function(data) {
-            $('#latest_tweets').html(data);
-            }
-            });
-        });
-        $("#test-lda").on("click", function () {
-            $.ajax({
-                url: "{% url 'testlda' %}",
-                success: function (data) {
-                    $('#trained_model').html(data);
-                }
-            })
-        });
-
+        }
     </script>
     {% endblock content %}
 </body>
