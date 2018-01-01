@@ -8,8 +8,7 @@ from django.views.decorators.csrf import csrf_protect
 from fyp_webapp.MachineLearningProcessing import tf_idf as tf
 from fyp_webapp.MachineLearningProcessing import lda as lda
 import numpy as np
-
-
+from fyp_webapp import forms
 def fyp(request):
     return HttpResponse("Hello, world. You're at the index.")
 
@@ -22,7 +21,7 @@ def tweetcollector(request):
     if (request.GET.get('disconnect_tweets')):
         stream.disconnect()
 
-    return render(request, 'fyp/CollectTweets/index.html')
+    return render(request, 'fyp/CollectTweets/index.html', {"nbar":"collect"})
 
 
 def latesttweets(request):
@@ -32,22 +31,32 @@ def latesttweets(request):
     resultList = []
     for result in res:
         resultList.append(result['_source']['text'])
-    return render_to_response('fyp/CollectTweets/latesttweets.html', {'res':resultList})
+    return render_to_response('fyp/CollectTweets/latesttweets.html', {'res':resultList}, {'nbar':'collect'})
 
 def trainmodel(request):
-    return render(request, 'fyp/TrainModel/index.html')
+    lda_form = forms.LDAForm()
+    kmeans_form = forms.KMeansForm()
+    return render(request, 'fyp/TrainModel/index.html', {'LDAForm':lda_form, 'KMeansForm':kmeans_form}, {'nbar':'trainmodel'} )
 
 def trainedmodel(request):
     result = tf.run_tf_idf()
+
     for label,entry in zip(result['model'].labels_,result['texts']):
         if (label ==1):
             print (label, entry)
-    return render(request, 'fyp/TrainModel/index.html')
+    return render(request, 'fyp/TrainModel/index.html', {'nbar':'trainmodel'}, )
 
 def testlda(request):
     result = lda.run_lda()
     info = [()]
     for label,entry in zip(result['predictions'], result['text']):
         info.append((np.argmax(label), entry))
-    print (info)
-    return render(request, 'fyp/TrainModel/index.html')
+    # If this is a POST request then process the Form data
+    if request.method == 'POST':
+        form = LDAForm(request.POST)
+        # Check if the form is valid:
+        if form.is_valid():
+            sample = form.cleaned_data['samples']
+            print (sample)
+
+    return render(request, 'fyp/TrainModel/index.html', {'nbar':'trainmodel'})
