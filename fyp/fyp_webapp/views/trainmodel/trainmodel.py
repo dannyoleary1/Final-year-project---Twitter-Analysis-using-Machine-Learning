@@ -3,9 +3,14 @@ from fyp_webapp.MachineLearningProcessing import tf_idf as tf
 from fyp_webapp.MachineLearningProcessing import lda as lda
 import numpy as np
 from fyp_webapp import forms
-
+import nltk
+import string
+from nltk.corpus import stopwords
+from collections import Counter
+from fyp_webapp.TwitterProcessing import preprocessor
 
 def trainmodel(request):
+
     if request.method == 'POST':
         if 'kmeans-form' in request.POST:
             #Do Stuff
@@ -44,11 +49,26 @@ def trainmodel(request):
                         list2.append(entry)
                     else:
                         list3.append(entry)
-
+            list1_word_count = count_words(10, list1)
+            list2_word_count = count_words(10, list2)
+            list3_word_count = count_words(10, list3)
             return render(request, 'fyp/TrainModel/index.html', {'LDAForm':lda_form, 'KMeansForm':kmeans_form,
-                                                                 'nbar':'trainmodel', 'list1': list1, 'list2':list2,'list3':list3})
+                                                                 'nbar':'trainmodel', 'list1': list1, 'list2':list2,'list3':list3,
+                                                                 'list1wordcount': list1_word_count, 'list2wordcount': list2_word_count,
+                                                                 'list3wordcount': list3_word_count,
+                                                                 'categories':result['categories']})
     else:
         lda_form = forms.LDAForm()
         kmeans_form = forms.KMeansForm()
     return render(request, 'fyp/TrainModel/index.html', {'LDAForm':lda_form, 'KMeansForm':kmeans_form}, {'nbar':'trainmodel'} )
 
+def count_words(number_word_frequency_results, list_in_question):
+    nltk.download('stopwords')
+
+    punctuation = list(string.punctuation)
+    stop = stopwords.words('english') + punctuation + ['rt', 'via', '…', 'I', '’', 'The', '!']
+    count_word_frequency = Counter()
+    for entry in list_in_question:
+        terms_all = [term for term in preprocessor.preprocess(entry) if term not in stop]
+        count_word_frequency.update(terms_all)
+    return count_word_frequency.most_common(number_word_frequency_results)

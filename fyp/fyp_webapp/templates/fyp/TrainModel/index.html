@@ -28,7 +28,13 @@
         <br>
     </div>
     <div id="lda-trained_model">
-
+        <div class="row">
+            {% if categories %}
+                {% for i in categories %}
+                    <div class="col"><h1> {{i}} </h1></div>
+            {% endfor %}
+            {% endif %}
+        </div>
         <div class="row">
             <div class="col">
                 <ul>
@@ -52,8 +58,32 @@
                 </ul>
             </div>
         </div>
-
+        <div id="lda-stats" class="row">
+            <div class="col">
+                <ul>
+                {% for c in list1wordcount %}
+                    <li> {{ c }} </li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="col">
+                <ul>
+                {% for c in list2wordcount %}
+                    <li> {{ c }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="col">
+                <ul>
+                    {% for c in list3wordcount %}
+                        <li> {{ c }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
+
+
 
     <script>
         function showformkmeans(){
