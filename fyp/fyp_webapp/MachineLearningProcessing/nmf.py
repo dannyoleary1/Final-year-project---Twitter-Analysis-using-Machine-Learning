@@ -7,10 +7,6 @@ import pickle
 from fyp_webapp.ElasticSearch import elastic_utils
 from fyp_webapp import config as cfg
 
-
-
-
-
 def print_top_words(model, feature_names, n_top_words):
     final_res = []
     for topic_idx, topic in enumerate(model.components_):
@@ -22,10 +18,7 @@ def print_top_words(model, feature_names, n_top_words):
     print()
     return final_res
 
-
-
-
-def run_lda(n_samples, n_features, n_components, n_top_words):
+def run_nmf(n_samples, n_features, n_components, n_top_words):
     texts = []
     res = elastic_utils.iterate_search(index_name=cfg.twitter_credentials['topic'])
     for i in res:
@@ -78,20 +71,8 @@ def run_lda(n_samples, n_features, n_components, n_top_words):
     tfidf_feature_names = tfidf_vectorizer.get_feature_names()
     print_top_words(nmf, tfidf_feature_names, n_top_words)
 
-    print("Fitting LDA models with tf features, "
-      "n_samples=%d and n_features=%d..."
-      % (n_samples, n_features))
-    lda = LatentDirichletAllocation(n_components=n_components, max_iter=5,
-                                learning_method='online',
-                                learning_offset=50.,
-                                random_state=0)
-    t0 = time()
-    lda.fit(tf)
-    print("done in %0.3fs." % (time() - t0))
-
-    print("\nTopics in LDA model:")
     tf_feature_names = tf_vectorizer.get_feature_names()
-    categories = print_top_words(lda, tf_feature_names, n_top_words)
-    predict = lda.transform(tf)
+    categories = print_top_words(nmf, tf_feature_names, n_top_words)
+    predict = nmf.transform(tf)
     result = {"predictions": predict, "text": texts, "categories": categories}
     return result
