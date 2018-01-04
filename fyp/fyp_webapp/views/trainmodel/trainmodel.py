@@ -75,10 +75,13 @@ def render_lda(request):
             result_list.append([])
         for label, entry in zip(result['predictions'], result['text']):
             result_list[np.argmax(label)].append(entry)
+        stats = []
+        for entry in list:
+            stats.append(count_words(10, result_list[entry]))
 
     return render(request, 'fyp/TrainModel/index.html',
                   {'LDAForm': lda_form, 'KMeansForm': kmeans_form, 'NMFForm': nmf_form,
-                   'nbar': 'trainmodel', 'ldaresultlist':result_list,
+                   'nbar': 'trainmodel', 'ldaresultlist':result_list, 'ldastats':stats,
                    'categories': result['categories']})
 
 def render_nmf(request):

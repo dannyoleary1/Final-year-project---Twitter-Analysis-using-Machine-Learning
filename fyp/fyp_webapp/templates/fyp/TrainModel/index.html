@@ -12,7 +12,7 @@
         <button value="Click" onclick="showformkmeans()" class="btn btn-success" id="display-kmeans-form" >Display KMeans </button>
         <form id="kmeans-form" style="display:none;" action="{% url 'trainmodel' %}" method="post">
             {% csrf_token %}
-            {{ KMeansForm }}
+            {{ KMeansForm.as_p }}
             <button type="submit" name="kmeans-form">Submit</button>
         </form>
     </div>
@@ -20,7 +20,7 @@
     <button value="Click" onclick="showformlda()" class="btn btn-success" id="display-lda-form">Display LDA</button>
         <form id="lda-form" style="display:none;" action="{% url 'trainmodel' %}" method="post">
             {% csrf_token %}
-            {{ LDAForm }}
+            {{ LDAForm.as_p }}
             <button type="submit" name="lda-form">Submit</button>
         </form>
     </div>
@@ -28,7 +28,7 @@
         <button value="Click" onclick="showformnmf()" class="btn btn-success" id="display-nmf-form">Display NMF</button>
             <form id="nmf-form" style="display:none;" action="{% url 'trainmodel' %}" method="post">
                 {% csrf_token %}
-                {{ NMFForm }}
+                {{ NMFForm.as_p }}
                 <button type="submit" name="nmf-form">Submit</button>
             </form>
     </div>
@@ -65,9 +65,6 @@
         </div>
 
 
-
-
-
     <div id="lda-trained_model">
         <div class="row">
             {% if categories %}
@@ -89,27 +86,15 @@
             </div>
         </div>
         <div id="lda-stats" class="row">
-            <div class="col">
-                <ul>
-                {% for c in list1wordcount %}
-                    <li> {{ c }} </li>
-                {% endfor %}
-                </ul>
-            </div>
-            <div class="col">
-                <ul>
-                {% for c in list2wordcount %}
-                    <li> {{ c }}</li>
-                {% endfor %}
-                </ul>
-            </div>
-            <div class="col">
-                <ul>
-                    {% for c in list3wordcount %}
-                        <li> {{ c }}</li>
+            {% for entry in ldastats %}
+                <div class="col">
+                    <ul>
+                    {% for a in entry %}
+                        <li> {{ a }} </li>
                     {% endfor %}
-                </ul>
-            </div>
+                    </ul>
+                </div>
+            {% endfor %}
         </div>
     </div>
 
