@@ -30,6 +30,15 @@ dark inverse
             <li class="nav-item {% if nbar == 'trainmodel' %}active{% endif %}">
                 <a class="nav-link" href="/fyp/trainmodel">Train Models</a>
             </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link">Welcome {{ user.username }}</a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+
         </ul>
     </div>
 </nav>

@@ -9,7 +9,9 @@ from fyp_webapp.MachineLearningProcessing import tf_idf as tf
 from fyp_webapp.MachineLearningProcessing import lda as lda
 import numpy as np
 from fyp_webapp import forms
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='/login/')
 def tweetcollector(request):
     if (request.GET.get('collect_tweets')):
         topic = cfg.twitter_credentials['topic'].replace(" ", "")
@@ -21,6 +23,7 @@ def tweetcollector(request):
 
     return render(request, 'fyp/CollectTweets/index.html', {"nbar":"collect"})
 
+@login_required
 def latesttweets(request):
     topic = cfg.twitter_credentials['topic'].replace(" ", "")
     res = es.last_n_in_index(topic, number=10)

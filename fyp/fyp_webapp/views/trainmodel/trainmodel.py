@@ -14,7 +14,9 @@ from fyp_webapp.ElasticSearch import elastic_utils
 from fyp_webapp import config as cfg
 from fyp_webapp.TwitterProcessing import preprocessor
 from sklearn.base import BaseEstimator, TransformerMixin
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='/login/')
 def trainmodel(request):
 
     if request.method == 'POST':
