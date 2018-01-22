@@ -1,4 +1,7 @@
 import re
+import nltk
+import string
+from nltk.corpus import stopwords
 
 #TODO Add docs
 #Picks up on the following regex
@@ -35,3 +38,27 @@ def preprocess(s, lowercase=True):
     if lowercase:
         tokens = [token if emoticon_re.search(token) else token.lower() for token in tokens]
     return tokens
+
+
+def remove_ats(tokens):
+    regex_ats = re.compile(r'(?:@[\w_]+)')
+    tokens_no_ats = [term for term in tokens if regex_ats.match(term) is None]
+    return tokens_no_ats
+
+def remove_hashtags(tokens):
+    regex_hashtags = re.compile(r"(?:\#+[\w_]+[\w\'_\-]*[\w_]+)")
+    tokens_no_hashtags = [term for term in tokens if regex_hashtags.match(term) is None]
+    return tokens_no_hashtags
+
+def remove_stop_words(tokens):
+    nltk.download('stopwords')
+
+    punctuation = list(string.punctuation)
+    stop = stopwords.words('english') + punctuation + ['rt', 'via', '…', 'I', '’', 'The', '!']
+    terms_all = [term for term in tokens if term not in stop]
+    return terms_all
+
+def remove_urls(tokens):
+    regex_urls = re.compile(r'http[s]?://(?:[a-z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-f][0-9a-f]))+')
+    tokens_no_urls = [term for term in tokens if regex_urls.match(term) is  None]
+    return tokens_no_urls

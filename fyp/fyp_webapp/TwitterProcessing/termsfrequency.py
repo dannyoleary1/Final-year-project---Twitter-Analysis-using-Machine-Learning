@@ -1,9 +1,9 @@
 import json
 from collections import Counter
-from fyp_webapp.TwitterProcessing import preprocessor
+from TwitterProcessing import preprocessor
 import nltk
 import string
-from fyp_webapp.ElasticSearch import elastic_utils as es
+from ElasticSearch import elastic_utils as es
 from nltk.corpus import stopwords
 
 

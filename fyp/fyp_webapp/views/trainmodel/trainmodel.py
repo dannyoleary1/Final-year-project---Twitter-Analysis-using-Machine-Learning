@@ -9,6 +9,11 @@ import string
 from nltk.corpus import stopwords
 from collections import Counter
 from fyp_webapp.TwitterProcessing import preprocessor
+from fyp_webapp.examples import testlda, word2vec
+from fyp_webapp.ElasticSearch import elastic_utils
+from fyp_webapp import config as cfg
+from fyp_webapp.TwitterProcessing import preprocessor
+from sklearn.base import BaseEstimator, TransformerMixin
 
 def trainmodel(request):
 
@@ -108,6 +113,21 @@ def render_nmf(request):
         stats = []
         for entry in list:
             stats.append(count_words(10, result_list[entry]))
+        test()
     return render(request, 'fyp/TrainModel/index.html',
                   {'LDAForm': lda_form, 'KMeansForm': kmeans_form, 'NMFForm': nmf_form, 'nbar': 'trainmodel', 'nmfresultlist':result_list,
                    'nmfcategories': result['categories'], 'nmfstats':stats})
+
+def test():
+    texts = []
+    res = elastic_utils.iterate_search(index_name=cfg.twitter_credentials['topic'])
+    for i in res:
+        processed_text = preprocessor.preprocess(i['_source']['text'])
+        processed_text = preprocessor.remove_stop_words(processed_text) #remove stop words
+        processed_text = preprocessor.remove_urls(processed_text) #remove urls
+        processed_text = preprocessor.remove_ats(processed_text) #remove username requests
+        processed_text = preprocessor.remove_hashtags(processed_text) #remove hashtags? #TODO this might be useful
+        texts.append(processed_text)
+    doc_2_vec = testlda.run(texts)
+
+    #print (doc_2_vec.fit(texts))

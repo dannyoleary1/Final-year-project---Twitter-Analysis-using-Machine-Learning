@@ -1,20 +1,7 @@
 from django.db import models
-from sklearn.feature_extraction.text import TfidfVectorizer
-from fyp_webapp.ElasticSearch import elastic_utils
+from django.contrib.auth.models import User
 
-# Create your models here.
-class KMeansModel(models.Model):
-    name = models.TextField()
-    clusters = models.IntegerField()
-    init = models.TextField(blank=True, default='kmeans++')
-    number_iterations = models.IntegerField()
-    verbose = models.IntegerField()
-
-class TF_IDFModel(models.Model):
-    batch_size = models.IntegerField()
-    max_features = models.IntegerField()
-    max_df = models.FloatField(default = 0.95)
-    min_df = models.FloatField(default = 2)
-    stopwords = models.TextField(default = 'english')
-    elasticsearch_category = models.TextField(default = 'security')
+class TwitterCat(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    category_name = models.CharField(max_length=30)
 
