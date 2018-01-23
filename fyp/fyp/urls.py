@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    url(r'^fyp/', include('fyp_webapp.urls')),
+    url(r'^fyp/', include('fyp_webapp.urls', namespace='fyp_webapp')),
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', auth_views.login, {'template_name': 'fyp/registration/login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, {'template_name': 'fyp/registration/logout.html', 'next_page': 'login'}, name='logout'),
