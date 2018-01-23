@@ -24,13 +24,14 @@ class TwitterCatForm(ModelForm):
         fields = ['user', 'category_name']
         exclude = ['user']
 
-
+@login_required(login_url='/login/')
 def twittercat_list(request, template_name='fyp/Category/twittercat_list.html'):
     cat = TwitterCat.objects.all()
     data = {}
     data['object_list'] = cat
     return render(request, template_name, data)
 
+@login_required(login_url='/login/')
 def twittercat_create(request, template_name='fyp/Category/twittercat_form.html'):
     form = TwitterCatForm(request.POST or None)
     test = form.save(commit=False)
@@ -40,6 +41,7 @@ def twittercat_create(request, template_name='fyp/Category/twittercat_form.html'
         return redirect('fyp_webapp:twittercat_list')
     return render(request, template_name, {'form':form})
 
+@login_required(login_url='/login/')
 def twittercat_update(request, pk, template_name='fyp/Category/twittercat_form.html'):
     book= get_object_or_404(TwitterCat, pk=pk)
     form = TwitterCatForm(request.POST or None, instance=book)
@@ -48,27 +50,10 @@ def twittercat_update(request, pk, template_name='fyp/Category/twittercat_form.h
         return redirect('fyp_webapp:twittercat_list')
     return render(request, template_name, {'form':form})
 
+@login_required(login_url='/login/')
 def twittercat_delete(request, pk, template_name='fyp/Category/twittercat_confirm_delete.html'):
     book= get_object_or_404(TwitterCat, pk=pk)
     if request.method=='POST':
         book.delete()
         return redirect('fyp_webapp:twittercat_list')
     return render(request, template_name, {'object':book})
-
-class TwitterCatList(ListView):
-    model = TwitterCat
-    print (model)
-
-class TwitterCatCreate(CreateView):
-    model = TwitterCat
-    fields = ['category_name']
-    success_url = reverse_lazy('fyp_webapp:twittercat_list')
-
-class TwitterCatUpdate(UpdateView):
-    model = TwitterCat
-    fields = ['category_name']
-    success_url = reverse_lazy('fyp_webapp:twittercat_list')
-
-class TwitterCatDelete(DeleteView):
-    model = TwitterCat
-    success_url = reverse_lazy('fyp_webapp:twittercat_list')
