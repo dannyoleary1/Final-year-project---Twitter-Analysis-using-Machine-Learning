@@ -12,3 +12,13 @@ class TwitterCat(models.Model):
     def get_absolute_url(self):
         return reverse('fyp_webapp:twittercat_edit', kwargs={'pk': self.pk})
 
+class TwitterUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    twitter_username = models.CharField(max_length=30)
+
+    def __unicode__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('fyp_webapp:twitteruser_edit', kwargs={'pk': self.pk})
+

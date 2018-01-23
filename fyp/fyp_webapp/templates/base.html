@@ -30,15 +30,11 @@ dark inverse
             <li class="nav-item {% if nbar == 'trainmodel' %}active{% endif %}">
                 <a class="nav-link" href="/fyp/trainmodel">Train Models</a>
             </li>
-
-
-            <li class="dropdown nav-item {% if nbar == 'category' %}active{% endif %}">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Category <span class="caret"></span></a>
-                 <ul class="dropdown-menu">
-                    <li><a href="/fyp/category">List</a></li>
-                    <li><a href="#">Add</a></li>
-                    <li><a href="#">Delete</a></li>
-                 </ul>
+            <li class="nav-item {% if nbar == 'category' %}active{% endif %}">
+                <a class="nav-link" href="/fyp/category">Category</a>
+            </li>
+            <li class="nav-item {% if nbar == 'twitteruser' %}active{% endif %}">
+                <a class="nav-link" href="/fyp/twitteruser">Twitter Users</a>
             </li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
