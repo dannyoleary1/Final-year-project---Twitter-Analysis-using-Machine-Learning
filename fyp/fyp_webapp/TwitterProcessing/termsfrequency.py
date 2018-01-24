@@ -1,9 +1,9 @@
 import json
 from collections import Counter
-from TwitterProcessing import preprocessor
+from fyp_webapp.TwitterProcessing import preprocessor
 import nltk
 import string
-from ElasticSearch import elastic_utils as es
+from fyp_webapp.ElasticSearch import elastic_utils as es
 from nltk.corpus import stopwords
 
 
@@ -16,6 +16,14 @@ nltk.download('stopwords')
 punctuation = list(string.punctuation)
 stop = stopwords.words('english') + punctuation + ['rt', 'via', '…', 'I', '’', 'The', '!']
 
+def count_words(data, number_word_frequency_results=40):
+    current_max_sentence_size = 0
+    count_word_frequency = Counter()
+    for entry in data:
+        print (entry)
+        terms_all = [term for term in entry]
+        count_word_frequency.update(terms_all)
+    return count_word_frequency.most_common(number_word_frequency_results)
 
 #In a realistic sense. These should all be done together.
 def execute_all_term_functions(self, index, number_word_frequency_results=10):

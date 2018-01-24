@@ -9,6 +9,11 @@ from django.views.generic import TemplateView,ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
 from django.forms import ModelForm
+from fyp_webapp.TwitterProcessing import collect_user_tweets
+from fyp_webapp.TwitterProcessing import preprocessor
+from fyp_webapp.TwitterProcessing import termsfrequency
+from collections import Counter
+from fyp_webapp.models import TwitterCat
 
 class TwitterUserForm(ModelForm):
     class Meta:
@@ -54,7 +59,35 @@ def twitteruser_delete(request, pk, template_name='fyp/twitteruser/twitteruser_c
 def twitteruser_suggest(request, template_name='fyp/twitteruser/twitteruser_suggest.html'):
     if request.method == 'POST':
         if 'twitteruser-form' in request.POST:
-            print(request.POST.getlist('suggest-user'))
+            all_tweets = []
+            all_text = []
+            user_list = request.POST.getlist('suggest-user')
+            for user in user_list:
+                all_tweets.extend(collect_user_tweets.get_all_users_tweets(user))
+            count_word_frequency = Counter()
+            for tweet in all_tweets:
+                text = preprocessor.preprocess(str(tweet.text))
+                text = preprocessor.remove_stop_words(text)
+                text = preprocessor.remove_ats(text)
+                text = preprocessor.remove_hashtags(text)
+                text = preprocessor.remove_urls(text)
+                text = [i for i in text if len(i) > 2]
+                all_text.extend(text)
+                terms_all = [term for term in text]
+                count_word_frequency.update(terms_all)
+            suggestions = count_word_frequency.most_common(75)
+            print (suggestions)
+            cat = TwitterUser.objects.filter(user=request.user)
+            data = {}
+            data['object_list'] = cat
+            return render(request, template_name, {'suggestions':suggestions, 'object_list':data['object_list']})
+        if 'suggestcat-form' in request.POST:
+            print (request.POST)
+            category_list = request.POST.getlist('suggest-category')
+            for category in category_list:
+                category = ''.join(c for c in category if c not in '()\',')
+                entry = TwitterCat(user=request.user, category_name=category)
+                entry.save()
 
     cat = TwitterUser.objects.filter(user=request.user)
     data = {}

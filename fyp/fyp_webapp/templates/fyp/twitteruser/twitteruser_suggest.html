@@ -3,19 +3,35 @@
 </head>
 {% block content %}
 <h1>Twitter Users</h1>
-<form id="twituser-form" action="{% url 'fyp_webapp:twitteruser_suggest' %}" method="post">
-    {% csrf_token %}
-    <br>
-    <input type="checkbox" id="select_all"/>Select All</td>
-    <br>
-    <br>
-    {% for category in object_list %}
-    <input type="checkbox" name="suggest-user" value={{ category.twitter_username }}>{{ category.user }}  ({{ category.twitter_username }})</input>
-    </br>
-    {% endfor %}
+<div class="row">
+    <div class="col-6">
+        <form id="twituser-form" action="{% url 'fyp_webapp:twitteruser_suggest' %}" method="post">
+        {% csrf_token %}
+        <br>
+        <input type="checkbox" id="select_all"/>Select All</td>
+        <br>
+        <br>
+        {% for category in object_list %}
+        <input type="checkbox" name="suggest-user" value={{ category.twitter_username }}>{{ category.user }}  ({{ category.twitter_username }})</input>
+        </br>
+        {% endfor %}
 
-    <button type="submit" name="twitteruser-form">Submit</button>
-</form>
+        <button type="submit" name="twitteruser-form">Submit</button>
+        </form>
+    </div>
+    <div clas="col-6">
+        <form id="suggestcat-form" action="{% url 'fyp_webapp:twitteruser_suggest' %}" method="post">
+             {% csrf_token %}
+        {% for entry in suggestions %}
+        <input type="checkbox" name="suggest-category" value={{entry}}>{{ entry }}</input>
+        <br>
+        {% endfor %}
+
+            <button type="submit" name="suggestcat-form">Submit</button>
+            </form>
+    </div>
+    </div>
+</div>
 <script>
     $('#select_all').change(function() {
     var checkboxes = $(this).closest('form').find(':checkbox');

@@ -39,6 +39,10 @@ def count_words(number_word_frequency_results, list_in_question):
     stop = stopwords.words('english') + punctuation + ['rt', 'via', '…', 'I', '’', 'The', '!']
     count_word_frequency = Counter()
     for entry in list_in_question:
+        print ("-----------")
+        print (entry)
+        print (type(entry))
+        print("-----------")
         terms_all = [term for term in preprocessor.preprocess(entry) if term not in stop]
         count_word_frequency.update(terms_all)
     return count_word_frequency.most_common(number_word_frequency_results)
