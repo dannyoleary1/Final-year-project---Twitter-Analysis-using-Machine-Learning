@@ -2,6 +2,7 @@
 import tweepy
 from fyp_webapp.ElasticSearch import elastic_utils as es
 from fyp_webapp import config as cfg
+from http.client import IncompleteRead
 
 
 
@@ -20,9 +21,12 @@ class StreamListener(tweepy.StreamListener):
             print (id)
             es.add_entry(topic, id, dict)
 
+
+
     def on_error(self, status_code):
         print(status_code)
         if status_code == 420:
+            print ("does it go here?")
             return True
 
 """This checks if the topic in question has a space or not. This is important for aggregations to ElasticSearch."""
@@ -32,14 +36,24 @@ def check_topic_index(topic):
     else:
         return topic
 
-def create_stream():
+def create_stream(topics, end_loop=False):
     auth = tweepy.OAuthHandler(cfg.twitter_credentials["consumer_key"], cfg.twitter_credentials['consumer_secret'])
     auth.set_access_token(cfg.twitter_credentials['access_token'], cfg.twitter_credentials['access_token_secret'])
 
     api = tweepy.API(auth)
 
     stream_listener = StreamListener()
-    stream = tweepy.Stream(auth=api.auth, listener=stream_listener)
+    while end_loop is False:
+        stream = tweepy.Stream(auth=api.auth, listener=stream_listener, timeout=60)
+        try:
+            stream.filter(track=topics)
+        except Exception as e:
+            print ("----------------")
+            print ("Error. Restarting Stream.... Error: ")
+            print (e)
+            print("----------------")
 
-    stream.filter(track=[cfg.twitter_credentials['topic_twitter']])
+
+
+
     return stream

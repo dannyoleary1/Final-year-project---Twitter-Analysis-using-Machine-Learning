@@ -10,14 +10,20 @@ from fyp_webapp.MachineLearningProcessing import lda as lda
 import numpy as np
 from fyp_webapp import forms
 from django.contrib.auth.decorators import login_required
+from fyp_webapp.models import TwitterCat
 
 @login_required(login_url='/login/')
 def tweetcollector(request, template_name='fyp/CollectTweets/index.html'):
     if (request.GET.get('collect_tweets')):
+
         topic = cfg.twitter_credentials['topic'].replace(" ", "")
-        if es.check_index_exists(topic) == False:
+        if es.check_index_exists(topic) is None:
             es.create_index(topic)
-        stream = collect_tweets.create_stream()
+        entries = TwitterCat.objects.filter(user=request.user)
+        topics = []
+        for entry in entries:
+            topics.append(entry.category_name)
+        stream = collect_tweets.create_stream(topics)
     if (request.GET.get('disconnect_tweets')):
         stream.disconnect()
 
