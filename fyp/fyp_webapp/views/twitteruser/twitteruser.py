@@ -18,7 +18,7 @@ class TwitterUserForm(ModelForm):
 
 @login_required(login_url='/login/')
 def twitteruser_list(request, template_name='fyp/twitteruser/twitteruser_list.html'):
-    cat = TwitterUser.objects.all()
+    cat = TwitterUser.objects.filter(user=request.user)
     data = {}
     data['object_list'] = cat
     return render(request, template_name, data)
@@ -49,3 +49,14 @@ def twitteruser_delete(request, pk, template_name='fyp/twitteruser/twitteruser_c
         book.delete()
         return redirect('fyp_webapp:twitteruser_list')
     return render(request, template_name, {'object':book})
+
+@login_required(login_url='/login/')
+def twitteruser_suggest(request, template_name='fyp/twitteruser/twitteruser_suggest.html'):
+    if request.method == 'POST':
+        if 'twitteruser-form' in request.POST:
+            print(request.POST.getlist('suggest-user'))
+
+    cat = TwitterUser.objects.filter(user=request.user)
+    data = {}
+    data['object_list'] = cat
+    return render(request, template_name, data)

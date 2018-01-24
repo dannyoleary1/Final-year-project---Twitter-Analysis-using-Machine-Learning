@@ -17,7 +17,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='/login/')
-def trainmodel(request):
+def trainmodel(request, template_name="fyp/TrainModel/index.html"):
 
     if request.method == 'POST':
         if 'kmeans-form' in request.POST:
@@ -30,7 +30,7 @@ def trainmodel(request):
         lda_form = forms.LDAForm()
         kmeans_form = forms.KMeansForm()
         nmf_form = forms.NMFForm()
-    return render(request, 'fyp/TrainModel/index.html', {'LDAForm':lda_form, 'KMeansForm':kmeans_form, 'NMFForm':nmf_form}, {'nbar':'trainmodel'} )
+    return render(request, template_name, {'LDAForm':lda_form, 'KMeansForm':kmeans_form, 'NMFForm':nmf_form}, {'nbar':'trainmodel'} )
 
 def count_words(number_word_frequency_results, list_in_question):
     nltk.download('stopwords')

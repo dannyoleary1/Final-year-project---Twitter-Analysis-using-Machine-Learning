@@ -24,5 +24,6 @@ urlpatterns = [
     url(r'^create-twitteruser', twitteruser.twitteruser_create, name='twitteruser_new'),
     url(r'^edit-twitteruser/(?P<pk>\d+)$', twitteruser.twitteruser_update, name='twitteruser_edit'),
     url(r'^delete-twitteruser/delete/(?P<pk>\d+)$', twitteruser.twitteruser_delete, name='twitteruser_delete'),
+    url(r'^suggestcategory-twitteruser', twitteruser.twitteruser_suggest, name='twitteruser_suggest'),
 
 ]

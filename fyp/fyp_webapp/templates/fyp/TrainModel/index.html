@@ -10,7 +10,7 @@
     <div class="row">
     <div id="kmeans-train" class="col">
         <button value="Click" onclick="showformkmeans()" class="btn btn-success" id="display-kmeans-form" >Display KMeans </button>
-        <form id="kmeans-form" style="display:none;" action="{% url 'trainmodel' %}" method="post">
+        <form id="kmeans-form" style="display:none;" action="{% url 'fyp_webapp:trainmodel' %}" method="post">
             {% csrf_token %}
             {{ KMeansForm.as_p }}
             <button type="submit" name="kmeans-form">Submit</button>
@@ -18,7 +18,7 @@
     </div>
     <div id="lda-train" class="col">
     <button value="Click" onclick="showformlda()" class="btn btn-success" id="display-lda-form">Display LDA</button>
-        <form id="lda-form" style="display:none;" action="{% url 'trainmodel' %}" method="post">
+        <form id="lda-form" style="display:none;" action="{% url 'fyp_webapp:trainmodel' %}" method="post">
             {% csrf_token %}
             {{ LDAForm.as_p }}
             <button type="submit" name="lda-form">Submit</button>
@@ -26,7 +26,7 @@
     </div>
     <div id="nmf-train" class="col">
         <button value="Click" onclick="showformnmf()" class="btn btn-success" id="display-nmf-form">Display NMF</button>
-            <form id="nmf-form" style="display:none;" action="{% url 'trainmodel' %}" method="post">
+            <form id="nmf-form" style="display:none;" action="{% url 'fyp_webapp:trainmodel' %}" method="post">
                 {% csrf_token %}
                 {{ NMFForm.as_p }}
                 <button type="submit" name="nmf-form">Submit</button>

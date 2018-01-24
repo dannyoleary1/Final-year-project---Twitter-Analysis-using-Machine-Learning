@@ -26,7 +26,7 @@ class TwitterCatForm(ModelForm):
 
 @login_required(login_url='/login/')
 def twittercat_list(request, template_name='fyp/Category/twittercat_list.html'):
-    cat = TwitterCat.objects.all()
+    cat = TwitterCat.objects.filter(user=request.user)
     data = {}
     data['object_list'] = cat
     return render(request, template_name, data)

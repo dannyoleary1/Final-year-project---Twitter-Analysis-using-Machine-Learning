@@ -12,7 +12,7 @@ from fyp_webapp import forms
 from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='/login/')
-def tweetcollector(request):
+def tweetcollector(request, template_name='fyp/CollectTweets/index.html'):
     if (request.GET.get('collect_tweets')):
         topic = cfg.twitter_credentials['topic'].replace(" ", "")
         if es.check_index_exists(topic) == False:
@@ -21,7 +21,7 @@ def tweetcollector(request):
     if (request.GET.get('disconnect_tweets')):
         stream.disconnect()
 
-    return render(request, 'fyp/CollectTweets/index.html', {"nbar":"collect"})
+    return render(request, template_name, {"nbar":"collect"})
 
 @login_required
 def latesttweets(request):

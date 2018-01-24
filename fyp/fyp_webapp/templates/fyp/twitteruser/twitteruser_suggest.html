@@ -1,0 +1,26 @@
+<head>
+    {% extends "base.html" %}
+</head>
+{% block content %}
+<h1>Twitter Users</h1>
+<form id="twituser-form" action="{% url 'fyp_webapp:twitteruser_suggest' %}" method="post">
+    {% csrf_token %}
+    <br>
+    <input type="checkbox" id="select_all"/>Select All</td>
+    <br>
+    <br>
+    {% for category in object_list %}
+    <input type="checkbox" name="suggest-user" value={{ category.twitter_username }}>{{ category.user }}  ({{ category.twitter_username }})</input>
+    </br>
+    {% endfor %}
+
+    <button type="submit" name="twitteruser-form">Submit</button>
+</form>
+<script>
+    $('#select_all').change(function() {
+    var checkboxes = $(this).closest('form').find(':checkbox');
+    checkboxes.prop('checked', $(this).is(':checked'));
+});
+</script>
+
+{% endblock content %}

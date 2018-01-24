@@ -1,3 +1,7 @@
+<head>
+    {% extends "base.html" %}
+</head>
+{% block content %}
 <h1>Twitter Categories</h1>
 <ul>
     {% for category in object_list %}
@@ -7,5 +11,5 @@
     </li>
     {% endfor %}
 </ul>
-
 <a href="{% url 'fyp_webapp:twittercat_new' %}">New</a>
+{% endblock content %}

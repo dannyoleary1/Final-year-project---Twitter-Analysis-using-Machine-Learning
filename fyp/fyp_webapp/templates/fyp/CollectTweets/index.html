@@ -28,7 +28,7 @@
 
          function collect_latest_tweets(){
            $.ajax({
-            url: "{% url 'latesttweets' %}",
+            url: "{% url 'fyp_webapp:latesttweets' %}",
             success: function(data) {
             $('#latest_tweets').html(data);
             }
