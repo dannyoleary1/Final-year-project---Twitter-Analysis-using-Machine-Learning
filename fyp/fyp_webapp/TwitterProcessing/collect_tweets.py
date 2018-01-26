@@ -46,14 +46,11 @@ def create_stream(topics, end_loop=False):
     while end_loop is False:
         stream = tweepy.Stream(auth=api.auth, listener=stream_listener, timeout=60)
         try:
-            stream.filter(track=topics)
+            stream.filter(languages=["en"], track=topics)
         except Exception as e:
             print ("----------------")
             print ("Error. Restarting Stream.... Error: ")
             print (e)
             print("----------------")
-
-
-
 
     return stream

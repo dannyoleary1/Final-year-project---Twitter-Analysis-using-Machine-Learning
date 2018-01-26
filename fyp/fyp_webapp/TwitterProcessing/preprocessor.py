@@ -2,6 +2,7 @@ import re
 import nltk
 import string
 from nltk.corpus import stopwords
+from nltk.stem.porter import *
 
 #TODO Add docs
 #Picks up on the following regex
@@ -39,6 +40,20 @@ def preprocess(s, lowercase=True):
         tokens = [token if emoticon_re.search(token) else token.lower() for token in tokens]
     return tokens
 
+def filter_multiple(s, ats=False, hashtags=False, stopwords=False, urls=False, stemming=False):
+    entries = preprocess(s)
+    if ats:
+        entries = remove_ats(entries)
+    if hashtags:
+        entries = remove_hashtags(entries)
+    if stopwords:
+        entries = remove_stop_words(entries)
+    if urls:
+        entries = remove_urls(entries)
+    if stemming:
+        entries = porter_stemming(entries)
+    return entries
+
 
 def remove_ats(tokens):
     regex_ats = re.compile(r'(?:@[\w_]+)')
@@ -62,3 +77,8 @@ def remove_urls(tokens):
     regex_urls = re.compile(r'http[s]?://(?:[a-z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-f][0-9a-f]))+')
     tokens_no_urls = [term for term in tokens if regex_urls.match(term) is  None]
     return tokens_no_urls
+
+def porter_stemming(tokens):
+    stemmer = PorterStemmer()
+    singles = [stemmer.stem(plural) for plural in tokens]
+    return singles
