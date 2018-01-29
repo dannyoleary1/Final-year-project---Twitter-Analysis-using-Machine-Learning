@@ -57,6 +57,7 @@ def search_index(index_name, query='{"query":{"match_all":{}}}'):
 
 """TODO needs to be tested"""
 def iterate_search(index_name, query={"query":{"match_all":{}}}):
+    print (query)
     res = helpers.scan(
         client=es,
         scroll='2m',
