@@ -51,6 +51,7 @@ def delete_entry(index_name, id):
 
 """Allows a search to take place on a given index. Default query or can be changed as an optional parameter"""
 def search_index(index_name, query='{"query":{"match_all":{}}}'):
+    print (query)
     res = es.search(index=index_name, body=query)
     return res
 

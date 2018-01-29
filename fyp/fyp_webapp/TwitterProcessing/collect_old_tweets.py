@@ -19,7 +19,7 @@ def run():
 
     printTweet("### Example 1 - Get tweets by username [barackobama]", tweet)
 
-    #Example 2 - Get tweets by query search
+    #Example 2 - Get tweets by query searchp
     tweetCriteria = got.manager.TweetCriteria().setQuerySearch('Computer Security').setSince("2018-01-01").setUntil("2018-01-03").setMaxTweets(1)
     tweet = got.manager.TweetManager.getTweets(tweetCriteria)[0]
 
