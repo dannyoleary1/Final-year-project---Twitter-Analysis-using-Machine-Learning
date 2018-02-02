@@ -40,12 +40,12 @@ dark inverse
                 <a class="nav-link" href="/fyp/twitteruser">Twitter Users</a>
             </li>
             {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link">Welcome {{ user.username }}</a>
+                <li class="nav-item ml-auto">
+                    <a class="nav-link ml-auto">Welcome {{ user.username }}</a>
                 </li>
             {% endif %}
-            <li class="nav-item">
-                <a class="nav-link" href="/logout">Logout</a>
+            <li class="nav-item ml-auto">
+                <a class="nav-link ml-auto" href="/logout">Logout</a>
             </li>
 
         </ul>

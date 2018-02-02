@@ -6,10 +6,12 @@
     <title>Tweet Collector</title>
 </head>
 <body>
-    {% block content %}
-    <div class="row">
+{% block content %}
+<div class="row">
     <div id="kmeans-train" class="col">
-        <button value="Click" onclick="showformkmeans()" class="btn btn-success" id="display-kmeans-form" >Display KMeans </button>
+        <button value="Click" onclick="showformkmeans()" class="btn btn-success" id="display-kmeans-form">Display
+            KMeans
+        </button>
         <form id="kmeans-form" style="display:none;" action="{% url 'fyp_webapp:trainmodel' %}" method="post">
             {% csrf_token %}
             {{ KMeansForm.as_p }}
@@ -17,7 +19,7 @@
         </form>
     </div>
     <div id="lda-train" class="col">
-    <button value="Click" onclick="showformlda()" class="btn btn-success" id="display-lda-form">Display LDA</button>
+        <button value="Click" onclick="showformlda()" class="btn btn-success" id="display-lda-form">Display LDA</button>
         <form id="lda-form" style="display:none;" action="{% url 'fyp_webapp:trainmodel' %}" method="post">
             {% csrf_token %}
             {{ LDAForm.as_p }}
@@ -26,102 +28,104 @@
     </div>
     <div id="nmf-train" class="col">
         <button value="Click" onclick="showformnmf()" class="btn btn-success" id="display-nmf-form">Display NMF</button>
-            <form id="nmf-form" style="display:none;" action="{% url 'fyp_webapp:trainmodel' %}" method="post">
-                {% csrf_token %}
-                {{ NMFForm.as_p }}
-                <button type="submit" name="nmf-form">Submit</button>
-            </form>
+        <form id="nmf-form" style="display:none;" action="{% url 'fyp_webapp:trainmodel' %}" method="post">
+            {% csrf_token %}
+            {{ NMFForm.as_p }}
+            <button type="submit" name="nmf-form">Submit</button>
+        </form>
     </div>
-        <br>
-        <br>
-    </div>
+    <br>
+    <br>
+</div>
 
-    <div class="row" id="nmf-trained-model">
-                {% for i in nmfcategories %}
-                    <div class="col"><h1> {{i}} </h1></div>
-            {% endfor %}
-    </div>
-        <div class="row">
-        {% for c in nmfresultlist|slice:":5" %}
-            <div class="col">
-           {% for entry in c|slice:":10" %}
-                <ul>
-                    <li> {{ entry }} </li>
-                </ul>
-            {% endfor %}
-            </div>
+<div class="row" id="nmf-trained-model">
+    {% for i in nmfcategories %}
+    <div class="col"><h1> {{i}} </h1></div>
+    {% endfor %}
+</div>
+<div class="row">
+    {% for c in nmfresultlist|slice:":5" %}
+    <div class="col">
+        {% for entry in c|slice:":10" %}
+        <ul>
+            <li> {{ entry }}</li>
+        </ul>
         {% endfor %}
-        </div>
-        <div class="row" id="nmfstats">
-            {% for entry in nmfstats %}
-                <div class="col">
-                    <ul>
-                    {% for a in entry %}
-                        <li> {{ a }} </li>
-                    {% endfor %}
-                    </ul>
-                </div>
-            {% endfor %}
-        </div>
-
-
-    <div id="lda-trained_model">
-        <div class="row">
-            {% if categories %}
-                {% for i in categories %}
-                    <div class="col"><h1> {{i}} </h1></div>
-            {% endfor %}
-            {% endif %}
-        </div>
-        <div class="row">
-            {% for c in ldaresultlist|slice:":5" %}
-            <div class="col">
-           {% for entry in c|slice:":10" %}
-                <ul>
-                    <li> {{ entry }} </li>
-                </ul>
-            {% endfor %}
-            </div>
-        {% endfor %}
-            </div>
-        </div>
-        <div id="lda-stats" class="row">
-            {% for entry in ldastats %}
-                <div class="col">
-                    <ul>
-                    {% for a in entry %}
-                        <li> {{ a }} </li>
-                    {% endfor %}
-                    </ul>
-                </div>
-            {% endfor %}
-        </div>
     </div>
+    {% endfor %}
+</div>
+<div class="row" id="nmfstats">
+    {% for entry in nmfstats %}
+    <div class="col">
+        <ul>
+            {% for a in entry %}
+            <li> {{ a }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</div>
 
 
+<div id="lda-trained_model">
+    <div class="row">
+        {% if categories %}
+        {% for i in categories %}
+        <div class="col"><h1> {{i}} </h1></div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    <div class="row">
+        {% for c in ldaresultlist|slice:":5" %}
+        <div class="col">
+            {% for entry in c|slice:":10" %}
+            <ul>
+                <li> {{ entry }}</li>
+            </ul>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div id="lda-stats" class="row">
+    {% for entry in ldastats %}
+    <div class="col">
+        <ul>
+            {% for a in entry %}
+            <li> {{ a }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+</div>
 
-    <script>
-        function showformnmf(){
-            var x = document.getElementById("nmf-form")
-            checkstyle(x)
+
+<script>
+    function showformnmf() {
+        var x = document.getElementById("nmf-form")
+        checkstyle(x)
+    }
+
+    function showformkmeans() {
+        var x = document.getElementById("kmeans-form")
+        checkstyle(x)
+    }
+
+    function showformlda() {
+        var x = document.getElementById("lda-form");
+        checkstyle(x)
+    }
+
+    function checkstyle(x) {
+        if (x.style.display === "none") {
+            x.style.display = "block";
         }
-        function showformkmeans(){
-            var x = document.getElementById("kmeans-form")
-            checkstyle(x)
+        else {
+            x.style.display = "none";
         }
-        function showformlda() {
-            var x = document.getElementById("lda-form");
-            checkstyle(x)
-        }
-        function checkstyle(x){
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            }
-            else {
-                x.style.display = "none";
-            }
-        }
-    </script>
-    {% endblock content %}
+    }
+</script>
+{% endblock content %}
 </body>
 </html>

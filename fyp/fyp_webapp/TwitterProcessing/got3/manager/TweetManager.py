@@ -72,16 +72,22 @@ class TweetManager:
                 results.append(tweet)
                 resultsAux.append(tweet)
 
+                print(tweet.date)
+
                 if receiveBuffer and len(resultsAux) >= bufferLength:
                     receiveBuffer(resultsAux)
                     resultsAux = []
+                    print ("greater than buffer length")
 
                 if tweetCriteria.maxTweets > 0 and len(results) >= tweetCriteria.maxTweets:
                     active = False
+                    print ("inside results > maxTweets?")
                     break
 
         if receiveBuffer and len(resultsAux) > 0:
             receiveBuffer(resultsAux)
+            print ("in receive buffer")
+
 
         return results
 
@@ -107,7 +113,7 @@ class TweetManager:
         else:
             urlLang = ''
         url = url % (urllib.parse.quote(urlGetData), urlLang, refreshCursor)
-        # print(url)
+        print(url)
 
         headers = [
             ('Host', "twitter.com"),
@@ -129,6 +135,7 @@ class TweetManager:
         try:
             response = opener.open(url)
             jsonResponse = response.read()
+
         except:
             # print("Twitter weird response. Try to see on browser: ", url)
             print(
@@ -137,7 +144,8 @@ class TweetManager:
             print("Unexpected error:", sys.exc_info()[0])
             sys.exit()
             return
-
+        print(
+            "Twitter weird response. Try to see on browser: https://twitter.com/search?q=%s&src=typd" % urllib.parse.quote(
+                urlGetData))
         dataJson = json.loads(jsonResponse.decode())
-
         return dataJson
