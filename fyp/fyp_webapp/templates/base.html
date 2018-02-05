@@ -39,6 +39,9 @@ dark inverse
             <li class="nav-item {% if nbar == 'twitteruser' %}active{% endif %}">
                 <a class="nav-link" href="/fyp/twitteruser">Twitter Users</a>
             </li>
+            <li class="nav-item {% if nbar == 'taskprogress' %}active{% endif %}">
+                <a class="nav-link" href="/fyp/taskprogress">Task Progress</a>
+            </li>
             {% if user.is_authenticated %}
                 <li class="nav-item ml-auto">
                     <a class="nav-link ml-auto">Welcome {{ user.username }}</a>

@@ -6,6 +6,7 @@ from .views.trainmodel import trainmodel
 from .views.index import index
 from .views.category import category
 from .views.twitteruser import twitteruser
+from .views.taskprogress import taskprogress
 
 
 urlpatterns = [
@@ -25,5 +26,9 @@ urlpatterns = [
     url(r'^edit-twitteruser/(?P<pk>\d+)$', twitteruser.twitteruser_update, name='twitteruser_edit'),
     url(r'^delete-twitteruser/delete/(?P<pk>\d+)$', twitteruser.twitteruser_delete, name='twitteruser_delete'),
     url(r'^suggestcategory-twitteruser', twitteruser.twitteruser_suggest, name='twitteruser_suggest'),
+
+    url(r'^taskprogress$', taskprogress.taskprogress, name='taskprogress'),
+    url(r'^poll_state$', taskprogress.poll_state,name='poll_state'),
+
 
 ]

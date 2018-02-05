@@ -1,6 +1,5 @@
 from django import forms
 
-
 class LDAForm(forms.Form):
     samples = forms.IntegerField(initial=2000)
     features = forms.IntegerField(initial=1000)
