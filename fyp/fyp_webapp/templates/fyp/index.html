@@ -54,14 +54,12 @@
         success: function(result) {
                         if (result.current_results == null || result.current_results == undefined) {
                             willstop = 1;
-
                         }
                         else{
                             $( "#chart" ).empty();
                             var word_count = result.current_results
                             var words = result.current_categories
                             drawWordCloud(words,word_count)
-                            console.log("-------")
                             $("#word-count").empty();
                             for (var key in result.current_results) {
                                 var item = document.createElement("div")
