@@ -16,13 +16,14 @@ from celery.result import AsyncResult
 from fyp_webapp.tasks import word_cloud
 from django.core.urlresolvers import reverse
 
-
+@login_required(login_url="/login/")
 def fyp(request):
     if 'job' in request.GET:
         job_id = request.GET['job']
         job = AsyncResult(job_id)
         data = job.result or job.state
         print("----------")
+        print (job.state)
         print(data)
         print("----------")
         context = {
@@ -32,6 +33,8 @@ def fyp(request):
         return render(request, "fyp/index.html", context)
     else:
         topic = cfg.twitter_credentials['topic']
+        print (topic)
+        print (request.user.id)
         job = word_cloud.delay(request.user.id, topic)
         return HttpResponseRedirect(reverse('fyp_webapp:fyp') + '?job=' + job.id)
         #  return render(request, "fyp/index.html", {'jsonData': job, 'category': job}, {'nbar': 'index'})

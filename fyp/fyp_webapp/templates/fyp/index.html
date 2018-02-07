@@ -9,13 +9,32 @@
 <body>
     {% block content %}
     {% csrf_token %}
+    <div class="row"></div>
+    <br>
         <div class="row">
             <div class="col-6">
                 <div class="card">
-                <div id="chart"></div>
+                    <div class="card-header">
+                        Current Words
                     </div>
+                    <div class="card-block">
+                    <div id="chart"></div>
+                        </div>
+                </div>
             </div>
-            </div>
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-header">
+                            Word Count
+                        </div>
+                        <div class="card-block">
+                            <div id="word-count">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script type="text/javascript">
          var poll_xhr;
@@ -42,6 +61,20 @@
                             var word_count = result.current_results
                             var words = result.current_categories
                             drawWordCloud(words,word_count)
+                            console.log("-------")
+                            $("#word-count").empty();
+                            for (var key in result.current_results) {
+                                var item = document.createElement("div")
+                                item.className += "list-group-item"
+                                var span = document.createElement("span")
+                                span.className += "badge badge-pill badge-success float-right"
+                                var text = document.createTextNode(result.current_results[key])
+                                var t = document.createTextNode(key)
+                                item.append(t)
+                                span.append(text)
+                                item.appendChild(span)
+                                document.getElementById("word-count").appendChild(item)
+                            }
                         }
                     }
       });
@@ -61,8 +94,8 @@
         console.log(words)
           console.log(word_count)
         var svg_location = "#chart";
-        var width = $(document).width();
-        var height = $(document).height();
+        var width = $(document).width()/2;
+        var height = $(document).height()/1.2;
 
         var fill = d3.scale.category20();
 

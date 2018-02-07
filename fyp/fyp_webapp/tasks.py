@@ -49,5 +49,4 @@ def word_cloud(id, topic):
         current_task.update_state(state='PROGRESS',
                                   meta={'current_categories': category, 'current_results': item})
     jsonData = json.dumps(item)
- #   print (jsonData)
     return (category, jsonData)
