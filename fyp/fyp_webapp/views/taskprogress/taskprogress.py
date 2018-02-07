@@ -19,7 +19,6 @@ def poll_state(request):
         if 'task_id' in request.POST.keys() and request.POST['task_id']:
             task_id = request.POST['task_id']
             task = AsyncResult(task_id)
-            print(task.state)
             data = task.result or task.state
         else:
             data = 'No task_id in the request'
@@ -29,11 +28,15 @@ def poll_state(request):
     json_data = json.dumps(data)
     return HttpResponse(json_data, content_type='application/json')
 
+@login_required(login_url='/login/')
 def taskprogress(request):
     if 'job' in request.GET:
         job_id = request.GET['job']
         job = AsyncResult(job_id)
         data = job.result or job.state
+        print("----------")
+        print(data)
+        print("----------")
         context = {
             'data':data,
             'task_id':job_id,
