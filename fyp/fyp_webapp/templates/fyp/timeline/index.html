@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends "base.html" %}
+    {% load range %}
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+<script>
+            function calculateHourAvg(data){
+                var sum = 0;
+                for (i in data){
+                    sum += data[i]
+                }
+                var result = sum/(Object.keys(data).length)
+                return result.toFixed(2);
+            }
+
+            function calculateDayAvg(data){
+                var result = calculateHourAvg(data) * 24
+                return result.toFixed(2);
+            }
+
+            function calculateMinuteAvg(data){
+                var result = calculateHourAvg(data) / 24
+                return result.toFixed(2);
+            }
+
+        </script>
+<br></br>
+    <table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Date</th>
+        {% with ''|center:24 as range %}
+            {% for _ in range %}
+               <th scope="col">Hour {{ forloop.counter }}</th>
+            {% endfor %}
+        {% endwith %}
+      <th scope="col">60m avg</th>
+      <th scope="col">1d avg</th>
+      <th scope="col">1m avg</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for k,v in data.items %}
+    <tr>
+      <th scope="row">{{k}}</th>
+        {% for key,value in v.items %}
+            <td>{{value}}</td>
+        {% endfor %}
+        {% if v.items|length < 24 %}
+            {% for value in v.items|length|range:24 %}
+                <td></td>
+            {% endfor %}
+        {% endif %}
+        <td><script>document.write(calculateHourAvg({{v}}));</script></td>
+        <td><script>document.write(calculateDayAvg({{v}}))</script></td>
+        <td><script>document.write(calculateMinuteAvg({{v}}))</script></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+    <script>
+
+    </script>
+{% endblock content %}
+</body>
+</html>
