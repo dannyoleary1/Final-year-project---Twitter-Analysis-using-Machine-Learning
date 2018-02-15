@@ -8,6 +8,7 @@ from .views.category import category
 from .views.twitteruser import twitteruser
 from .views.taskprogress import taskprogress
 from .views.timeline import timeline
+from .views.oldtweets import oldtweets
 
 
 urlpatterns = [
@@ -31,7 +32,9 @@ urlpatterns = [
     url(r'^taskprogress$', taskprogress.taskprogress, name='taskprogress'),
     url(r'^poll_state$', taskprogress.poll_state,name='poll_state'),
 
-    url(r'^timeline', timeline.timeline, name='timeline')
+    url(r'^timeline', timeline.timeline, name='timeline'),
+
+    url(r'^oldtweets', oldtweets.oldtweets, name="oldtweets")
 
 
 ]

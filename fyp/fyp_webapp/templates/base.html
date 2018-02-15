@@ -22,8 +22,7 @@ dark inverse
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="navbar-collapse collapse" id="navbar3">
-        <ul class="navbar-nav">
-
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item {% if nbar == 'index' %}active{% endif %}">
                 <a class="nav-link" href="/fyp/">Index</a>
             </li>
@@ -45,6 +44,11 @@ dark inverse
             <li class="nav-item {% if nbar == 'timeline' %}active{% endif %}">
                 <a class="nav-link" href="/fyp/timeline">Timeline</a>
             </li>
+            <li class="nav-item {% if nbar == 'oldtweets' %}active{% endif %}">
+                <a class="nav-link" href="/fyp/oldtweets">Old Tweets</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
             {% if user.is_authenticated %}
                 <li class="nav-item ml-auto float-right">
                     <a class="nav-link ml-auto float-right">Welcome {{ user.username }}</a>
