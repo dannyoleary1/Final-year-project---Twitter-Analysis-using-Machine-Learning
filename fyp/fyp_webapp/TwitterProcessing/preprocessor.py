@@ -3,6 +3,7 @@ import nltk
 import string
 from nltk.corpus import stopwords
 from nltk.stem.porter import *
+from fyp_webapp import config
 
 #TODO Add docs
 #Picks up on the following regex
@@ -40,7 +41,7 @@ def preprocess(s, lowercase=True):
         tokens = [token if emoticon_re.search(token) else token.lower() for token in tokens]
     return tokens
 
-def filter_multiple(s, ats=False, hashtags=False, stopwords=False, urls=False, stemming=False):
+def filter_multiple(s, ats=False, hashtags=False, stopwords=False, urls=False, stemming=False, singles=False):
     entries = preprocess(s)
     if ats:
         entries = remove_ats(entries)
@@ -52,6 +53,8 @@ def filter_multiple(s, ats=False, hashtags=False, stopwords=False, urls=False, s
         entries = remove_urls(entries)
     if stemming:
         entries = porter_stemming(entries)
+    if singles:
+        entries = remove_single_chars(entries)
     return entries
 
 
@@ -66,11 +69,12 @@ def remove_hashtags(tokens):
     return tokens_no_hashtags
 
 def remove_stop_words(tokens):
-    nltk.download('stopwords')
-
-    punctuation = list(string.punctuation)
-    stop = stopwords.words('english') + punctuation + ['rt', 'via', '…', 'I', '’', 'The', '!']
+    stop = config.stopwords['words']
     terms_all = [term for term in tokens if term not in stop]
+    return terms_all
+
+def remove_single_chars(tokens):
+    terms_all = [term for term in tokens if len(term) != 1]
     return terms_all
 
 def remove_urls(tokens):

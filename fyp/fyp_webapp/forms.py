@@ -23,6 +23,7 @@ class DateInput(forms.DateInput):
 
 class OldTweetsForm(forms.Form):
     index_name = forms.CharField()
+    query_search = forms.CharField()
     start_date = forms.DateField(input_formats=['%Y-%m-%d',      # '2006-10-25'
                                                 '%m/%d/%Y',      # '10/25/2006'
                                                 '%m/%d/%y',     # '10/25/06'
@@ -35,6 +36,9 @@ class OldTweetsForm(forms.Form):
                                                 "%d/%m/%Y",        #25/10/2006
                                                 "%Y/%m/%d",     # 2006/10/25
                                                   ])
+
+
+
     def clean(self):
         cleaned_data = super(OldTweetsForm, self).clean()
         print (cleaned_data.get("index_name"))
