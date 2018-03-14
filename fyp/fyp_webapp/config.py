@@ -7,6 +7,7 @@ twitter_credentials = {
     "topic_twitter": "data breach"
 }
 es_host = {"host" : "35.196.219.6", "port" : 9200}
+rabbitmq = {"host": "35.196.219.6", "port": 5672, "username": "admin", "password": "password01"}
 stopwords = {"words": ['i','me','my','myself','we','our', 'ours', 'ourselves', 'you', 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself',
                        'she', 'her', 'hers', 'herself', 'it', 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom',
                         'this', 'that', 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does',

@@ -9,7 +9,6 @@ es = Elasticsearch(hosts=[cfg.es_host])
 """Creates an elastic search index. Reads in name as a parameter and outputs if it fails or not."""
 def create_index(name):
     # create ES client, create index
-
     if es.indices.exists(name):
         return ("Index already exists!")
     else:
@@ -50,7 +49,8 @@ def delete_entry(index_name, id):
 
 
 """Allows a search to take place on a given index. Default query or can be changed as an optional parameter"""
-def search_index(index_name, query='{"query":{"match_all":{}}}'):
+def search_index(index_name, query='{"que'
+                                   'ry":{"match_all":{}}}'):
     print (query)
     res = es.search(index=index_name, body=query)
     return res

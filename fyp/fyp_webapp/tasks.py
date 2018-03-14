@@ -5,6 +5,8 @@ from fyp_webapp.models import TwitterCat
 from fyp_webapp.TwitterProcessing import preprocessor
 from fyp_webapp.ElasticSearch import elastic_utils
 import json
+from fyp_webapp import config as cfg
+
 
 
 @shared_task(name="fyp_webapp.tasks.ftt_random")
@@ -50,3 +52,12 @@ def word_cloud(id, topic):
                                   meta={'current_categories': category, 'current_results': item})
     jsonData = json.dumps(item)
     return (category, jsonData)
+
+
+
+@shared_task(name="fyp_webapp.tasks.aggregate_words")
+def aggregate_words(status):
+    topic = cfg.twitter_credentials['topic']
+    id = elastic_utils.last_id(topic)
+    id+=1
+    elastic_utils.add_entry(topic, id, status)
