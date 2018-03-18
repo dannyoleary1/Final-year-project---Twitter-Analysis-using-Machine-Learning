@@ -23,7 +23,7 @@ def tweetcollector(request, template_name='fyp/CollectTweets/index.html'):
         topics = []
         for entry in entries:
             topics.append(entry.category_name)
-        stream = collect_tweets.create_stream(topics)
+        stream = collect_tweets.create_stream(request.user.id, topics)
     if (request.GET.get('disconnect_tweets')):
         stream.disconnect()
 

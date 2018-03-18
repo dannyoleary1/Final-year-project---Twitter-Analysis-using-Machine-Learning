@@ -5,18 +5,23 @@ from fyp_webapp import config as cfg
 from http.client import IncompleteRead
 from fyp_webapp.tasks import aggregate_words
 
-
+current_user = None
 
 class StreamListener(tweepy.StreamListener):
 
     def on_status(self, status):
+
         if hasattr(status, 'retweeted_status'):
             return #this filters out retweets
         else:
-            dict = {"description":str(status.user.description), "loc":str(status.user.location), "text":str(status.text),"coords":str(status.coordinates),
+            try:
+                text = status.extended_tweet["full_text"]
+            except AttributeError:
+                text = status.text
+            dict = {"description":str(status.user.description), "loc":str(status.user.location), "text":str(text),"coords":str(status.coordinates),
                     "name": str(status.user.screen_name), "user_created":str(status.user.created_at), "followers":str(status.user.followers_count),
                     "id_str":str(status.id_str),"created":str(status.created_at), "retweets":str(status.retweet_count)}
-            aggregate_words.delay(dict)
+            aggregate_words.delay(current_user, dict)
 
 
 
@@ -32,7 +37,10 @@ def check_topic_index(topic):
     else:
         return topic
 
-def create_stream(topics, end_loop=False):
+def create_stream(user, topics, end_loop=False):
+    #assign user to the variable so we can pass to aggregate words in the stream.
+    global current_user
+    current_user = user
     auth = tweepy.OAuthHandler(cfg.twitter_credentials["consumer_key"], cfg.twitter_credentials['consumer_secret'])
     auth.set_access_token(cfg.twitter_credentials['access_token'], cfg.twitter_credentials['access_token_secret'])
 

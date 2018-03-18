@@ -54,8 +54,21 @@ def word_cloud(id, topic):
     return (category, jsonData)
 
 @shared_task(name="fyp_webapp.tasks.aggregate_words")
-def aggregate_words(status):
-    topic = cfg.twitter_credentials['topic']
+def aggregate_words(user_id,status):
+    cat = TwitterCat.objects.filter(user_id=user_id)
+    for entry in cat:
+        assigned_cat = False
+        if str(entry.category_name) in status['text'].lower() or status['name'].lower():
+            topic = entry.category_name + "-latest"
+            elastic_utils.create_index(topic)
+            assigned_cat=True
+            break
+    if assigned_cat == False:
+        print ("------------------------")
+        print ("Text says:  " + str(status['text']))
+        print ("------------------------")
+        topic = "unknown-latest"
+        elastic_utils.create_index(topic)
     id = elastic_utils.last_id(topic)
     id+=1
     elastic_utils.add_entry(topic, id, status)
