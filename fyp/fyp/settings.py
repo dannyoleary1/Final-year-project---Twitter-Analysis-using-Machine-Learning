@@ -138,4 +138,5 @@ CELERY_QUEUES = (
     Queue('default'),
     Queue('priority_high'),
 )
-CELERY_TASK_TRACK_STARTED = True
+CELERY_TRACK_STARTED = True
+CELERY_SEND_TASK_SENT_EVENT = True

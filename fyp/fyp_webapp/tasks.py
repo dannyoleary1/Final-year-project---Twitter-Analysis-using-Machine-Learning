@@ -29,7 +29,7 @@ def add(x,y):
         a = x+y
     return x+y
 
-@shared_task(name="fyp_webapp.tasks.wordcloud", queue='priority_high')
+@shared_task(name="fyp_webapp.tasks.wordcloud", queue='priority_high', track_started=True)
 def word_cloud(id, topic):
     item = {}
     category = []
