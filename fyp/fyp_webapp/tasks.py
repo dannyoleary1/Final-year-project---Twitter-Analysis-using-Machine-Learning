@@ -6,6 +6,8 @@ from fyp_webapp.TwitterProcessing import preprocessor
 from fyp_webapp.ElasticSearch import elastic_utils
 import json
 from fyp_webapp import config as cfg
+from datetime import datetime, timedelta
+from fyp_webapp.views.oldtweets import oldtweets
 
 
 
@@ -72,3 +74,15 @@ def aggregate_words(user_id,status):
     id = elastic_utils.last_id(topic)
     id+=1
     elastic_utils.add_entry(topic, id, status)
+
+@shared_task(name="fyp_webapp.tasks.collect_old_tweets", queue='old_tweets')
+def collect_old_tweets(topic, number_of_days):
+    todays_date = datetime.today()
+    print (str(todays_date))
+    start_date = todays_date - timedelta(days=number_of_days)
+    while start_date != todays_date:
+        print ("Currently on date:  " + str(start_date))
+        tweets = oldtweets.collect_tweets(topic, start_date, (start_date + timedelta(days=1)))
+        oldtweets.aggregate(tweets, topic, start_date)
+        start_date += timedelta(days=1)
+    return

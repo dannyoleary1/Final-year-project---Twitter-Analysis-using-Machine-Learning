@@ -10,6 +10,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
 from django.forms import ModelForm
 from fyp_webapp.ElasticSearch import elastic_utils
+from fyp_webapp.tasks import collect_old_tweets
 
 @login_required(login_url='/login/')
 def category(request):
@@ -34,6 +35,13 @@ def twittercat_list(request, template_name='fyp/Category/twittercat_list.html'):
 
 @login_required(login_url='/login/')
 def twittercat_create(request, template_name='fyp/Category/twittercat_form.html'):
+    if 'job' in request.POST:
+        form = TwitterCatForm(request.POST or None)
+        test = form.save(commit=False)
+        test.user = request.user
+        if form.is_valid():
+            form.save()
+            return redirect('fyp_webapp:twittercat_list')
     form = TwitterCatForm(request.POST or None)
     test = form.save(commit=False)
     test.user = request.user
@@ -41,6 +49,8 @@ def twittercat_create(request, template_name='fyp/Category/twittercat_form.html'
         form.save()
         topic = form.cleaned_data['category_name'] + "-latest"
         elastic_utils.create_index(topic)
+        elastic_utils.create_index(form.cleaned_data['category_name'])
+        collect_old_tweets.delay(form.cleaned_data['category_name'], 30)
         return redirect('fyp_webapp:twittercat_list')
     return render(request, template_name, {'form':form})
 

@@ -14,6 +14,8 @@ from fyp_webapp.TwitterProcessing import preprocessor
 from fyp_webapp.TwitterProcessing import termsfrequency
 from collections import Counter
 from fyp_webapp.models import TwitterCat
+from fyp_webapp.tasks import collect_old_tweets
+from fyp_webapp.ElasticSearch import elastic_utils
 
 class TwitterUserForm(ModelForm):
     class Meta:
@@ -88,6 +90,8 @@ def twitteruser_suggest(request, template_name='fyp/twitteruser/twitteruser_sugg
                 category = ''.join(c for c in category if c not in '()\',')
                 entry = TwitterCat(user=request.user, category_name=category)
                 entry.save()
+                elastic_utils.create_index(category)
+                collect_old_tweets.delay(category, 30)
 
     cat = TwitterUser.objects.filter(user=request.user)
     data = {}

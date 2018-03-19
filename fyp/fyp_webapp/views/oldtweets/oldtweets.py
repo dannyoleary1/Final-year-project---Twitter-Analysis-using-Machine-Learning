@@ -53,7 +53,7 @@ def aggregate(tweet, topic, start_date):
             current_tweet_count = 1
         common_words.append(
                 preprocessor.filter_multiple(str(entry.text), ats=True, stopwords=True, stemming=False, urls=True, singles=True))
-
+    #TODO if no entries in tweet it won't work properly since it skips the for loop. Captured only for hour 23 in that case.
     count_word_frequency = Counter()
     for entry in common_words:
         terms_all = [term for term in entry]
@@ -62,7 +62,11 @@ def aggregate(tweet, topic, start_date):
     words = count_word_frequency.most_common(50)
     print (json.dumps(words))
 
-    dict = {"date": str(start_date), "total": len(tweet), "last_time": tweet[len(tweet) - 1].date, "hour_breakdown": data, 'words': json.dumps(words)}
+    try:
+        dict = {"date": str(start_date), "total": len(tweet), "last_time": tweet[len(tweet) - 1].date, "hour_breakdown": data, 'words': json.dumps(words)}
+    except:
+        dict = {"date": str(start_date), "total": len(tweet), "last_time": "No Tweets",
+                "hour_breakdown": data, 'words': json.dumps(words)}
     id = elastic_utils.last_id(topic)
     id += 1
     elastic_utils.add_entry(topic, id, dict)

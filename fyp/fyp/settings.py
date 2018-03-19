@@ -137,6 +137,7 @@ CELERY_DEFAULT_QUEUE = 'default'
 CELERY_QUEUES = (
     Queue('default'),
     Queue('priority_high'),
+    Queue('old_tweets'),
 )
 CELERY_TRACK_STARTED = True
 CELERY_SEND_TASK_SENT_EVENT = True
