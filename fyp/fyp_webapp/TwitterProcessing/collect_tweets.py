@@ -18,6 +18,7 @@ class StreamListener(tweepy.StreamListener):
                 text = status.extended_tweet["full_text"]
             except AttributeError:
                 text = status.text
+            print (status)
             dict = {"description":str(status.user.description), "loc":str(status.user.location), "text":str(text),"coords":str(status.coordinates),
                     "name": str(status.user.screen_name), "user_created":str(status.user.created_at), "followers":str(status.user.followers_count),
                     "id_str":str(status.id_str),"created":str(status.created_at), "retweets":str(status.retweet_count)}
