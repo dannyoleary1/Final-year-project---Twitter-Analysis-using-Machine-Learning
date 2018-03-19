@@ -31,7 +31,7 @@ def delete_index(name):
 """Lists all current existing indexes."""
 def list_all_indexes():
     res = es.indices.get_alias("*")
-    return (" response: %s" % (res))
+    return (res)
 
 """Create an entry into an existing index. Uses a unique ID to identify. Body is the data entry in question"""
 def add_entry(index_name, id, body):
@@ -73,6 +73,7 @@ def last_id(index_name):
     else:
         return res['hits']['total']
 
+
 def last_n_in_index(index_name, number):
     query = {
             "query": {
@@ -81,7 +82,7 @@ def last_n_in_index(index_name, number):
             "size": number,
             "sort": [
             {
-            "created.keyword": {
+            "_id": {
             "order": "desc"
             }
             }

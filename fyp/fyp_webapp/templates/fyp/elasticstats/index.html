@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% extends "base.html" %}
+</head>
+<body>
+{% block content %}
+    {% for entry in data %}
+        <div class="col">
+            <p>Anotha' Col.</p>
+        </div>
+    {% endfor %}
+{% endblock content %}
+</body>
+</html>

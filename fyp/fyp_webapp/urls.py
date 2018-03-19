@@ -9,6 +9,7 @@ from .views.twitteruser import twitteruser
 from .views.taskprogress import taskprogress
 from .views.timeline import timeline
 from .views.oldtweets import oldtweets
+from .views.elastic_stats import elasticstats
 
 
 urlpatterns = [
@@ -34,7 +35,8 @@ urlpatterns = [
 
     url(r'^timeline', timeline.timeline, name='timeline'),
 
-    url(r'^oldtweets', oldtweets.oldtweets, name="oldtweets")
+    url(r'^oldtweets', oldtweets.oldtweets, name="oldtweets"),
 
+    url(r'^indexes', elasticstats.elasticstats, name="elasticstats")
 
 ]

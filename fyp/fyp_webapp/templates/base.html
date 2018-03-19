@@ -47,6 +47,9 @@ dark inverse
             <li class="nav-item {% if nbar == 'oldtweets' %}active{% endif %}">
                 <a class="nav-link" href="/fyp/oldtweets">Old Tweets</a>
             </li>
+            <li class="nav-item {% if nbar == 'elasticstats' %}"active{% endif %}">
+                <a class="nav-link" href="/fyp/indexes">Indexes</a>
+            </li>
         </ul>
         <ul class="navbar-nav">
             {% if user.is_authenticated %}

@@ -20,6 +20,15 @@ app.config_from_object('django.conf:settings')
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks(force=True)
 
+app.conf.beat_schedule = {
+    'add-every-30-seconds': {
+        'task': 'fyp_webapp.tasks.test',
+        'schedule': 10.0,
+        'options': {'queue' : 'misc'}
+    },
+}
+app.conf.timezone = 'UTC'
+
 
 @app.task(bind=True)
 def debug_task(self):

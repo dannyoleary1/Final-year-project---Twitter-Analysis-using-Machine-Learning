@@ -86,3 +86,24 @@ def collect_old_tweets(topic, number_of_days):
         oldtweets.aggregate(tweets, topic, start_date)
         start_date += timedelta(days=1)
     return
+
+@shared_task(name="fyp_webapp.tasks.test", queue='misc')
+def test():
+    print ("Does this run every 10 seconds?")
+
+@shared_task(name="fyp_webapp.tasks.elastic_info", queue="priority_high")
+def elastic_info():
+    index = elastic_utils.list_all_indexes()
+    index_list = []
+    for entry in index:
+        index_list.append(entry)
+    index_list.sort()
+    index_dict = {}
+    for entry in index_list:
+        current_task.update_state(state='PROGRESS',
+                                  meta={'entry': entry, 'current_results': index_dict})
+        latest_entry_number = elastic_utils.last_id(entry)
+        if latest_entry_number != 0:
+            latest_tweets = elastic_utils.last_n_in_index(entry, 10)
+        index_dict[entry] = {"total": latest_entry_number, "last_entries": latest_tweets}
+    return index_dict
