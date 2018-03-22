@@ -7,16 +7,16 @@
 </head>
 <body>
 {% block content %}
-    {% for entry in data %}
         <div class="row">
-            <div class="col">
-
+            <div class="col-11">
+                <div data-preset="stripe" style="width:50%;height:50%;margin:auto" class="ldBar label-center" data-value="50"></div>
             </div>
+
             <div id="latest-update" class="col-11">
+
                 <p id="update-status"></p>
             </div>
         </div>
-    {% endfor %}
     <script>
                var poll_xhr;
    var willstop = 0;
@@ -39,12 +39,12 @@
                             willstop = 1;
                         }
                         else{
-                            var paragraph = document.createElement("P");
+                            $("#update-status").empty();
+                            var paragraph = document.getElementById("update-status");
                             var str1 = "Finished processing:    "
                             var str2 = result.entry
                             var text = document.createTextNode(str1.concat(str2));
                             paragraph.appendChild(text)
-                            document.getElementById("latest-update").appendChild(paragraph)
                         }
                     }
       });

@@ -93,6 +93,7 @@ def test():
 
 @shared_task(name="fyp_webapp.tasks.elastic_info", queue="priority_high")
 def elastic_info():
+    progress_recorder = ProgressRecorder()
     index = elastic_utils.list_all_indexes()
     index_list = []
     for entry in index:
@@ -106,4 +107,5 @@ def elastic_info():
         if latest_entry_number != 0:
             latest_tweets = elastic_utils.last_n_in_index(entry, 10)
         index_dict[entry] = {"total": latest_entry_number, "last_entries": latest_tweets}
+        current_number += 1
     return index_dict
