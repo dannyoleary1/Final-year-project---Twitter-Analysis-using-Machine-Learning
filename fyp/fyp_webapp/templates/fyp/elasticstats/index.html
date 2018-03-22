@@ -8,10 +8,55 @@
 <body>
 {% block content %}
     {% for entry in data %}
-        <div class="col">
-            <p>Anotha' Col.</p>
+        <div class="row">
+            <div class="col">
+
+            </div>
+            <div id="latest-update" class="col-11">
+                <p id="update-status"></p>
+            </div>
         </div>
     {% endfor %}
+    <script>
+               var poll_xhr;
+   var willstop = 0;
+  (function(){
+    var poll = function(){
+      var json_dump = "{{ data }}";
+      var task_id = "{{task_id}}";
+      var list = []
+      poll_xhr = $.ajax({
+        url:'poll_state',
+        type: 'POST',
+        data: {
+            task_id: task_id,
+            csrfmiddlewaretoken: "{{csrf_token}}",
+        },
+        success: function(result) {
+                        if (result.entry == undefined) {
+                            $("#latest-update").empty();
+                            console.log(result)
+                            willstop = 1;
+                        }
+                        else{
+                            var paragraph = document.createElement("P");
+                            var str1 = "Finished processing:    "
+                            var str2 = result.entry
+                            var text = document.createTextNode(str1.concat(str2));
+                            paragraph.appendChild(text)
+                            document.getElementById("latest-update").appendChild(paragraph)
+                        }
+                    }
+      });
+    };
+    var refreshIntervalId = setInterval(function() {
+      poll();
+      if(willstop == 1){
+        clearInterval(refreshIntervalId);
+      }
+    },500);
+  })();
+    </script>
 {% endblock content %}
 </body>
 </html>

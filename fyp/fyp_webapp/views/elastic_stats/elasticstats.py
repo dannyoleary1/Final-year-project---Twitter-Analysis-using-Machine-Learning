@@ -20,7 +20,24 @@ def elasticstats(request):
             'data': data,
             'task_id': job_id,
         }
+        print (context)
         return render(request, "fyp/elasticstats/index.html", context)
     else:
         job = elastic_info.delay()
         return HttpResponseRedirect(reverse('fyp_webapp:elasticstats') + '?job=' + job.id)
+
+def poll_state(request):
+    """ A view to report the progress to the user """
+    data = 'Fail'
+    if request.is_ajax():
+        if 'task_id' in request.POST.keys() and request.POST['task_id']:
+            task_id = request.POST['task_id']
+            task = AsyncResult(task_id)
+            data = task.result or task.state
+        else:
+            data = 'No task_id in the request'
+    else:
+        data = 'This is not an ajax request'
+    print(data)
+    json_data = json.dumps(data)
+    return HttpResponse(json_data, content_type='application/json')
