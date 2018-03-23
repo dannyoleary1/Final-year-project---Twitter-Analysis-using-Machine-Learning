@@ -61,7 +61,16 @@
                                 }
                                 test += "<div class='column'>"
                                 test +="<div class='card-header'>"+entry+"</div>"
-                                test +="<div class='card-body'>"+result[entry]+"</div></div>"
+                                test +="<div class='card-body'> Total:  "+result[entry].total+"</div>"
+
+                                    for (a=0; a<(result[entry].last_entries.hits.hits).length; a++){
+                                         if (entry.includes("-latest")){
+                                            console.log(result[entry].last_entries.hits.hits[a]._source)
+                                             test+= addToEntry()
+
+                                         }
+                                    }
+                                test+="</div>"
                                 if(control%2 != 0 && control !=0){
                                     test += "</div>"
                                 }
@@ -89,6 +98,41 @@
       }
     },500);
   })();
+  function addToEntry(){
+      var entry = "<div class=''>\n" +
+          "<article class=\"media\">\n" +
+          "  <figure class=\"media-left\">\n" +
+          "    <p class=\"image is-64x64\">\n" +
+          "      <img src=\"https://bulma.io/images/placeholders/128x128.png\">\n" +
+          "    </p>\n" +
+          "  </figure>\n" +
+          "  <div class=\"media-content is-clipped\">\n" +
+          "    <div class=\"content\">\n" +
+          "      <p>\n" +
+          "        <strong>John Smith</strong> <small>@johnsmith</small> <small>31m</small>\n" +
+          "        <br>\n" +
+          "        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.\n" +
+          "      </p>\n" +
+          "    </div>\n" +
+          "    <nav class=\"level is-mobile\">\n" +
+          "      <div class=\"level-left\">\n" +
+          "        <a class=\"level-item\">\n" +
+          "          <span class=\"icon is-small\"><i class=\"fas fa-reply\"></i></span>\n" +
+          "        </a>\n" +
+          "        <a class=\"level-item\">\n" +
+          "          <span class=\"icon is-small\"><i class=\"fas fa-retweet\"></i></span>\n" +
+          "        </a>\n" +
+          "        <a class=\"level-item\">\n" +
+          "          <span class=\"icon is-small\"><i class=\"fas fa-heart\"></i></span>\n" +
+          "        </a>\n" +
+          "      </div>\n" +
+          "    </nav>\n" +
+          "  </div>\n" +
+          " </article>\n" +
+          "</div>\n" +
+      "<br>";
+      return entry
+  }
     </script>
 {% endblock content %}
 </body>
