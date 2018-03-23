@@ -33,10 +33,13 @@ urlpatterns = [
     url(r'^taskprogress$', taskprogress.taskprogress, name='taskprogress'),
     url(r'^poll_state$', taskprogress.poll_state,name='poll_state'),
 
+
+
     url(r'^timeline', timeline.timeline, name='timeline'),
 
     url(r'^oldtweets', oldtweets.oldtweets, name="oldtweets"),
 
-    url(r'^indexes', elasticstats.elasticstats, name="elasticstats")
+    url(r'^indexes', elasticstats.elasticstats, name="elasticstats"),
+    url(r'^process_elastic', elasticstats.poll_state, name='process_elastic'),
 
 ]

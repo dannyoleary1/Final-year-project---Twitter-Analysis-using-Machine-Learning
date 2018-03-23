@@ -11,7 +11,6 @@ import json
 def elasticstats(request):
     print ("accessed.")
     if 'job' in request.GET:
-
         job_id = request.GET['job']
         job = AsyncResult(job_id)
         data = job.result or job.state
@@ -19,8 +18,8 @@ def elasticstats(request):
         context = {
             'data': data,
             'task_id': job_id,
+            'state': job.state,
         }
-        print (context)
         return render(request, "fyp/elasticstats/index.html", context)
     else:
         job = elastic_info.delay()
@@ -38,6 +37,6 @@ def poll_state(request):
             data = 'No task_id in the request'
     else:
         data = 'This is not an ajax request'
-    print(data)
+    data['state'] = task.state
     json_data = json.dumps(data)
     return HttpResponse(json_data, content_type='application/json')

@@ -6,17 +6,16 @@
     {% extends "base.html" %}
 </head>
 <body>
+
 {% block content %}
-        <div class="row">
             <div class="col-11">
                 <div data-preset="stripe" style="width:50%;height:50%;margin:auto" class="ldBar label-center" data-value="50"></div>
             </div>
 
-            <div id="latest-update" class="col-11">
+            <div class="container is-fluid" id="latest-update">
 
                 <p id="update-status"></p>
             </div>
-        </div>
     <script>
                var poll_xhr;
    var willstop = 0;
@@ -26,16 +25,33 @@
       var task_id = "{{task_id}}";
       var list = []
       poll_xhr = $.ajax({
-        url:'poll_state',
+        url:'process_elastic',
         type: 'POST',
         data: {
             task_id: task_id,
             csrfmiddlewaretoken: "{{csrf_token}}",
         },
         success: function(result) {
-                        if (result.entry == undefined) {
+                        if (result.state == "SUCCESS") {
                             $("#latest-update").empty();
+                            var updatedField = document.getElementById("latest-update")
                             console.log(result)
+                            var i = 0
+                            var rowDiv = document.createElement("div")
+                            var test = ""
+                            for (entry in result){
+                                if (i%2 == 0){
+                                    test+="<div class='columns'>"
+                                }
+                                test += "<div class='column'>"
+                                test +="<div class='card-header'>"+entry+"</div>"
+                                test +="<div class='card-body'>"+result[entry]+"</div></div>"
+                                if(i%2 != 0 && i !=0){
+                                    test += "</div>"
+                                }
+                                i++
+                            }
+                            $('#latest-update').append(test);
                             willstop = 1;
                         }
                         else{
