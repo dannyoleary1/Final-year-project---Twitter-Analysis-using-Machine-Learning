@@ -58,9 +58,10 @@ def word_cloud(id, topic):
 @shared_task(name="fyp_webapp.tasks.aggregate_words")
 def aggregate_words(user_id,status):
     cat = TwitterCat.objects.filter(user_id=user_id)
+    assigned_cat = False
     for entry in cat:
-        assigned_cat = False
-        if str(entry.category_name) in status['text'].lower() or status['name'].lower():
+        print (entry.category_name)
+        if str(entry.category_name) in (status['text'].lower() or status['name'].lower()):
             topic = entry.category_name + "-latest"
             elastic_utils.create_index(topic)
             assigned_cat=True
@@ -71,6 +72,7 @@ def aggregate_words(user_id,status):
         print ("------------------------")
         topic = "unknown-latest"
         elastic_utils.create_index(topic)
+    print (topic)
     id = elastic_utils.last_id(topic)
     id+=1
     elastic_utils.add_entry(topic, id, status)
@@ -105,7 +107,7 @@ def elastic_info():
                                   meta={'entry': entry, 'current_results': index_dict, 'current_entry': current_entry, 'last_entry': len(index_list)})
         latest_entry_number = elastic_utils.last_id(entry)
         if latest_entry_number != 0:
-            latest_tweets = elastic_utils.last_n_in_index(entry, 10)
+            latest_tweets = elastic_utils.last_n_in_index(entry, 5)
         index_dict[entry] = {"total": latest_entry_number, "last_entries": latest_tweets, 'current_entry': current_entry, 'last_entry': len(index_list),
                              }
         current_entry += 1

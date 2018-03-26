@@ -66,7 +66,7 @@
                                     for (a=0; a<(result[entry].last_entries.hits.hits).length; a++){
                                          if (entry.includes("-latest")){
                                             console.log(result[entry].last_entries.hits.hits[a]._source)
-                                             test+= addToEntry()
+                                             test+= addToEntry(result[entry].last_entries.hits.hits[a]._source)
 
                                          }
                                     }
@@ -98,20 +98,60 @@
       }
     },500);
   })();
-  function addToEntry(){
+  function addToEntry(data){
+      var name = data.name
+      var time = data.created
+      var minutes = 0
+      var displayTime = 0
+      if (data.last_time == "No Tweets"){
+          time = 0
+          displayTime = "0m"
+      }
+      else {
+          var diff = Math.abs(Date.now() - new Date(time.replace(/-/g,'/')));
+          var minutes = (diff / (1000 * 60)).toFixed(0);
+          var hours = (diff / (1000 * 60 * 60)).toFixed(0);
+          var days = (diff / (1000 * 60 * 60 * 24)).toFixed(0);
+          console.log("Minutes: " + minutes)
+          console.log("Hours: " + hours)
+          console.log("Days: " + days)
+
+          if (days < 1){
+              console.log("in days")
+              if (hours < 1){
+                  if (minutes > 0){
+                      console.log("in minutes")
+                      displayTime = minutes+"m"
+                  }
+              }
+              else{
+                   displayTime = hours+"h"
+                      console.log("Hour display time:" + displayTime)
+              }
+          }
+          else{
+              displayTime = days+"d"
+          }
+      }
+      console.log(diff)
+      var text = data.text
+      var profile = data.profile_picture
+      if (profile == undefined){
+          profile = "https://bulma.io/images/placeholders/128x128.png"
+      }
       var entry = "<div class=''>\n" +
           "<article class=\"media\">\n" +
           "  <figure class=\"media-left\">\n" +
           "    <p class=\"image is-64x64\">\n" +
-          "      <img src=\"https://bulma.io/images/placeholders/128x128.png\">\n" +
+          "      <img src="+profile+">\n" +
           "    </p>\n" +
           "  </figure>\n" +
           "  <div class=\"media-content is-clipped\">\n" +
           "    <div class=\"content\">\n" +
           "      <p>\n" +
-          "        <strong>John Smith</strong> <small>@johnsmith</small> <small>31m</small>\n" +
+          "        <strong>"+name+"</strong> <small>@"+name+"</small> <small>"+displayTime+"</small>\n" +
           "        <br>\n" +
-          "        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.\n" +
+          "        "+text+"\n" +
           "      </p>\n" +
           "    </div>\n" +
           "    <nav class=\"level is-mobile\">\n" +

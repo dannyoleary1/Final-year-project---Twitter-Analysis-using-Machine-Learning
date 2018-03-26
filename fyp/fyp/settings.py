@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_static_jquery',
     'fyp_webapp',
-    'bulma',
 ]
 
 MIDDLEWARE = [

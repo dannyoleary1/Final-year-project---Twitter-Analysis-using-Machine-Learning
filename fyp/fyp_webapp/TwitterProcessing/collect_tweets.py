@@ -18,10 +18,10 @@ class StreamListener(tweepy.StreamListener):
                 text = status.extended_tweet["full_text"]
             except AttributeError:
                 text = status.text
-            print (status)
+            print (status.created_at)
             dict = {"description":str(status.user.description), "loc":str(status.user.location), "text":str(text),"coords":str(status.coordinates),
                     "name": str(status.user.screen_name), "user_created":str(status.user.created_at), "followers":str(status.user.followers_count),
-                    "id_str":str(status.id_str),"created":str(status.created_at), "retweets":str(status.retweet_count)}
+                    "id_str":str(status.id_str),"created":str(status.created_at), "retweets":str(status.retweet_count), "profile_picture": status.user.profile_image_url}
             aggregate_words.delay(current_user, dict)
 
 
