@@ -35,7 +35,6 @@
                         if (result.state == "SUCCESS") {
                             $("#latest-update").empty();
                             var updatedField = document.getElementById("latest-update")
-                            console.log(result)
                             var i = 0
                             var rowDiv = document.createElement("div")
                             var test = ""
@@ -58,16 +57,42 @@
                                 if (entry != "state"){
                                      if (control%2 == 0){
                                     test+="<div class='columns'>"
-                                }
+                                    }
                                 test += "<div class='column'>"
                                 test +="<div class='card-header'>"+entry+"</div>"
                                 test +="<div class='card-body'> Total:  "+result[entry].total+"</div>"
-
                                     for (a=0; a<(result[entry].last_entries.hits.hits).length; a++){
                                          if (entry.includes("-latest")){
-                                            console.log(result[entry].last_entries.hits.hits[a]._source)
                                              test+= addToEntry(result[entry].last_entries.hits.hits[a]._source)
+                                         }
+                                         else if(result[entry].last_entries.hits.hits[a]._source.last_time == "No Tweets"){
+                                             test += "<div>No Tweets in this index.</div>"
+                                         }
+                                         else{
+                                             console.log(result[entry].last_entries.hits.hits[a]._source)
+                                             console.log(entry)
+                                             test += "<h2>Date of entry: "+ result[entry].last_entries.hits.hits[a]._source.date+"</h2>"
+                                             test += "<h3>Total Tweets: " + result[entry].last_entries.hits.hits[a]._source.total+"</h3>"
 
+                                             if (result[entry].last_entries.hits.hits[a]._source.last_time == undefined){
+                                                 test += "work out later";
+                                             }
+                                             else if (result[entry].last_entries.hits.hits[a]._source.last_time.includes("00:00:00")){
+                                                 test += "<h3>Last Collected: 00:00:00</h3>"
+                                             }
+                                             else{
+                                                 test += "<h3 class=text-warning>Last Collected: "+result[entry].last_entries.hits.hits[a]._source.last_time+"</h3>"
+                                             }
+                                             if (result[entry].last_entries.hits.hits[a]._source.words == undefined){
+
+                                             }
+                                             else {
+                                                 for (var b = 0; b<6; b++){
+                                                     console.log("----------")
+                                                     console.log(JSON.parse(result[entry].last_entries.hits.hits[a]._source.words))
+                                                     test += "<span class=badge badge-dark>"+JSON.parse(result[entry].last_entries.hits.hits[a]._source.words)[b][0]+"</span>"
+                                                 }
+                                             }
                                          }
                                     }
                                 test+="</div>"
@@ -112,28 +137,20 @@
           var minutes = (diff / (1000 * 60)).toFixed(0);
           var hours = (diff / (1000 * 60 * 60)).toFixed(0);
           var days = (diff / (1000 * 60 * 60 * 24)).toFixed(0);
-          console.log("Minutes: " + minutes)
-          console.log("Hours: " + hours)
-          console.log("Days: " + days)
-
           if (days < 1){
-              console.log("in days")
               if (hours < 1){
                   if (minutes > 0){
-                      console.log("in minutes")
                       displayTime = minutes+"m"
                   }
               }
               else{
                    displayTime = hours+"h"
-                      console.log("Hour display time:" + displayTime)
               }
           }
           else{
               displayTime = days+"d"
           }
       }
-      console.log(diff)
       var text = data.text
       var profile = data.profile_picture
       if (profile == undefined){

@@ -89,3 +89,4 @@ def last_n_in_index(index_name, number):
             ]
         }
     return search_index(index_name, query)
+

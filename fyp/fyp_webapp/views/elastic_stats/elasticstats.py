@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, render_to_response, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 import json
+from fyp_webapp.ElasticSearch import elastic_utils
+import json
 
 @login_required(login_url='/login/')
 def elasticstats(request):
@@ -20,9 +22,16 @@ def elasticstats(request):
             'task_id': job_id,
             'state': job.state,
         }
+        obj = elastic_utils.iterate_search("netflix")
+        for entry in obj:
+            print("**********")
+            uh = json.dumps(entry['_source']['words'])
+            print (type(uh))
         return render(request, "fyp/elasticstats/index.html", context)
     else:
         job = elastic_info.delay()
+
+
         return HttpResponseRedirect(reverse('fyp_webapp:elasticstats') + '?job=' + job.id)
 
 def poll_state(request):
