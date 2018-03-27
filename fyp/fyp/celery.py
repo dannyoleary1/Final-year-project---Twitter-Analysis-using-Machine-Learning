@@ -5,6 +5,7 @@ from django.conf import settings
 from fyp import settings
 from django.apps import apps
 import django
+from celery.schedules import crontab
 
 
 # set the default Django settings module for the 'celery' program.
@@ -22,12 +23,17 @@ app.autodiscover_tasks(force=True)
 
 app.conf.beat_schedule = {
     'add-every-30-seconds': {
-        'task': 'fyp_webapp.tasks.test',
-        'schedule': 10.0,
+        'task': 'fyp_webapp.tasks.check_index',
+        'schedule': 60.0,
         'options': {'queue' : 'misc'}
     },
+    'clean-indexes': {
+        'task': 'fyp_webapp.tasks.clean_indexes',
+        'schedule': crontab(minute=0, hour=0),
+        'options': {'queue': 'misc'}
+    }
 }
-app.conf.timezone = 'UTC'
+app.conf.timezone = 'GMT'
 
 
 @app.task(bind=True)

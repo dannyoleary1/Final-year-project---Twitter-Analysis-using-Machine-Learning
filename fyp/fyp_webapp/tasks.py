@@ -8,6 +8,8 @@ import json
 from fyp_webapp import config as cfg
 from datetime import datetime, timedelta
 from fyp_webapp.views.oldtweets import oldtweets
+import statistics
+
 
 
 
@@ -90,8 +92,55 @@ def collect_old_tweets(topic, number_of_days):
     return
 
 @shared_task(name="fyp_webapp.tasks.check_index", queue='misc')
-def test():
+def check_index():
     print ("Does this run every 10 seconds?")
+    #assign the median value.
+    index = elastic_utils.list_all_indexes()
+    index_list = []
+    for entry in index:
+        if "-latest" not in entry:
+            res = elastic_utils.iterate_search(entry)
+            hour_breakdown = []
+            day_breakdown = []
+            minute_breakdown = []
+            for result in res:
+                try:
+                    if (result["_source"]["last_time"] != "No Tweets"):
+                        print (result["_source"]["total"])
+                        day_breakdown.append(result["_source"]["total"])
+                        todays_hours = []
+                        hours = result["_source"]["hour_breakdown"]
+                        for test in hours:
+                            todays_hours.append(hours[test])
+                        todays_hours.sort()
+                        hour_med = statistics.median(todays_hours)
+                        minute_estimate = hour_med/60
+                        hour_breakdown.append(hour_med)
+                        minute_breakdown.append(minute_estimate)
+                except:
+                    continue
+            day_breakdown.sort()
+            minute_breakdown.sort()
+            hour_breakdown.sort()
+            if (len(day_breakdown) != 0):
+                day_median = statistics.median(day_breakdown)
+            else:
+                day_median = 0
+            if (len(minute_breakdown) != 0):
+                minute_median = statistics.median(minute_breakdown)
+            else:
+                minute_median = 0
+            if (len(hour_breakdown) != 0):
+                hour_median = statistics.median(hour_breakdown)
+            else:
+                hour_median = 0
+            es_obj = {"index": entry, "day_median": day_median, "minute_median": minute_median, "hour_median":hour_median}
+            elastic_utils.add_entry_median(entry, es_obj)
+
+
+@shared_task(name="fyp_webapp.tasks.clean_indexes", queue='misc')
+def clean_indexes():
+    print ("runs at midnight.")
 
 @shared_task(name="fyp_webapp.tasks.elastic_info", queue="priority_high")
 def elastic_info():
