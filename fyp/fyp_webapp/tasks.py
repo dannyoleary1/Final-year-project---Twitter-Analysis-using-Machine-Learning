@@ -89,7 +89,7 @@ def collect_old_tweets(topic, number_of_days):
         start_date += timedelta(days=1)
     return
 
-@shared_task(name="fyp_webapp.tasks.test", queue='misc')
+@shared_task(name="fyp_webapp.tasks.check_index", queue='misc')
 def test():
     print ("Does this run every 10 seconds?")
 

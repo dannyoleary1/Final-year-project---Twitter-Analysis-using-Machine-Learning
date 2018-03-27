@@ -38,6 +38,11 @@ def add_entry(index_name, id, body):
     res = es.index(index=index_name, doc_type="tweet", id=id, body=body)
     return res
 
+"""Responsible for adding the median of the totals for each day with the breakdown in specific categories."""
+def add_entry_median(index_name, id, body):
+    res = es.index(index=index_name, doc_type="median", id=1, body=body)
+    return res
+
 """Delete an entry from an existing index. Uses the ID to locate"""
 def delete_entry(index_name, id):
     try:
