@@ -9,7 +9,8 @@ from fyp_webapp import config as cfg
 from datetime import datetime, timedelta
 from fyp_webapp.views.oldtweets import oldtweets
 import statistics
-
+from datetime import datetime
+from collections import Counter
 
 
 
@@ -93,8 +94,63 @@ def collect_old_tweets(topic, number_of_days):
 
 @shared_task(name="fyp_webapp.tasks.check_index", queue='misc')
 def check_index():
-    print ("Does this run every 10 seconds?")
     #assign the median value.
+    index = elastic_utils.list_all_indexes()
+    for entry in index:
+        count_word_frequency = Counter()
+        if ("-latest") not in entry:
+            if ("median") not in entry:
+                res = elastic_utils.iterate_search(entry)
+                hour_breakdown = []
+                day_breakdown = []
+                minute_breakdown = []
+                for result in res:
+                    try:
+                        if (result["_source"]["last_time"] != "No Tweets"):
+                            day_breakdown.append(result["_source"]["total"])
+                            todays_hours = []
+                            hours = result["_source"]["hour_breakdown"]
+                            for test in hours:
+                                todays_hours.append(hours[test])
+                            todays_hours.sort()
+                            hour_med = statistics.median(todays_hours)
+                            minute_estimate = hour_med / 60
+                            hour_breakdown.append(hour_med)
+                            minute_breakdown.append(minute_estimate)
+                    except:
+                        continue
+                day_breakdown.sort()
+                minute_breakdown.sort()
+                hour_breakdown.sort()
+                if (len(day_breakdown) != 0):
+                    day_median = statistics.median(day_breakdown)
+                else:
+                    day_median = 0
+                if (len(minute_breakdown) != 0):
+                    minute_median = statistics.median(minute_breakdown)
+                else:
+                    minute_median = 0
+                if (len(hour_breakdown) != 0):
+                    hour_median = statistics.median(hour_breakdown)
+                else:
+                    hour_median = 0
+                es_obj = {"index": entry, "day_median": day_median, "minute_median": minute_median,
+                          "hour_median": hour_median}
+                elastic_utils.add_entry_median(entry + "-median", es_obj)
+        else:
+            res = elastic_utils.iterate_search(entry)
+            for result in res:
+                try:
+                    created = result["_source"]["created"]
+                    datetime_object = datetime.strptime(created, '%Y-%m-%d %H:%M:%S')
+                    count_word_frequency.update(datetime_object.hour)
+                    #TODO get common words
+                except:
+                    continue
+
+
+@shared_task(name="fyp_webapp.tasks.clean_indexes", queue='misc')
+def clean_indexes():
     index = elastic_utils.list_all_indexes()
     index_list = []
     for entry in index:
@@ -137,11 +193,14 @@ def check_index():
                     hour_median = 0
                 es_obj = {"index": entry, "day_median": day_median, "minute_median": minute_median, "hour_median":hour_median}
                 elastic_utils.add_entry_median(entry+"-median", es_obj)
-
-
-@shared_task(name="fyp_webapp.tasks.clean_indexes", queue='misc')
-def clean_indexes():
-    print ("runs at midnight.")
+        elif ("-latest") in entry:
+            res = elastic_utils.iterate_search(entry)
+            for result in res:
+                try:
+                    created = result["_source"]["created"]
+                    print (type(created))
+                except:
+                    continue
 
 @shared_task(name="fyp_webapp.tasks.elastic_info", queue="priority_high")
 def elastic_info():
