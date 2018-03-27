@@ -26,7 +26,9 @@ def elasticstats(request):
         for entry in obj:
             print("**********")
             uh = json.dumps(entry['_source']['words'])
-            print (type(uh))
+            uh = uh.replace("\"[", "")
+            uh = uh.replace("]\"", "")
+            print (uh)
         return render(request, "fyp/elasticstats/index.html", context)
     else:
         job = elastic_info.delay()
