@@ -15,7 +15,6 @@ from .views.elastic_stats import elasticstats
 urlpatterns = [
     url(r'^$', index.fyp, name='fyp'),
     url(r'^collect', collect.tweetcollector, name='tweetcollector'),
-    url(r'^latesttweets', collect.latesttweets, name="latesttweets"),
     url(r'^trainmodel', trainmodel.trainmodel, name="trainmodel"),
  #   url(r'^category', category.category, name="category"),
 
@@ -30,10 +29,7 @@ urlpatterns = [
     url(r'^delete-twitteruser/delete/(?P<pk>\d+)$', twitteruser.twitteruser_delete, name='twitteruser_delete'),
     url(r'^suggestcategory-twitteruser', twitteruser.twitteruser_suggest, name='twitteruser_suggest'),
 
-    url(r'^taskprogress$', taskprogress.taskprogress, name='taskprogress'),
     url(r'^poll_state$', taskprogress.poll_state,name='poll_state'),
-
-
 
     url(r'^timeline', timeline.timeline, name='timeline'),
 
@@ -41,5 +37,4 @@ urlpatterns = [
 
     url(r'^indexes', elasticstats.elasticstats, name="elasticstats"),
     url(r'^process_elastic', elasticstats.poll_state, name='process_elastic'),
-
 ]

@@ -19,26 +19,6 @@
                 id="disconnect_tweets" name="disconnect_tweets" type="submit">Disconnect! <i class="fa fa-times"></i>
         </button>
     </form>
-    <div id="latest_tweets">
-
-    </div>
-
-     <script>
-
-
-         function collect_latest_tweets(){
-           $.ajax({
-            url: "{% url 'fyp_webapp:latesttweets' %}",
-            success: function(data) {
-            $('#latest_tweets').html(data);
-            }
-            });
-        }
-
-        setInterval(function(){
-            collect_latest_tweets()
-        }, 60000);
-    </script>
 
     {% endblock content %}
 

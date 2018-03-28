@@ -12,6 +12,5 @@ def timeline(request):
         for hour in entry["_source"]["hour_breakdown"]:
             temp_data[int(hour)] = (entry["_source"]["hour_breakdown"][hour])
         data[entry["_source"]["date"]] = temp_data
-    print (data)
     return render(request, "fyp/timeline/index.html", {"data": data})
 

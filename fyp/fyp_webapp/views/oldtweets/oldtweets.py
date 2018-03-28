@@ -16,7 +16,6 @@ import json
 @login_required(login_url="/login/")
 def oldtweets(request):
     if request.POST:
-        print ("got post request")
         completed_form = forms.OldTweetsForm(request.POST)
         if completed_form.is_valid():
             cleaned = completed_form.clean()
@@ -60,8 +59,6 @@ def aggregate(tweet, topic, start_date):
         count_word_frequency.update(terms_all)
     data[current_hour] = current_tweet_count
     words = count_word_frequency.most_common(50)
-    print (json.dumps(words))
-
     try:
         dict = {"date": str(start_date), "total": len(tweet), "last_time": tweet[len(tweet) - 1].date, "hour_breakdown": data, 'words': json.dumps(words)}
     except:
@@ -70,4 +67,3 @@ def aggregate(tweet, topic, start_date):
     id = elastic_utils.last_id(topic)
     id += 1
     elastic_utils.add_entry(topic, id, dict)
-    print(id)

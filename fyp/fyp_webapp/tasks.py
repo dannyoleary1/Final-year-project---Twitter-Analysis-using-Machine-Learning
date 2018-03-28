@@ -12,39 +12,12 @@ import statistics
 from datetime import datetime
 from collections import Counter
 
-
-
-
-@shared_task(name="fyp_webapp.tasks.ftt_random")
-def fft_random(n):
-    """
-    Brainless number crunching just to have a substantial task:
-    """
-    for i in range(n):
-        x = random.normal(0, 0.1, 2000)
-        y = fft(x)
-        if(i%30 == 0):
-            process_percent = int(100 * float(i) / float(n))
-            current_task.update_state(state='PROGRESS',
-                                      meta={'process_percent': process_percent})
-    return random.random()
-
-@shared_task
-def add(x,y):
-    for i in range(1000000000):
-        a = x+y
-    return x+y
-
 @shared_task(name="fyp_webapp.tasks.wordcloud", queue='priority_high', track_started=True)
 def word_cloud(id, topic):
     item = {}
     category = []
     cat = TwitterCat.objects.filter(user_id=id)
     for entry in cat:
-        print("----------")
-        print(entry)
-        print("---------")
-
         entry = preprocessor.preprocess(entry.category_name)
         entry = preprocessor.porter_stemming(entry)
         entry = ''.join(c for c in entry if c not in '[]\'')
@@ -64,19 +37,15 @@ def aggregate_words(user_id,status):
     cat = TwitterCat.objects.filter(user_id=user_id)
     assigned_cat = False
     for entry in cat:
-        print (entry.category_name)
         if str(entry.category_name) in (status['text'].lower() or status['name'].lower()):
+            print (status['created'])
             topic = entry.category_name + "-latest"
             elastic_utils.create_index(topic)
             assigned_cat=True
             break
     if assigned_cat == False:
-        print ("------------------------")
-        print ("Text says:  " + str(status['text']))
-        print ("------------------------")
         topic = "unknown-latest"
         elastic_utils.create_index(topic)
-    print (topic)
     id = elastic_utils.last_id(topic)
     id+=1
     elastic_utils.add_entry(topic, id, status)
@@ -84,7 +53,6 @@ def aggregate_words(user_id,status):
 @shared_task(name="fyp_webapp.tasks.collect_old_tweets", queue='old_tweets')
 def collect_old_tweets(topic, number_of_days):
     todays_date = datetime.today()
-    print (str(todays_date))
     start_date = todays_date - timedelta(days=number_of_days)
     while start_date != todays_date:
         print ("Currently on date:  " + str(start_date))
@@ -152,7 +120,6 @@ def clean_indexes():
                     created = result["_source"]["created"]
                     datetime_object = datetime.strptime(created, '%Y-%m-%d %H:%M:%S')
                     count_word_frequency.update(str(datetime_object.hour))
-                    #TODO get common words
                     words = preprocessor.filter_multiple(str(result["_source"]["created"]), ats=True, stopwords=True, stemming=False, urls=True,
                                                  singles=True)
                     terms_all = [term for term in words]

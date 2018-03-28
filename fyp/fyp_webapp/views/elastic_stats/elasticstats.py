@@ -14,12 +14,10 @@ from collections import Counter
 
 @login_required(login_url='/login/')
 def elasticstats(request):
-    print ("accessed.")
     if 'job' in request.GET:
         job_id = request.GET['job']
         job = AsyncResult(job_id)
         data = job.result or job.state
-        print (job.state)
         context = {
             'data': data,
             'task_id': job_id,

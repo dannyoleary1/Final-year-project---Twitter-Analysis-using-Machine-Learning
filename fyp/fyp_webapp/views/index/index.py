@@ -21,11 +21,6 @@ def fyp(request):
     if 'job' in request.GET:
         job_id = request.GET['job']
         job = AsyncResult(job_id)
-        print ("_____________________")
-        print ("Async:  " + str(AsyncResult(job_id)))
-        print ("Job Result: " + str(job.result))
-        print ("Job State:  " + str(job.state))
-        print ("_____________________")
         data = job.result or job.state
         context = {
             'data': data,
@@ -34,8 +29,6 @@ def fyp(request):
         return render(request, "fyp/index.html", context)
     else:
         topic = cfg.twitter_credentials['topic']
-        print (topic)
-        print (request.user.id)
         job = word_cloud.delay(request.user.id, topic)
         return HttpResponseRedirect(reverse('fyp_webapp:fyp') + '?job=' + job.id)
         #  return render(request, "fyp/index.html", {'jsonData': job, 'category': job}, {'nbar': 'index'})
@@ -97,9 +90,6 @@ def render_word_cloud(word):
     for entry in jsonData:
         words.append(entry[0])
         items[entry[0]] = entry[1]
-        print(entry[0])
-        print(entry[1])
-        print(items[entry[0]])
     jsonData = json.dumps(items)
     print(jsonData)
     return JsonResponse({'jsonData': jsonData, 'category': words})
@@ -107,15 +97,11 @@ def render_word_cloud(word):
 
 def count_words(number_word_frequency_results, list_in_question):
     nltk.download('stopwords')
-
+    #TODO change to our stopwords.
     punctuation = list(string.punctuation)
     stop = stopwords.words('english') + punctuation + ['rt', 'via', '…', 'I', '’', 'The', '!']
     count_word_frequency = Counter()
     for entry in list_in_question:
-        print("-----------")
-        print(entry)
-        print(type(entry))
-        print("-----------")
         terms_all = [term for term in preprocessor.preprocess(entry) if term not in stop]
         count_word_frequency.update(terms_all)
     return count_word_frequency.most_common(number_word_frequency_results)

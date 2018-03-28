@@ -41,9 +41,6 @@ class OldTweetsForm(forms.Form):
 
     def clean(self):
         cleaned_data = super(OldTweetsForm, self).clean()
-        print (cleaned_data.get("index_name"))
-        print (cleaned_data.get("start_date"))
-        print (cleaned_data.get("end_date"))
         end_date = cleaned_data['end_date']
        # index_name = cleaned_data['index_name']
 
