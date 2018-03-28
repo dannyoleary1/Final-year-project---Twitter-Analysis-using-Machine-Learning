@@ -145,6 +145,8 @@ def elastic_info():
         current_task.update_state(state='PROGRESS',
                                   meta={'entry': entry, 'current_results': index_dict, 'current_entry': current_entry, 'last_entry': len(index_list)})
         latest_entry_number = elastic_utils.last_id(entry)
+        print (entry)
+        print (latest_entry_number)
         if latest_entry_number != 0:
             latest_tweets = elastic_utils.last_n_in_index(entry, 5)
         index_dict[entry] = {"total": latest_entry_number, "last_entries": latest_tweets, 'current_entry': current_entry, 'last_entry': len(index_list),
