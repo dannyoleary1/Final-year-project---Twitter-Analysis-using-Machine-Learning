@@ -79,36 +79,8 @@ def collect_old_tweets(topic, number_of_days):
 
 @shared_task(name="fyp_webapp.tasks.check_index", queue='misc')
 def check_index():
-    #assign the median value.
-    obj = elastic_utils.iterate_search("antivirus")
-    count_word_frequency = Counter()
-    other_frequency = Counter()
-    for entry in obj:
-        uh = json.dumps(entry['_source']['words'])
-        uh = uh.replace("\"[", "")
-        uh = uh.replace("]\"", "")
-        uh = (uh.split("], ["))
-        data_set = []
+   print ("")
 
-        for data in uh:
-            data = data.replace("[", "")
-            data = data.replace("\"", "")
-            data = data.replace("\\", "")
-            data = data.replace("[\'", "")
-            data = data.replace("\']", "")
-            data = data.replace("]", "")
-            data_set.append(data.split(", ")[0])
-            terms_all = [data.split(", ")[0]]
-            total = [data.split(", ")[1]]
-            count_word_frequency.update(terms_all)
-            other_frequency.update({terms_all[0]: int(total[0])})
-    unsorted_list = []
-    for key, value in count_word_frequency.items():
-        unsorted_list.append((key, value, other_frequency[key]))
-    sorted_list = sorted(unsorted_list,
-                         key=lambda x: ((x[1], -x[2])))
-    print("---------")
-    print (sorted_list)
 
 
 @shared_task(name="fyp_webapp.tasks.clean_indexes", queue='misc')
@@ -119,6 +91,39 @@ def clean_indexes():
         word_counter = Counter()
         if ("-latest") not in entry:
             if ("median") not in entry:
+                # we frst need to collect all todays tweets
+                entry_total = elastic_utils.last_id(entry)
+                if elastic_utils.check_index_exists(entry + "-latest") is True:
+                    total = elastic_utils.last_id(entry + "-latest")
+                    day_res = elastic_utils.iterate_search(entry + "-latest", query={
+                        "query":
+                            {
+                                "match_all": {}
+                            },
+                        "sort": [
+                            {
+                                "last_time": {
+                                    "order": "desc"
+                                }
+                            }
+                        ]
+                    })
+                    for test in day_res:
+                        time_of_tweet = test["_source"]["created"]
+                        datetime_object = datetime.strptime(time_of_tweet, '%Y-%m-%d %H:%M:%S')
+                        count_word_frequency.update(str(datetime_object.hour))
+                        words = preprocessor.filter_multiple(str(test["_source"]["text"]), ats=True, hashtags=True,
+                                                             stopwords=True, stemming=False, urls=True,
+                                                             singles=True)
+                        terms_all = [term for term in words]
+                        word_counter.update(terms_all)
+                        freq_obj = {"hour_breakdown": count_word_frequency.most_common(24),
+                                    "word_frequency": word_counter.most_common(75), "total": total,
+                                    "date": (str(datetime.today()))}
+                        elastic_utils.add_entry(entry, entry_total+1, freq_obj)
+                        elastic_utils.delete_index(entry+"-latest")
+                        elastic_utils.create_index(entry+"-latest")
+
                 res = elastic_utils.iterate_search(entry)
                 hour_breakdown = []
                 day_breakdown = []
@@ -156,25 +161,7 @@ def clean_indexes():
                 es_obj = {"index": entry, "day_median": day_median, "minute_median": minute_median,
                           "hour_median": hour_median}
                 elastic_utils.add_entry_median(entry + "-median", es_obj)
-        else:
-            res = elastic_utils.iterate_search(entry)
-            total = elastic_utils.last_id(entry)
-            for result in res:
-                try:
-                    created = result["_source"]["created"]
-                    datetime_object = datetime.strptime(created, '%Y-%m-%d %H:%M:%S')
-                    count_word_frequency.update(str(datetime_object.hour))
-                    words = preprocessor.filter_multiple(str(result["_source"]["created"]), ats=True, stopwords=True, stemming=False, urls=True,
-                                                 singles=True)
-                    terms_all = [term for term in words]
-                    word_counter.update(terms_all)
-                    freq_obj = {"hour_breakdown": count_word_frequency.most_common(24), "word_frequency": word_counter.most_common(75), "total": total, "date": (str(datetime.today() - timedelta(days=1)))}
-                    print(freq_obj)
-                except:
-                    continue
-    for entry in index:
-        if ("-latest") in index:
-            elastic_utils.delete_index(entry)
+
 
 @shared_task(name="fyp_webapp.tasks.elastic_info", queue="priority_high")
 def elastic_info():

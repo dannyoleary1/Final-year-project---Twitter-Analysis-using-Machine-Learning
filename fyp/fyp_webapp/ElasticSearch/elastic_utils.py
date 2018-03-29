@@ -17,7 +17,11 @@ def create_index(name):
 
 """Check if an elasticsearch index exists or not"""
 def check_index_exists(name):
-    True if es.indices.exists(name) else False
+    try:
+        bool = es.indices.exists(name)
+        return bool
+    except:
+        return False
 
 
 """Deletes an elasticsearch index. Reads in name as a parameter."""

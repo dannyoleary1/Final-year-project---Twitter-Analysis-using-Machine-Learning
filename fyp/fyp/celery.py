@@ -22,9 +22,9 @@ app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(force=True)
 
 app.conf.beat_schedule = {
-    'add-every-30-seconds': {
+    'check_index': {
         'task': 'fyp_webapp.tasks.check_index',
-        'schedule': 60.0,
+        'schedule': 300.0,
         'options': {'queue' : 'misc'}
     },
     'clean-indexes': {

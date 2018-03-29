@@ -74,6 +74,7 @@
                                              test += "<div>No Tweets in this index.</div>"
                                          }
                                          else{
+                                             test += "<div class='box'>"
                                              test += "<nav class='level'>"
                                              test += "<div class='level-item has-text-centered'>"
                                              test += "<div>"
@@ -86,6 +87,7 @@
                                              test += "<p class='title'>"+result[entry].last_entries.hits.hits[a]._source.date+"</p>"
                                              test+= "</div></div>"
                                              test += "</nav>"
+                                             test += "</div>"
 
                                              if (result[entry].last_entries.hits.hits[a]._source.last_time == undefined){
                                                  test += "work out later";
@@ -161,7 +163,7 @@
       if (profile == undefined){
           profile = "https://bulma.io/images/placeholders/128x128.png"
       }
-      var entry = "<div class=''>\n" +
+      var entry = "<div class='box'>\n" +
           "<article class=\"media\">\n" +
           "  <figure class=\"media-left\">\n" +
           "    <p class=\"image is-64x64\">\n" +
