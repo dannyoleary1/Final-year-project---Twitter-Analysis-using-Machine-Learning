@@ -86,8 +86,10 @@ class TweetManager:
                             print ("inside results > maxTweets?")
                             break
                     except:
+                        print ("exception 1")
                         pass
             except:
+                print ("exception 2")
                 pass
 
         if receiveBuffer and len(resultsAux) > 0:
@@ -105,21 +107,23 @@ class TweetManager:
         if hasattr(tweetCriteria, 'username'):
             urlGetData += ' from:' + tweetCriteria.username
 
+        if hasattr(tweetCriteria, 'querySearch'):
+            urlGetData += ' ' + tweetCriteria.querySearch
+
         if hasattr(tweetCriteria, 'since'):
+            print (tweetCriteria.since)
             urlGetData += ' since:' + tweetCriteria.since
 
         if hasattr(tweetCriteria, 'until'):
+            print (tweetCriteria.until)
             urlGetData += ' until:' + tweetCriteria.until
 
-        if hasattr(tweetCriteria, 'querySearch'):
-            urlGetData += ' ' + tweetCriteria.querySearch
 
         if hasattr(tweetCriteria, 'lang'):
             urlLang = 'lang=' + tweetCriteria.lang + '&'
         else:
             urlLang = ''
         url = url % (urllib.parse.quote(urlGetData), urlLang, refreshCursor)
-        print(url)
 
         headers = [
             ('Host', "twitter.com"),
@@ -149,7 +153,7 @@ class TweetManager:
                     urlGetData))
             return
         print(
-            "Twitter weird response. Try to see on browser: https://twitter.com/search?q=%s&src=typd" % urllib.parse.quote(
-                urlGetData))
+                "Twitter weird response. Try to see on browser: https://twitter.com/search?q=%s&src=typd" % urllib.parse.quote(
+            urlGetData))
         dataJson = json.loads(jsonResponse.decode())
         return dataJson

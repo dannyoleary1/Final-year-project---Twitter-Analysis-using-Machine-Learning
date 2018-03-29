@@ -11,6 +11,7 @@ from fyp_webapp.views.oldtweets import oldtweets
 import statistics
 from datetime import datetime
 from collections import Counter
+import tweepy
 
 @shared_task(name="fyp_webapp.tasks.wordcloud", queue='priority_high', track_started=True)
 def word_cloud(id, topic):
@@ -52,10 +53,25 @@ def aggregate_words(user_id,status):
 
 @shared_task(name="fyp_webapp.tasks.collect_old_tweets", queue='old_tweets')
 def collect_old_tweets(topic, number_of_days):
-    todays_date = datetime.today()
+    todays_date = datetime.now().date()
     start_date = todays_date - timedelta(days=number_of_days)
     while start_date != todays_date:
+        print ("------------------------------------------")
+        print ("Entry:  " + topic)
         print ("Currently on date:  " + str(start_date))
+        print ("------------------------------------------")
+ #   auth = tweepy.OAuthHandler(cfg.twitter_credentials["consumer_key"], cfg.twitter_credentials['consumer_secret'])
+ #   auth.set_access_token(cfg.twitter_credentials['access_token'], cfg.twitter_credentials['access_token_secret'])
+ #   api = tweepy.API(auth, wait_on_rate_limit=True)
+ #   for status in tweepy.Cursor(api.search, q=topic, since="2018-03-22", until="2018-03-28", lang="en").items():
+ #       if hasattr(status, 'retweeted_status'):
+ #           continue #this filters out retweets
+ #       else:
+ #           try:
+ #               text = status.extended_tweet["full_text"]
+ #           except AttributeError:
+ #               text = status.text
+ #       print (status.created_at)
         tweets = oldtweets.collect_tweets(topic, start_date, (start_date + timedelta(days=1)))
         oldtweets.aggregate(tweets, topic, start_date)
         start_date += timedelta(days=1)

@@ -3,7 +3,6 @@ from fyp_webapp.ElasticSearch import elastic_utils as es
 
 
 def run(query_search, start_date, end_date, max_tweets=500000):
-    print("its here")
 
     def printTweet(descr, t):
         print(descr)
@@ -21,6 +20,7 @@ def run(query_search, start_date, end_date, max_tweets=500000):
     topic = query_search
     tweetCriteria = got.manager.TweetCriteria().setQuerySearch(query_search).setSince(start_date).setUntil(
         end_date).setLang('eng').setMaxTweets(max_tweets)
+
     tweet = got.manager.TweetManager.getTweets(tweetCriteria)
 
     return tweet

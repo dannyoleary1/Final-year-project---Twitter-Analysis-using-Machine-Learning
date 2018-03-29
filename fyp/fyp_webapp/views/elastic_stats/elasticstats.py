@@ -24,7 +24,7 @@ def elasticstats(request):
             'state': job.state,
         }
         #TODO this needs to be moved.
-        obj = elastic_utils.iterate_search("netflix")
+        obj = elastic_utils.iterate_search("malware")
         count_word_frequency = Counter()
         other_frequency = Counter()
         for entry in obj:
@@ -51,7 +51,8 @@ def elasticstats(request):
             unsorted_list.append((key, value, other_frequency[key]))
         sorted_list = sorted(unsorted_list,
                                   key=lambda x: ((x[1], -x[2])))
-        print(sorted_list)
+        print("---------")
+        print (sorted_list)
         return render(request, "fyp/elasticstats/index.html", context)
     else:
         job = elastic_info.delay()
