@@ -60,36 +60,41 @@
                                     }
                                 test += "<div class='column'>"
                                 test +="<div class='card-header'>"+entry+"</div>"
-                                test +="<div class='card-body'> Total:  "+result[entry].total+"</div>"
+                                test +="<br>"
                                     for (a=0; a<(result[entry].last_entries.hits.hits).length; a++){
                                          if (entry.includes("-latest")){
-                                             test+= addToEntry(result[entry].last_entries.hits.hits[a]._source)
+                                             console.log("_________")
+                                             console.log(entry)
+                                             if (result[entry].total != 0) {
+                                                 console.log((result[entry].last_entries.hits.hits[a]._source))
+                                                 test += addToEntry(result[entry].last_entries.hits.hits[a]._source)
+                                             }
                                          }
                                          else if(result[entry].last_entries.hits.hits[a]._source.last_time == "No Tweets"){
                                              test += "<div>No Tweets in this index.</div>"
                                          }
                                          else{
-                                             console.log(result[entry].last_entries.hits.hits[a]._source)
-                                             console.log(entry)
-                                             test += "<h2>Date of entry: "+ result[entry].last_entries.hits.hits[a]._source.date+"</h2>"
-                                             test += "<h3>Total Tweets: " + result[entry].last_entries.hits.hits[a]._source.total+"</h3>"
+                                             test += "<nav class='level'>"
+                                             test += "<div class='level-item has-text-centered'>"
+                                             test += "<div>"
+                                             test += "<p class='heading'>Tweets</p>"
+                                             test += "<p class='title'>"+result[entry].last_entries.hits.hits[a]._source.total+"</p>"
+                                             test += "</div></div>"
+                                             test += "<div class='level-item has-text-centered'>"
+                                             test += "<div>"
+                                             test += "<p class='heading'>Date</p>"
+                                             test += "<p class='title'>"+result[entry].last_entries.hits.hits[a]._source.date+"</p>"
+                                             test+= "</div></div>"
+                                             test += "</nav>"
 
                                              if (result[entry].last_entries.hits.hits[a]._source.last_time == undefined){
                                                  test += "work out later";
-                                             }
-                                             else if (result[entry].last_entries.hits.hits[a]._source.last_time.includes("00:00:00")){
-                                                 test += "<h3>Last Collected: 00:00:00</h3>"
-                                             }
-                                             else{
-                                                 test += "<h3 class=text-warning>Last Collected: "+result[entry].last_entries.hits.hits[a]._source.last_time+"</h3>"
                                              }
                                              if (result[entry].last_entries.hits.hits[a]._source.words == undefined){
 
                                              }
                                              else {
                                                  for (var b = 0; b<6; b++){
-                                                     console.log("----------")
-                                                     console.log(JSON.parse(result[entry].last_entries.hits.hits[a]._source.words))
                                                      test += "<span class=badge badge-dark>"+JSON.parse(result[entry].last_entries.hits.hits[a]._source.words)[b][0]+"</span>"
                                                  }
                                              }

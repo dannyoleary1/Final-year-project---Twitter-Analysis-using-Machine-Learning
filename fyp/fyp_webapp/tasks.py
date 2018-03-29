@@ -80,7 +80,35 @@ def collect_old_tweets(topic, number_of_days):
 @shared_task(name="fyp_webapp.tasks.check_index", queue='misc')
 def check_index():
     #assign the median value.
-    print ("")
+    obj = elastic_utils.iterate_search("antivirus")
+    count_word_frequency = Counter()
+    other_frequency = Counter()
+    for entry in obj:
+        uh = json.dumps(entry['_source']['words'])
+        uh = uh.replace("\"[", "")
+        uh = uh.replace("]\"", "")
+        uh = (uh.split("], ["))
+        data_set = []
+
+        for data in uh:
+            data = data.replace("[", "")
+            data = data.replace("\"", "")
+            data = data.replace("\\", "")
+            data = data.replace("[\'", "")
+            data = data.replace("\']", "")
+            data = data.replace("]", "")
+            data_set.append(data.split(", ")[0])
+            terms_all = [data.split(", ")[0]]
+            total = [data.split(", ")[1]]
+            count_word_frequency.update(terms_all)
+            other_frequency.update({terms_all[0]: int(total[0])})
+    unsorted_list = []
+    for key, value in count_word_frequency.items():
+        unsorted_list.append((key, value, other_frequency[key]))
+    sorted_list = sorted(unsorted_list,
+                         key=lambda x: ((x[1], -x[2])))
+    print("---------")
+    print (sorted_list)
 
 
 @shared_task(name="fyp_webapp.tasks.clean_indexes", queue='misc')

@@ -23,8 +23,7 @@ def elasticstats(request):
             'task_id': job_id,
             'state': job.state,
         }
-        #TODO this needs to be moved.
-        obj = elastic_utils.iterate_search("malware")
+        obj = elastic_utils.iterate_search("antivirus")
         count_word_frequency = Counter()
         other_frequency = Counter()
         for entry in obj:
@@ -45,12 +44,12 @@ def elasticstats(request):
                 terms_all = [data.split(", ")[0]]
                 total = [data.split(", ")[1]]
                 count_word_frequency.update(terms_all)
-                other_frequency.update({terms_all[0]:int(total[0])})
+                other_frequency.update({terms_all[0]: int(total[0])})
         unsorted_list = []
-        for key,value in count_word_frequency.items():
+        for key, value in count_word_frequency.items():
             unsorted_list.append((key, value, other_frequency[key]))
         sorted_list = sorted(unsorted_list,
-                                  key=lambda x: ((x[1], -x[2])))
+                             key=lambda x: ((x[1], -x[2])))
         print("---------")
         print (sorted_list)
         return render(request, "fyp/elasticstats/index.html", context)
