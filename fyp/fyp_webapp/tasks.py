@@ -89,6 +89,7 @@ def clean_indexes():
     for entry in index:
         count_word_frequency = Counter()
         word_counter = Counter()
+        hour_break_dict = {}
         if ("-latest") not in entry:
             if ("median") not in entry:
                 # we frst need to collect all todays tweets
@@ -111,18 +112,28 @@ def clean_indexes():
                     for test in day_res:
                         time_of_tweet = test["_source"]["created"]
                         datetime_object = datetime.strptime(time_of_tweet, '%Y-%m-%d %H:%M:%S')
+                        dateobj = datetime_object.strftime("%Y-%m-%d" )
                         count_word_frequency.update(str(datetime_object.hour))
+                        if datetime_object.hour in hour_break_dict:
+                            hour_break_dict[str(datetime_object.hour)] += 1
+                        else:
+                            hour_break_dict[str(datetime_object.hour)] = 1
+
                         words = preprocessor.filter_multiple(str(test["_source"]["text"]), ats=True, hashtags=True,
                                                              stopwords=True, stemming=False, urls=True,
                                                              singles=True)
                         terms_all = [term for term in words]
                         word_counter.update(terms_all)
-                        freq_obj = {"hour_breakdown": count_word_frequency.most_common(24),
-                                    "word_frequency": word_counter.most_common(75), "total": total,
-                                    "date": (str(datetime.today()))}
-                        elastic_utils.add_entry(entry, entry_total+1, freq_obj)
-                        elastic_utils.delete_index(entry+"-latest")
-                        elastic_utils.create_index(entry+"-latest")
+                        freq_obj = {"hour_breakdown": hour_break_dict,
+                                    "word_frequency": json.dumps(word_counter.most_common(75)), "total": total,
+                                    "date": dateobj}
+                    print(freq_obj)
+                    elastic_utils.add_entry(entry, entry_total + 1, freq_obj)
+                    elastic_utils.delete_index(entry + "-latest")
+                    try:
+                        elastic_utils.create_index(entry + "-latest")
+                    except:
+                        continue
 
                 res = elastic_utils.iterate_search(entry)
                 hour_breakdown = []
