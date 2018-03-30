@@ -12,6 +12,7 @@ import statistics
 from datetime import datetime
 from collections import Counter
 import tweepy
+import time
 
 @shared_task(name="fyp_webapp.tasks.wordcloud", queue='priority_high', track_started=True)
 def word_cloud(id, topic):
@@ -79,8 +80,73 @@ def collect_old_tweets(topic, number_of_days):
 
 @shared_task(name="fyp_webapp.tasks.check_index", queue='misc')
 def check_index():
-   print ("")
+    index = elastic_utils.list_all_indexes()
+    ts = datetime.now() - timedelta(minutes=5)
+    for entry in index:
+        word_counter = Counter()
+        if ("-latest") not in entry:
+            if ("median") not in entry:
+                if elastic_utils.check_index_exists(entry + "-latest") is True:
+                    total = elastic_utils.last_id(entry + "-latest")
 
+               #     t = datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+                    day_res = elastic_utils.iterate_search(entry + "-latest", query={
+                        "query":
+                            {
+                                "match_all": {}
+                            },
+                        "sort": [
+                            {
+                                "last_time": {
+                                    "order": "desc"
+                                }
+                            }
+                        ]
+                    })
+                    total_in_five = 0
+                    for item in day_res:
+                        time_of_tweet = item["_source"]["created"]
+                        datetime_object = datetime.strptime(time_of_tweet, '%Y-%m-%d %H:%M:%S')
+                        if datetime_object > ts:
+                            total_in_five += 1
+                            words = preprocessor.filter_multiple(str(item["_source"]["text"]), ats=True, hashtags=True,
+                                                                 stopwords=True, stemming=False, urls=True,
+                                                                 singles=True)
+                            terms_all = [term for term in words]
+                            word_counter.update(terms_all)
+                    res = elastic_utils.iterate_search(entry+"-median")
+                    for median in res:
+                        print ("entry: " + str(entry))
+                        breakdown = median["_source"]["five_minute_median"]
+                        if (total_in_five is 0):
+                            total_five_ratio = 0
+                        elif (breakdown is 0):
+                            total_five_ratio = 0
+                        else: total_five_ratio = total_in_five/breakdown
+                        if (total_five_ratio > 1.9):
+                            print ("The total of:    " + entry + " is over the configured ratio of 1.9. The ratio is:   " + str(total_five_ratio) + " . This is for the entry: " + entry )
+                        yesterdays_res = median["_source"]["yesterday_res"]
+                    for key, value in word_counter.items():
+                        current_word = word_counter[key]
+                        if (current_word > 1):
+                            if key in yesterdays_res:
+
+                                print ("key:" + str(key))
+                                print ("current word: " + str(current_word))
+                                print ("yesterdays res key: " + str(yesterdays_res[key][0]))
+                                test_var = ((yesterdays_res[key][0]/24)/60)*5
+                                current_word_ratio = current_word/test_var
+                                if (current_word_ratio > 1.9):
+                                    print ("The word:   " + str(key) + " is over the current word ratio for the last 5 minutes. The ratio is:    " + str(current_word_ratio) + " . This is for the entry: " + entry)
+                        existing_words = median["_source"]["five_min_words_median"]
+                        if (current_word > 1):
+                            if key in existing_words:
+                                existing_val = existing_words[key]
+                                compared_to_monthly_ratio = current_word/existing_val
+                                if (compared_to_monthly_ratio > 1.9):
+                                    print ("The word:   " + str(key) + " is over the monthly median for the ratio. The ratio is: " + str(compared_to_monthly_ratio) + " . This is for the entry: " + entry)
+                    print("______")
+                        #check for yestedays median?
 
 
 @shared_task(name="fyp_webapp.tasks.clean_indexes", queue='misc')
