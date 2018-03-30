@@ -126,7 +126,7 @@ def clean_indexes():
                         word_counter.update(terms_all)
                         freq_obj = {"hour_breakdown": hour_break_dict,
                                     "word_frequency": json.dumps(word_counter.most_common(75)), "total": total,
-                                    "date": dateobj}
+                                    "date": dateobj, "last_time": time_of_tweet}
                     print(freq_obj)
                     elastic_utils.add_entry(entry, entry_total + 1, freq_obj)
                     elastic_utils.delete_index(entry + "-latest")
@@ -142,9 +142,16 @@ def clean_indexes():
                 for result in res:
                     try:
                         if (result["_source"]["last_time"] != "No Tweets"):
+                            hours = result["_source"]["hour_breakdown"]
+                            if len(hours) is 24:
+                                day_breakdown.append(result["_source"]["total"])
+                            else:
+                                day_b = ((result["_source"]["total"]/len(hours))*24)
+                                day_breakdown.append(day_b)
                             day_breakdown.append(result["_source"]["total"])
                             todays_hours = []
-                            hours = result["_source"]["hour_breakdown"]
+
+                            print (len(hours))
                             for test in hours:
                                 todays_hours.append(hours[test])
                             todays_hours.sort()
@@ -157,12 +164,14 @@ def clean_indexes():
                 day_breakdown.sort()
                 minute_breakdown.sort()
                 hour_breakdown.sort()
+                five_min_median = 0
                 if (len(day_breakdown) != 0):
                     day_median = statistics.median(day_breakdown)
                 else:
                     day_median = 0
                 if (len(minute_breakdown) != 0):
                     minute_median = statistics.median(minute_breakdown)
+                    five_min_median = minute_median*5
                 else:
                     minute_median = 0
                 if (len(hour_breakdown) != 0):
@@ -170,7 +179,7 @@ def clean_indexes():
                 else:
                     hour_median = 0
                 es_obj = {"index": entry, "day_median": day_median, "minute_median": minute_median,
-                          "hour_median": hour_median}
+                          "hour_median": hour_median, "five_minute_median": five_min_median}
                 elastic_utils.add_entry_median(entry + "-median", es_obj)
 
 
