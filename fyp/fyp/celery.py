@@ -33,7 +33,7 @@ app.conf.beat_schedule = {
         'options': {'queue': 'misc'}
     }
 }
-app.conf.timezone = 'GMT'
+app.conf.timezone = 'UTC'
 
 
 @app.task(bind=True)

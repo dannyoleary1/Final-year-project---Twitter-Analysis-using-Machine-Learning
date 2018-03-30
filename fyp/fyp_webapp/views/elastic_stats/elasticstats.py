@@ -26,7 +26,9 @@ def elasticstats(request):
         obj = elastic_utils.iterate_search("antivirus")
         count_word_frequency = Counter()
         other_frequency = Counter()
+        totals_array = {}
         for entry in obj:
+
             uh = json.dumps(entry['_source']['words'])
             uh = uh.replace("\"[", "")
             uh = uh.replace("]\"", "")
@@ -34,6 +36,7 @@ def elasticstats(request):
             data_set = []
 
             for data in uh:
+
                 data = data.replace("[", "")
                 data = data.replace("\"", "")
                 data = data.replace("\\", "")
@@ -45,12 +48,19 @@ def elasticstats(request):
                 total = [data.split(", ")[1]]
                 count_word_frequency.update(terms_all)
                 other_frequency.update({terms_all[0]: int(total[0])})
+                if terms_all[0] in totals_array:
+                    totals_array[terms_all[0]].append(int(total[0]))
+                else:
+                    totals_array[terms_all[0]] = []
+                    totals_array[terms_all[0]].append(int(total[0]))
         unsorted_list = []
         for key, value in count_word_frequency.items():
             unsorted_list.append((key, value, other_frequency[key]))
         sorted_list = sorted(unsorted_list,
                              key=lambda x: ((x[1], -x[2])))
         print("---------")
+        print (totals_array)
+        print ("_________")
         print (sorted_list)
         return render(request, "fyp/elasticstats/index.html", context)
     else:

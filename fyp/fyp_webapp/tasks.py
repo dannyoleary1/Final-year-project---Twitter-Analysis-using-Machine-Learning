@@ -113,6 +113,7 @@ def clean_indexes():
                         time_of_tweet = test["_source"]["created"]
                         datetime_object = datetime.strptime(time_of_tweet, '%Y-%m-%d %H:%M:%S')
                         dateobj = datetime_object.strftime("%Y-%m-%d" )
+                        created_at = datetime_object.strftime("%Y-%m-%d %H:%M:%S")
                         count_word_frequency.update(str(datetime_object.hour))
                         if str(datetime_object.hour) in hour_break_dict:
                             hour_break_dict[str(datetime_object.hour)] += 1
@@ -125,11 +126,11 @@ def clean_indexes():
                         terms_all = [term for term in words]
                         word_counter.update(terms_all)
                         freq_obj = {"hour_breakdown": hour_break_dict,
-                                    "word_frequency": json.dumps(word_counter.most_common(75)), "total": total,
-                                    "date": dateobj, "last_time": time_of_tweet}
+                                    "words": json.dumps(word_counter.most_common(75)), "total": total,
+                                    "date": dateobj, "last_time": created_at}
                     print(freq_obj)
-                    elastic_utils.add_entry(entry, entry_total + 1, freq_obj)
-                    elastic_utils.delete_index(entry + "-latest")
+           #         elastic_utils.add_entry(entry, entry_total + 1, freq_obj)
+           #         elastic_utils.delete_index(entry + "-latest")
                     try:
                         elastic_utils.create_index(entry + "-latest")
                     except:
@@ -139,6 +140,7 @@ def clean_indexes():
                 hour_breakdown = []
                 day_breakdown = []
                 minute_breakdown = []
+                totals_array = {}
                 for result in res:
                     try:
                         if (result["_source"]["last_time"] != "No Tweets"):
@@ -151,7 +153,6 @@ def clean_indexes():
                             day_breakdown.append(result["_source"]["total"])
                             todays_hours = []
 
-                            print (len(hours))
                             for test in hours:
                                 todays_hours.append(hours[test])
                             todays_hours.sort()
@@ -159,12 +160,42 @@ def clean_indexes():
                             minute_estimate = hour_med / 60
                             hour_breakdown.append(hour_med)
                             minute_breakdown.append(minute_estimate)
+
+                            #Word Breakdown. Something of a check is probably needed first.
+                            uh = json.dumps(result['_source']['words'])
+                            uh = uh.replace("\"[", "")
+                            uh = uh.replace("]\"", "")
+                            uh = (uh.split("], ["))
+                            data_set = []
+
+                            for data in uh:
+                                data = data.replace("[", "")
+                                data = data.replace("\"", "")
+                                data = data.replace("\\", "")
+                                data = data.replace("[\'", "")
+                                data = data.replace("\']", "")
+                                data = data.replace("]", "")
+                                data_set.append(data.split(", ")[0])
+                                terms_all = [data.split(", ")[0]]
+                                total = [data.split(", ")[1]]
+                                if terms_all[0] in totals_array:
+                                    totals_array[terms_all[0]].append(int(total[0]))
+                                else:
+                                    totals_array[terms_all[0]] = []
+                                    totals_array[terms_all[0]].append(int(total[0]))
                     except:
                         continue
                 day_breakdown.sort()
                 minute_breakdown.sort()
                 hour_breakdown.sort()
                 five_min_median = 0
+                totals_array = add_zeros(totals_array)
+                hour_word_breakdown = {}
+                five_min_word_breakdown = {}
+                print (len(totals_array))
+                for item in totals_array:
+                    hour_word_breakdown[item] = totals_array[item]/24
+                    five_min_word_breakdown[item] = (hour_word_breakdown[item]/60)*5
                 if (len(day_breakdown) != 0):
                     day_median = statistics.median(day_breakdown)
                 else:
@@ -178,8 +209,51 @@ def clean_indexes():
                     hour_median = statistics.median(hour_breakdown)
                 else:
                     hour_median = 0
+                try:
+                    #Now get yesterdays entries
+                    day_res = elastic_utils.iterate_search(entry, query={
+                        "query":
+                            {
+                                "match_all": {}
+                            },
+                        "sort": [
+                            {
+                                "date": {
+                                    "order": "desc"
+                                }
+                            }
+                        ]
+                    })
+                except:
+                    continue
+                latest_words = {}
+                for latest in day_res:
+                    print ("------")
+                    print (entry)
+                    hours = latest["_source"]["hour_breakdown"]
+                    if (len(hours) is 24):
+                        latest_ent = json.dumps(latest['_source']['words'])
+                        latest_ent = latest_ent.replace("\"[", "")
+                        latest_ent = latest_ent.replace("]\"", "")
+                        latest_ent = (latest_ent.split("], ["))
+
+                        for data in latest_ent:
+                            data = data.replace("[", "")
+                            data = data.replace("\"", "")
+                            data = data.replace("\\", "")
+                            data = data.replace("[\'", "")
+                            data = data.replace("\']", "")
+                            data = data.replace("]", "")
+                            terms_all = [data.split(", ")[0]]
+                            total = [data.split(", ")[1]]
+                            if terms_all[0] in latest_words:
+                                latest_words[terms_all[0]].append(int(total[0]))
+                            else:
+                                latest_words[terms_all[0]] = []
+                                latest_words[terms_all[0]].append(int(total[0]))
+                        break
                 es_obj = {"index": entry, "day_median": day_median, "minute_median": minute_median,
-                          "hour_median": hour_median, "five_minute_median": five_min_median}
+                          "hour_median": hour_median, "five_minute_median": five_min_median, "day_words_median": totals_array, "hour_words_median": hour_word_breakdown, "five_min_words_median": five_min_word_breakdown, "yesterday_res":latest_words}
                 elastic_utils.add_entry_median(entry + "-median", es_obj)
 
 
@@ -200,7 +274,21 @@ def elastic_info():
         print (latest_entry_number)
         if latest_entry_number != 0:
             latest_tweets = elastic_utils.last_n_in_index(entry, 5)
+        else:
+            latest_tweets = ""
         index_dict[entry] = {"total": latest_entry_number, "last_entries": latest_tweets, 'current_entry': current_entry, 'last_entry': len(index_list),
                              }
         current_entry += 1
     return index_dict
+
+def add_zeros(data):
+    temp_arr = {}
+    for item in data:
+        size = len(data[item])
+        if size < 31:
+            data[item].extend(([0]*(30-size)))
+            data[item].sort()
+            data[item] = statistics.median(data[item])
+            if (data[item] > 0):
+                temp_arr[item] = data[item]
+    return temp_arr
