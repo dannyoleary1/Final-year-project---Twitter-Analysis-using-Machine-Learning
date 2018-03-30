@@ -129,8 +129,8 @@ def clean_indexes():
                                     "words": json.dumps(word_counter.most_common(75)), "total": total,
                                     "date": dateobj, "last_time": created_at}
                     print(freq_obj)
-           #         elastic_utils.add_entry(entry, entry_total + 1, freq_obj)
-           #         elastic_utils.delete_index(entry + "-latest")
+                    elastic_utils.add_entry(entry, entry_total + 1, freq_obj)
+                    elastic_utils.delete_index(entry + "-latest")
                     try:
                         elastic_utils.create_index(entry + "-latest")
                     except:
