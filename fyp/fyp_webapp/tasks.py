@@ -114,7 +114,7 @@ def clean_indexes():
                         datetime_object = datetime.strptime(time_of_tweet, '%Y-%m-%d %H:%M:%S')
                         dateobj = datetime_object.strftime("%Y-%m-%d" )
                         count_word_frequency.update(str(datetime_object.hour))
-                        if datetime_object.hour in hour_break_dict:
+                        if str(datetime_object.hour) in hour_break_dict:
                             hour_break_dict[str(datetime_object.hour)] += 1
                         else:
                             hour_break_dict[str(datetime_object.hour)] = 1
