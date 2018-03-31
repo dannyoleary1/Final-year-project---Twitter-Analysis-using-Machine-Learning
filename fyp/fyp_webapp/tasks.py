@@ -179,7 +179,7 @@ def clean_indexes():
                         time_of_tweet = test["_source"]["created"]
                         datetime_object = datetime.strptime(time_of_tweet, '%Y-%m-%d %H:%M:%S')
                         dateobj = datetime_object.strftime("%Y-%m-%d" )
-                        created_at = datetime_object.strftime("%Y-%m-%d %H:%M:%S")
+                        created_at = datetime_object.strftime("%Y-%m-%dT%H:%M:%S")
                         count_word_frequency.update(str(datetime_object.hour))
                         if str(datetime_object.hour) in hour_break_dict:
                             hour_break_dict[str(datetime_object.hour)] += 1
@@ -191,6 +191,7 @@ def clean_indexes():
                                                              singles=True)
                         terms_all = [term for term in words]
                         word_counter.update(terms_all)
+                        print (created_at)
                         freq_obj = {"hour_breakdown": hour_break_dict,
                                     "words": json.dumps(word_counter.most_common(75)), "total": total,
                                     "date": dateobj, "last_time": created_at}
