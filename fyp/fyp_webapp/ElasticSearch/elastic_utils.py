@@ -37,6 +37,10 @@ def list_all_indexes():
     res = es.indices.get_alias("*")
     return (res)
 
+def count_entries(name, body={"query": {"match_all": {}}}):
+    count = es.count(index=name, doc_type="tweet", body=body)
+    return count
+
 """Create an entry into an existing index. Uses a unique ID to identify. Body is the data entry in question"""
 def add_entry(index_name, id, body):
     res = es.index(index=index_name, doc_type="tweet", id=id, body=body)

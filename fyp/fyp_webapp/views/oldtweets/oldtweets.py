@@ -58,7 +58,7 @@ def aggregate(tweet, topic, start_date):
         terms_all = [term for term in entry]
         count_word_frequency.update(terms_all)
     data[current_hour] = current_tweet_count
-    words = count_word_frequency.most_common(50)
+    words = count_word_frequency.most_common(400)
     try:
         dict = {"date": str(start_date), "total": len(tweet), "last_time": tweet[len(tweet) - 1].date, "hour_breakdown": data, 'words': json.dumps(words)}
     except:

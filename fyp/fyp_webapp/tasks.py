@@ -116,36 +116,30 @@ def check_index():
                             word_counter.update(terms_all)
                     res = elastic_utils.iterate_search(entry+"-median")
                     for median in res:
-                        print ("entry: " + str(entry))
                         breakdown = median["_source"]["five_minute_median"]
                         if (total_in_five is 0):
                             total_five_ratio = 0
                         elif (breakdown is 0):
                             total_five_ratio = 0
                         else: total_five_ratio = total_in_five/breakdown
-                        if (total_five_ratio > 1.9):
+                        if (total_five_ratio > 2.0):
                             print ("The total of:    " + entry + " is over the configured ratio of 1.9. The ratio is:   " + str(total_five_ratio) + " . This is for the entry: " + entry )
                         yesterdays_res = median["_source"]["yesterday_res"]
                     for key, value in word_counter.items():
                         current_word = word_counter[key]
-                        if (current_word > 1):
+                        if (current_word > 3):
                             if key in yesterdays_res:
-
-                                print ("key:" + str(key))
-                                print ("current word: " + str(current_word))
-                                print ("yesterdays res key: " + str(yesterdays_res[key][0]))
                                 test_var = ((yesterdays_res[key][0]/24)/60)*5
                                 current_word_ratio = current_word/test_var
-                                if (current_word_ratio > 1.9):
-                                    print ("The word:   " + str(key) + " is over the current word ratio for the last 5 minutes. The ratio is:    " + str(current_word_ratio) + " . This is for the entry: " + entry)
+                                if (current_word_ratio > 2.0):
+                                    print ("The word:   " + str(key) + " is over the current word ratio for the last 5 minutes. The ratio is:    " + str(current_word_ratio) + " . This is for the entry: " + entry +" . Occurences of the word: " + str(current_word))
                         existing_words = median["_source"]["five_min_words_median"]
-                        if (current_word > 1):
+                        if (current_word > 3):
                             if key in existing_words:
                                 existing_val = existing_words[key]
                                 compared_to_monthly_ratio = current_word/existing_val
                                 if (compared_to_monthly_ratio > 1.9):
-                                    print ("The word:   " + str(key) + " is over the monthly median for the ratio. The ratio is: " + str(compared_to_monthly_ratio) + " . This is for the entry: " + entry)
-                    print("______")
+                                    print ("The word:   " + str(key) + " is over the monthly median for the ratio. The ratio is: " + str(compared_to_monthly_ratio) + " . This is for the entry: " + entry +" . Occurences of the word: " + str(current_word))
                         #check for yestedays median?
 
 
@@ -193,11 +187,11 @@ def clean_indexes():
                         word_counter.update(terms_all)
                         print (created_at)
                         freq_obj = {"hour_breakdown": hour_break_dict,
-                                    "words": json.dumps(word_counter.most_common(75)), "total": total,
+                                    "words": json.dumps(word_counter.most_common(400)), "total": total,
                                     "date": dateobj, "last_time": created_at}
                     print(freq_obj)
-                    elastic_utils.add_entry(entry, entry_total + 1, freq_obj)
-                    elastic_utils.delete_index(entry + "-latest")
+        #            elastic_utils.add_entry(entry, entry_total + 1, freq_obj)
+        #            elastic_utils.delete_index(entry + "-latest")
                     try:
                         elastic_utils.create_index(entry + "-latest")
                     except:
@@ -256,12 +250,15 @@ def clean_indexes():
                 minute_breakdown.sort()
                 hour_breakdown.sort()
                 five_min_median = 0
-                totals_array = add_zeros(totals_array)
+                count = elastic_utils.count_entries(entry)
+                count = count["count"]
+                totals_array = add_zeros(totals_array, count)
                 hour_word_breakdown = {}
                 five_min_word_breakdown = {}
                 print (len(totals_array))
                 for item in totals_array:
-                    hour_word_breakdown[item] = totals_array[item]/24
+                    hours = result["_source"]["hour_breakdown"]
+                    hour_word_breakdown[item] = totals_array[item]/len(hours)
                     five_min_word_breakdown[item] = (hour_word_breakdown[item]/60)*5
                 if (len(day_breakdown) != 0):
                     day_median = statistics.median(day_breakdown)
@@ -348,12 +345,12 @@ def elastic_info():
         current_entry += 1
     return index_dict
 
-def add_zeros(data):
+def add_zeros(data, count):
     temp_arr = {}
     for item in data:
         size = len(data[item])
-        if size < 31:
-            data[item].extend(([0]*(30-size)))
+        if size < count:
+            data[item].extend(([0]*(count-size)))
             data[item].sort()
             data[item] = statistics.median(data[item])
             if (data[item] > 0):
