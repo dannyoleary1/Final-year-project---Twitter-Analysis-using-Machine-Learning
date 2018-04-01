@@ -153,6 +153,7 @@ def clean_indexes():
         if ("-latest") not in entry:
             if ("median") not in entry:
                 # we frst need to collect all todays tweets
+
                 entry_total = elastic_utils.last_id(entry)
                 if elastic_utils.check_index_exists(entry + "-latest") is True:
                     total = elastic_utils.last_id(entry + "-latest")
@@ -185,11 +186,9 @@ def clean_indexes():
                                                              singles=True)
                         terms_all = [term for term in words]
                         word_counter.update(terms_all)
-                        print (created_at)
                         freq_obj = {"hour_breakdown": hour_break_dict,
                                     "words": json.dumps(word_counter.most_common(400)), "total": total,
                                     "date": dateobj, "last_time": created_at}
-                    print(freq_obj)
         #            elastic_utils.add_entry(entry, entry_total + 1, freq_obj)
         #            elastic_utils.delete_index(entry + "-latest")
                     try:
@@ -239,21 +238,33 @@ def clean_indexes():
                                 data_set.append(data.split(", ")[0])
                                 terms_all = [data.split(", ")[0]]
                                 total = [data.split(", ")[1]]
-                                total[0] = round((total[0]/len(hours)*24),2)
+                                total[0] = round((int(total[0])/len(hours)*24),2)
+                                print (type(terms_all[0]))
                                 if terms_all[0] in totals_array:
-                                    if "." in terms_all[0]:
+                                    dot = "."
+                                    comma = "\,"
+                                    print ("inside if statement: " + str(terms_all[0]))
+                                    if dot in terms_all[0]:
                                         terms_all[0] = terms_all[0].replace(".", "dot")
-                                    if "," in terms_all[0]:
+                                        print("inside dot:    " + str(terms_all[0]))
+                                    if comma in terms_all[0]:
                                         terms_all[0] = terms_all[0].replace(",", "comma")
+                                        print ("inside comma:    " + str(terms_all[0]))
                                     totals_array[terms_all[0]].append(int(total[0]))
+                                    print (totals_array[terms_all[0]])
                                 else:
+                                    print ("inside else statement:    " + str(terms_all[0]))
                                     if "." in terms_all[0]:
                                         terms_all[0] = terms_all[0].replace(".", "dot")
+                                        print("inside dot:    " + str(terms_all[0]))
                                     if "," in terms_all[0]:
                                         terms_all[0] = terms_all[0].replace(",", "comma")
+                                        print("inside comma:    " + str(terms_all[0]))
                                     totals_array[terms_all[0]] = []
                                     totals_array[terms_all[0]].append(int(total[0]))
+                                    print(totals_array[terms_all[0]])
                     except:
+                        print (round((int(total[0])/len(hours)*24),2))
                         continue
                 day_breakdown.sort()
                 minute_breakdown.sort()
@@ -265,7 +276,6 @@ def clean_indexes():
                 totals_array = add_zeros(totals_array, count)
                 hour_word_breakdown = {}
                 five_min_word_breakdown = {}
-                print (len(totals_array))
                 for item in totals_array:
                     hours = result["_source"]["hour_breakdown"]
                     hour_word_breakdown[item] = totals_array[item]/len(hours)
@@ -302,8 +312,6 @@ def clean_indexes():
                     continue
                 latest_words = {}
                 for latest in day_res:
-                    print ("------")
-                    print (entry)
                     hours = latest["_source"]["hour_breakdown"]
                     if (len(hours) is 24):
                         latest_ent = json.dumps(latest['_source']['words'])
@@ -320,9 +328,6 @@ def clean_indexes():
                             data = data.replace("]", "")
                             terms_all = [data.split(", ")[0]]
                             total = [data.split(", ")[1]]
-                            print ("-----")
-                            print (terms_all[0])
-                            print ("-----")
                             if terms_all[0] in latest_words:
                                 if "." in terms_all[0]:
                                     terms_all[0] = terms_all[0].replace(".", "dot")
@@ -337,10 +342,6 @@ def clean_indexes():
                                 latest_words[terms_all[0]] = []
                                 latest_words[terms_all[0]].append(int(total[0]))
                         break
-                print(len(latest_words))
-                print(len(totals_array))
-                print (len(hour_word_breakdown))
-                print (len(five_min_word_breakdown))
                 es_obj = {"index": entry, "day_median": day_median, "minute_median": minute_median,
                           "hour_median": hour_median, "five_minute_median": five_min_median, "day_words_median": totals_array, "hour_words_median": hour_word_breakdown, "five_min_words_median": five_min_word_breakdown, "yesterday_res":latest_words}
                 if elastic_utils.check_index_exists(entry+"-median"):
