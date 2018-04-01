@@ -239,9 +239,18 @@ def clean_indexes():
                                 data_set.append(data.split(", ")[0])
                                 terms_all = [data.split(", ")[0]]
                                 total = [data.split(", ")[1]]
+                                total[0] = round((total[0]/len(hours)*24),2)
                                 if terms_all[0] in totals_array:
+                                    if "." in terms_all[0]:
+                                        terms_all[0] = terms_all[0].replace(".", "dot")
+                                    if "," in terms_all[0]:
+                                        terms_all[0] = terms_all[0].replace(",", "comma")
                                     totals_array[terms_all[0]].append(int(total[0]))
                                 else:
+                                    if "." in terms_all[0]:
+                                        terms_all[0] = terms_all[0].replace(".", "dot")
+                                    if "," in terms_all[0]:
+                                        terms_all[0] = terms_all[0].replace(",", "comma")
                                     totals_array[terms_all[0]] = []
                                     totals_array[terms_all[0]].append(int(total[0]))
                     except:
@@ -252,6 +261,7 @@ def clean_indexes():
                 five_min_median = 0
                 count = elastic_utils.count_entries(entry)
                 count = count["count"]
+                print ("totals array:    " + str(len(totals_array)))
                 totals_array = add_zeros(totals_array, count)
                 hour_word_breakdown = {}
                 five_min_word_breakdown = {}
@@ -310,14 +320,31 @@ def clean_indexes():
                             data = data.replace("]", "")
                             terms_all = [data.split(", ")[0]]
                             total = [data.split(", ")[1]]
+                            print ("-----")
+                            print (terms_all[0])
+                            print ("-----")
                             if terms_all[0] in latest_words:
+                                if "." in terms_all[0]:
+                                    terms_all[0] = terms_all[0].replace(".", "dot")
+                                elif "," in terms_all[0]:
+                                    terms_all[0] = terms_all[0].replace(",", "comma")
                                 latest_words[terms_all[0]].append(int(total[0]))
                             else:
+                                if "." in terms_all[0]:
+                                    terms_all[0] = terms_all[0].replace(".", "dot")
+                                elif "," in terms_all[0]:
+                                    terms_all[0] = terms_all[0].replace(",", "comma")
                                 latest_words[terms_all[0]] = []
                                 latest_words[terms_all[0]].append(int(total[0]))
                         break
+                print(len(latest_words))
+                print(len(totals_array))
+                print (len(hour_word_breakdown))
+                print (len(five_min_word_breakdown))
                 es_obj = {"index": entry, "day_median": day_median, "minute_median": minute_median,
                           "hour_median": hour_median, "five_minute_median": five_min_median, "day_words_median": totals_array, "hour_words_median": hour_word_breakdown, "five_min_words_median": five_min_word_breakdown, "yesterday_res":latest_words}
+                if elastic_utils.check_index_exists(entry+"-median"):
+                    elastic_utils.create_index(entry+"-median")
                 elastic_utils.add_entry_median(entry + "-median", es_obj)
 
 
@@ -349,10 +376,13 @@ def add_zeros(data, count):
     temp_arr = {}
     for item in data:
         size = len(data[item])
+        print ("size:    " + str(size))
+        print ("count:    " + str(count))
         if size < count:
             data[item].extend(([0]*(count-size)))
             data[item].sort()
             data[item] = statistics.median(data[item])
             if (data[item] > 0):
                 temp_arr[item] = data[item]
+        print (temp_arr)
     return temp_arr
