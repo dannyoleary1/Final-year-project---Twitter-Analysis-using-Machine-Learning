@@ -29,7 +29,7 @@ app.conf.beat_schedule = {
     },
     'clean-indexes': {
         'task': 'fyp_webapp.tasks.clean_indexes',
-        'schedule': crontab(minute=34, hour=23),
+        'schedule': crontab(minute=40, hour=21),
         'options': {'queue': 'misc'}
     }
 }

@@ -88,7 +88,7 @@ def check_index():
             if ("median") not in entry:
                 if elastic_utils.check_index_exists(entry + "-latest") is True:
                     total = elastic_utils.last_id(entry + "-latest")
-
+                    print ("Checking indexes.")
                #     t = datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
                     day_res = elastic_utils.iterate_search(entry + "-latest", query={
                         "query":
@@ -121,232 +121,235 @@ def check_index():
                             total_five_ratio = 0
                         elif (breakdown is 0):
                             total_five_ratio = 0
+                        elif (breakdown < 1):
+                            total_five_ratio = 1
                         else: total_five_ratio = total_in_five/breakdown
                         if (total_five_ratio > 2.0):
                             print ("The total of:    " + entry + " is over the configured ratio of 1.9. The ratio is:   " + str(total_five_ratio) + " . This is for the entry: " + entry )
                         yesterdays_res = median["_source"]["yesterday_res"]
+
                     for key, value in word_counter.items():
                         current_word = word_counter[key]
-                        if (current_word > 3):
+                        if (current_word > 5):
                             if key in yesterdays_res:
                                 test_var = ((yesterdays_res[key][0]/24)/60)*5
                                 current_word_ratio = current_word/test_var
                                 if (current_word_ratio > 2.0):
                                     print ("The word:   " + str(key) + " is over the current word ratio for the last 5 minutes. The ratio is:    " + str(current_word_ratio) + " . This is for the entry: " + entry +" . Occurences of the word: " + str(current_word))
-                        existing_words = median["_source"]["five_min_words_median"]
-                        if (current_word > 3):
+                        existing_words = median["_source"]["day_words_median"]
+                        existing_dev = median["_source"]["standard_dev"]
+
+
+                        if (current_word > 5):
                             if key in existing_words:
                                 existing_val = existing_words[key]
+                                existing_val = ((existing_val/24)/60)*5
+                                standard_dev_5_mins = ((existing_dev[key]/24)/60)*5
+                                print ("Standard dev:   " + str(standard_dev_5_mins))
+                                print ("Existing val:   " + str(existing_val))
+                                print ("Current word:    " + str(current_word))
                                 compared_to_monthly_ratio = current_word/existing_val
+
                                 if (compared_to_monthly_ratio > 1.9):
                                     print ("The word:   " + str(key) + " is over the monthly median for the ratio. The ratio is: " + str(compared_to_monthly_ratio) + " . This is for the entry: " + entry +" . Occurences of the word: " + str(current_word))
-                        #check for yestedays median?
+                        if (current_word > 6 and key not in existing_words and key not in yesterdays_res):
+                            print ("The word:    " + str(key) + " has had no previous entry, and is currently on: " + str(current_word) + ". This is for the entry: " + str(entry))
+
+def collect_todays_tweets(entry):
+    count_word_frequency = Counter()
+    word_counter = Counter()
+    hour_break_dict = {}
+    if ("-latest") not in entry:
+        if ("median") not in entry:
+            # we frst need to collect all todays tweets
+            entry_total = elastic_utils.last_id(entry)
+            if elastic_utils.check_index_exists(entry + "-latest") is True:
+                total = elastic_utils.last_id(entry + "-latest")
+                day_res = elastic_utils.iterate_search(entry + "-latest", query={
+                    "query":
+                        {
+                            "match_all": {}
+                        },
+                    "sort": [
+                        {
+                            "last_time": {
+                                "order": "desc"
+                            }
+                        }
+                    ]
+                })
+                for test in day_res:
+                    time_of_tweet = test["_source"]["created"]
+                    datetime_object = datetime.strptime(time_of_tweet, '%Y-%m-%d %H:%M:%S')
+                    dateobj = datetime_object.strftime("%Y-%m-%d")
+                    created_at = datetime_object.strftime("%Y-%m-%dT%H:%M:%S")
+                    count_word_frequency.update(str(datetime_object.hour))
+                    if str(datetime_object.hour) in hour_break_dict:
+                        hour_break_dict[str(datetime_object.hour)] += 1
+                    else:
+                        hour_break_dict[str(datetime_object.hour)] = 1
+
+                    words = preprocessor.filter_multiple(str(test["_source"]["text"]), ats=True, hashtags=True,
+                                                         stopwords=True, stemming=False, urls=True,
+                                                         singles=True)
+                    terms_all = [term for term in words]
+                    word_counter.update(terms_all)
+                    freq_obj = {"hour_breakdown": hour_break_dict,
+                                "words": json.dumps(word_counter.most_common(400)), "total": total,
+                                "date": dateobj, "last_time": created_at}
+                    elastic_utils.add_entry(entry, entry_total + 1, freq_obj)
+                    elastic_utils.delete_index(entry + "-latest")
+                try:
+                    elastic_utils.create_index(entry + "-latest")
+                except:
+                    print ("Todays index already exists! This is an exception, but it's probably ok")
+
+
+def get_median(entry):
+
+        # Now get yesterdays entries
+        #I need to keep track of the value for words over each day, and also need day/hour breakdowns for each entry.
+        day_breakdown = []
+        hour_breakdown = []
+        minute_breakdown = []
+        latest_words = {}
+
+        day_res = elastic_utils.iterate_search(entry, query={
+            "query":
+                {
+                    "match_all": {}
+                },
+            "sort": [
+                {
+                    "date": {
+                        "order": "desc"
+                    }
+                }
+            ]
+        })
+
+        ##iterate through entries by date.
+        day = 0
+        yesterday_res = {}
+        for latest in day_res:
+            try:
+                hours = latest["_source"]["hour_breakdown"]
+            except:
+                hours = "No Tweets"
+                continue
+            #This is a words setup.
+            if (hours != "No Tweets"):
+                latest_ent = json.dumps(latest['_source']['words'])
+                latest_ent = latest_ent.replace("\"[", "")
+                latest_ent = latest_ent.replace("]\"", "")
+                latest_ent = (latest_ent.split("], ["))
+
+                for data in latest_ent:
+                    data = data.replace("[", "")
+                    data = data.replace("\"", "")
+                    data = data.replace("\\", "")
+                    data = data.replace("[\'", "")
+                    data = data.replace("\']", "")
+                    data = data.replace("]", "")
+                    terms_all = [data.split(", ")[0]]
+                    print (entry)
+                    total = [data.split(", ")[1]]
+                    if len(hours) <24:
+                        total[0] = (int(total[0])/int(len(hours)))*24
+                    if terms_all[0] in latest_words:
+                        if "." in terms_all[0]:
+                            terms_all[0] = terms_all[0].replace(".", "dot")
+                        elif "," in terms_all[0]:
+                            terms_all[0] = terms_all[0].replace(",", "comma")
+                        latest_words[terms_all[0]].append(int(total[0]))
+                    else:
+                        if "." in terms_all[0]:
+                            terms_all[0] = terms_all[0].replace(".", "dot")
+                        elif "," in terms_all[0]:
+                            terms_all[0] = terms_all[0].replace(",", "comma")
+                        latest_words[terms_all[0]] = []
+                        latest_words[terms_all[0]].append(int(total[0]))
+                    if day is 0:
+                        if terms_all[0] in yesterday_res:
+                            if "." in terms_all[0]:
+                                terms_all[0] = terms_all[0].replace(".", "dot")
+                            elif "," in terms_all[0]:
+                                terms_all[0] = terms_all[0].replace(",", "comma")
+                            yesterday_res[terms_all[0]].append(int(total[0]))
+                        else:
+                            if "." in terms_all[0]:
+                                terms_all[0] = terms_all[0].replace(".", "dot")
+                            elif "," in terms_all[0]:
+                                terms_all[0] = terms_all[0].replace(",", "comma")
+                            yesterday_res[terms_all[0]] = []
+                            yesterday_res[terms_all[0]].append(int(total[0]))
+
+            #Now dealing with the breakdown over time
+                if len(hours) is 24:
+                    day_breakdown.append(latest["_source"]["total"])
+                else:
+                    day_b = ((latest["_source"]["total"] / len(
+                        hours)) * 24)  # This is to combat when all entries aren't collected.
+                    day_breakdown.append(day_b)
+                todays_hours = []  # A list of all the hours captured fors total..
+                for test in hours:
+                    todays_hours.append(hours[test])
+                todays_hours.sort()
+                hour_med = statistics.median(todays_hours)  # gets the median for the hours for the specific day
+                minute_estimate = hour_med / 60  # divide by 60 to get a minutes median
+                hour_breakdown.append(hour_med)
+                minute_breakdown.append(minute_estimate)
+                day +=1
+
+        #Now to calculate setup.
+        day_breakdown.sort()
+        minute_breakdown.sort()
+        hour_breakdown.sort()
+        five_min_median = 0
+        count = elastic_utils.count_entries(entry)
+        totals_array = add_zeros(latest_words, count)
+        standard_dev = totals_array[1]
+        totals_array = totals_array[0]
+
+        five_min_word_breakdown = {}
+
+        if (len(day_breakdown) != 0):
+            day_median = statistics.median(day_breakdown)
+        else:
+            day_median = 0
+        if (len(minute_breakdown) != 0):
+            minute_median = statistics.median(minute_breakdown)
+            five_min_median = minute_median * 5
+        else:
+            minute_median = 0
+        if (len(hour_breakdown) != 0):
+            hour_median = statistics.median(hour_breakdown)
+        else:
+            hour_median = 0
+        es_obj = {"index": entry, "day_median": day_median, "minute_median": minute_median,
+              "hour_median": hour_median, "five_minute_median": five_min_median, "day_words_median": totals_array,
+              "yesterday_res": yesterday_res, "standard_dev": standard_dev}
+        if "-median" not in entry:
+            if elastic_utils.check_index_exists(entry + "-median") == False:
+                elastic_utils.create_index(entry + "-median")
+        elastic_utils.add_entry_median(entry + "-median", es_obj)
+
 
 
 @shared_task(name="fyp_webapp.tasks.clean_indexes", queue='misc')
 def clean_indexes():
+    print ("Started cleaning and median collection.")
     index = elastic_utils.list_all_indexes()
     for entry in index:
-        count_word_frequency = Counter()
-        word_counter = Counter()
-        hour_break_dict = {}
+
         if ("-latest") not in entry:
-            if ("median") not in entry:
-                # we frst need to collect all todays tweets
+            if "-median" not in entry:
+                #collect_todays_tweets(entry) #TODO commented out when testing
+                get_median(entry)
 
-                entry_total = elastic_utils.last_id(entry)
-                if elastic_utils.check_index_exists(entry + "-latest") is True:
-                    total = elastic_utils.last_id(entry + "-latest")
-                    day_res = elastic_utils.iterate_search(entry + "-latest", query={
-                        "query":
-                            {
-                                "match_all": {}
-                            },
-                        "sort": [
-                            {
-                                "last_time": {
-                                    "order": "desc"
-                                }
-                            }
-                        ]
-                    })
-                    for test in day_res:
-                        time_of_tweet = test["_source"]["created"]
-                        datetime_object = datetime.strptime(time_of_tweet, '%Y-%m-%d %H:%M:%S')
-                        dateobj = datetime_object.strftime("%Y-%m-%d" )
-                        created_at = datetime_object.strftime("%Y-%m-%dT%H:%M:%S")
-                        count_word_frequency.update(str(datetime_object.hour))
-                        if str(datetime_object.hour) in hour_break_dict:
-                            hour_break_dict[str(datetime_object.hour)] += 1
-                        else:
-                            hour_break_dict[str(datetime_object.hour)] = 1
 
-                        words = preprocessor.filter_multiple(str(test["_source"]["text"]), ats=True, hashtags=True,
-                                                             stopwords=True, stemming=False, urls=True,
-                                                             singles=True)
-                        terms_all = [term for term in words]
-                        word_counter.update(terms_all)
-                        freq_obj = {"hour_breakdown": hour_break_dict,
-                                    "words": json.dumps(word_counter.most_common(400)), "total": total,
-                                    "date": dateobj, "last_time": created_at}
-        #            elastic_utils.add_entry(entry, entry_total + 1, freq_obj)
-        #            elastic_utils.delete_index(entry + "-latest")
-                    try:
-                        elastic_utils.create_index(entry + "-latest")
-                    except:
-                        continue
 
-                res = elastic_utils.iterate_search(entry)
-                hour_breakdown = []
-                day_breakdown = []
-                minute_breakdown = []
-                totals_array = {}
-                for result in res:
-                    try:
-                        if (result["_source"]["last_time"] != "No Tweets"):
-                            hours = result["_source"]["hour_breakdown"]
-                            if len(hours) is 24:
-                                day_breakdown.append(result["_source"]["total"])
-                            else:
-                                day_b = ((result["_source"]["total"]/len(hours))*24)
-                                day_breakdown.append(day_b)
-                            day_breakdown.append(result["_source"]["total"])
-                            todays_hours = []
 
-                            for test in hours:
-                                todays_hours.append(hours[test])
-                            todays_hours.sort()
-                            hour_med = statistics.median(todays_hours)
-                            minute_estimate = hour_med / 60
-                            hour_breakdown.append(hour_med)
-                            minute_breakdown.append(minute_estimate)
-
-                            #Word Breakdown. Something of a check is probably needed first.
-                            uh = json.dumps(result['_source']['words'])
-                            uh = uh.replace("\"[", "")
-                            uh = uh.replace("]\"", "")
-                            uh = (uh.split("], ["))
-                            data_set = []
-
-                            for data in uh:
-                                data = data.replace("[", "")
-                                data = data.replace("\"", "")
-                                data = data.replace("\\", "")
-                                data = data.replace("[\'", "")
-                                data = data.replace("\']", "")
-                                data = data.replace("]", "")
-                                data_set.append(data.split(", ")[0])
-                                terms_all = [data.split(", ")[0]]
-                                total = [data.split(", ")[1]]
-                                total[0] = round((int(total[0])/len(hours)*24),2)
-                                print (type(terms_all[0]))
-                                if terms_all[0] in totals_array:
-                                    dot = "."
-                                    comma = "\,"
-                                    print ("inside if statement: " + str(terms_all[0]))
-                                    if dot in terms_all[0]:
-                                        terms_all[0] = terms_all[0].replace(".", "dot")
-                                        print("inside dot:    " + str(terms_all[0]))
-                                    if comma in terms_all[0]:
-                                        terms_all[0] = terms_all[0].replace(",", "comma")
-                                        print ("inside comma:    " + str(terms_all[0]))
-                                    totals_array[terms_all[0]].append(int(total[0]))
-                                    print (totals_array[terms_all[0]])
-                                else:
-                                    print ("inside else statement:    " + str(terms_all[0]))
-                                    if "." in terms_all[0]:
-                                        terms_all[0] = terms_all[0].replace(".", "dot")
-                                        print("inside dot:    " + str(terms_all[0]))
-                                    if "," in terms_all[0]:
-                                        terms_all[0] = terms_all[0].replace(",", "comma")
-                                        print("inside comma:    " + str(terms_all[0]))
-                                    totals_array[terms_all[0]] = []
-                                    totals_array[terms_all[0]].append(int(total[0]))
-                                    print(totals_array[terms_all[0]])
-                    except:
-                        print (round((int(total[0])/len(hours)*24),2))
-                        continue
-                day_breakdown.sort()
-                minute_breakdown.sort()
-                hour_breakdown.sort()
-                five_min_median = 0
-                count = elastic_utils.count_entries(entry)
-                count = count["count"]
-                print ("totals array:    " + str(len(totals_array)))
-                totals_array = add_zeros(totals_array, count)
-                hour_word_breakdown = {}
-                five_min_word_breakdown = {}
-                for item in totals_array:
-                    hours = result["_source"]["hour_breakdown"]
-                    hour_word_breakdown[item] = totals_array[item]/len(hours)
-                    five_min_word_breakdown[item] = (hour_word_breakdown[item]/60)*5
-                if (len(day_breakdown) != 0):
-                    day_median = statistics.median(day_breakdown)
-                else:
-                    day_median = 0
-                if (len(minute_breakdown) != 0):
-                    minute_median = statistics.median(minute_breakdown)
-                    five_min_median = minute_median*5
-                else:
-                    minute_median = 0
-                if (len(hour_breakdown) != 0):
-                    hour_median = statistics.median(hour_breakdown)
-                else:
-                    hour_median = 0
-                try:
-                    #Now get yesterdays entries
-                    day_res = elastic_utils.iterate_search(entry, query={
-                        "query":
-                            {
-                                "match_all": {}
-                            },
-                        "sort": [
-                            {
-                                "date": {
-                                    "order": "desc"
-                                }
-                            }
-                        ]
-                    })
-                except:
-                    continue
-                latest_words = {}
-                for latest in day_res:
-                    hours = latest["_source"]["hour_breakdown"]
-                    if (len(hours) is 24):
-                        latest_ent = json.dumps(latest['_source']['words'])
-                        latest_ent = latest_ent.replace("\"[", "")
-                        latest_ent = latest_ent.replace("]\"", "")
-                        latest_ent = (latest_ent.split("], ["))
-
-                        for data in latest_ent:
-                            data = data.replace("[", "")
-                            data = data.replace("\"", "")
-                            data = data.replace("\\", "")
-                            data = data.replace("[\'", "")
-                            data = data.replace("\']", "")
-                            data = data.replace("]", "")
-                            terms_all = [data.split(", ")[0]]
-                            total = [data.split(", ")[1]]
-                            if terms_all[0] in latest_words:
-                                if "." in terms_all[0]:
-                                    terms_all[0] = terms_all[0].replace(".", "dot")
-                                elif "," in terms_all[0]:
-                                    terms_all[0] = terms_all[0].replace(",", "comma")
-                                latest_words[terms_all[0]].append(int(total[0]))
-                            else:
-                                if "." in terms_all[0]:
-                                    terms_all[0] = terms_all[0].replace(".", "dot")
-                                elif "," in terms_all[0]:
-                                    terms_all[0] = terms_all[0].replace(",", "comma")
-                                latest_words[terms_all[0]] = []
-                                latest_words[terms_all[0]].append(int(total[0]))
-                        break
-                es_obj = {"index": entry, "day_median": day_median, "minute_median": minute_median,
-                          "hour_median": hour_median, "five_minute_median": five_min_median, "day_words_median": totals_array, "hour_words_median": hour_word_breakdown, "five_min_words_median": five_min_word_breakdown, "yesterday_res":latest_words}
-                if elastic_utils.check_index_exists(entry+"-median"):
-                    elastic_utils.create_index(entry+"-median")
-                elastic_utils.add_entry_median(entry + "-median", es_obj)
 
 
 @shared_task(name="fyp_webapp.tasks.elastic_info", queue="priority_high")
@@ -374,16 +377,31 @@ def elastic_info():
     return index_dict
 
 def add_zeros(data, count):
+#    print ("number of entries:    " + str(len(data)))
     temp_arr = {}
+    dev_arr = {}
     for item in data:
+        print ("--")
+        print (item)
         size = len(data[item])
+        if type(count) is int:
+            count = count
+        else:
+            count = count['count']
+
         print ("size:    " + str(size))
         print ("count:    " + str(count))
-        if size < count:
-            data[item].extend(([0]*(count-size)))
+        print ("data:    " + str(item))
+        print ("data    " + str(data[item]))
+        if (int(size) > int(count)/5):
+            #TODO calc mean or standard deviation?
             data[item].sort()
-            data[item] = statistics.median(data[item])
-            if (data[item] > 0):
+
+            #Take mean away from standard deviation
+            day_stdev = statistics.stdev(data[item])
+            data[item] = statistics.mean(data[item])
+#            print ("One standard Deviation away:    " + str(day_stdev))
+            if (data[item] > 1):
                 temp_arr[item] = data[item]
-        print (temp_arr)
-    return temp_arr
+                dev_arr[item] = day_stdev
+    return (temp_arr,dev_arr)
