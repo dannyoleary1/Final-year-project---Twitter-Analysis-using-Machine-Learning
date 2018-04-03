@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="8036c63a-27d5-4941-8319-d6551871f30b" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fyp/celerybeat-schedule" afterPath="$PROJECT_DIR$/fyp/celerybeat-schedule" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Final-year-project---Twitter-Analysis-using-Machine-Learning.iml" afterPath="$PROJECT_DIR$/.idea/Final-year-project---Twitter-Analysis-using-Machine-Learning.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fyp/fyp/celery.py" afterPath="$PROJECT_DIR$/fyp/fyp/celery.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fyp/fyp_webapp/stopwords.txt" afterPath="$PROJECT_DIR$/fyp/fyp_webapp/stopwords.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fyp/fyp_webapp/tasks.py" afterPath="$PROJECT_DIR$/fyp/fyp_webapp/tasks.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,8 +22,18 @@
       <file leaf-file-name="tasks.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/tasks.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="240" column="63" lean-forward="false" selection-start-line="240" selection-start-column="63" selection-end-line="240" selection-end-column="63" />
+            <state relative-caret-position="18">
+              <caret line="103" column="25" lean-forward="true" selection-start-line="103" selection-start-column="25" selection-end-line="103" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="stopwords.txt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/stopwords.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="558">
+              <caret line="635" column="3" lean-forward="false" selection-start-line="635" selection-start-column="3" selection-end-line="635" selection-end-column="3" />
               <folding />
             </state>
           </provider>
@@ -43,11 +51,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="celery.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="celery.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fyp/fyp/celery.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="16" column="39" lean-forward="true" selection-start-line="16" selection-start-column="39" selection-end-line="16" selection-end-column="39" />
+            <state relative-caret-position="306">
+              <caret line="24" column="20" lean-forward="true" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -122,6 +130,8 @@
       <find>totals_arr</find>
       <find>str</find>
       <find>hour</find>
+      <find>totals</find>
+      <find>wrong</find>
       <find>print</find>
     </findStrings>
   </component>
@@ -156,8 +166,9 @@
         <option value="$PROJECT_DIR$/fyp/fyp_webapp/templates/fyp/elasticstats/index.html" />
         <option value="$PROJECT_DIR$/fyp/fyp_webapp/views/elastic_stats/elasticstats.py" />
         <option value="$PROJECT_DIR$/fyp/fyp_webapp/ElasticSearch/elastic_utils.py" />
-        <option value="$PROJECT_DIR$/fyp/fyp_webapp/tasks.py" />
         <option value="$PROJECT_DIR$/fyp/fyp/celery.py" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/tasks.py" />
+        <option value="$PROJECT_DIR$/fyp/fyp_webapp/stopwords.txt" />
       </list>
     </option>
   </component>
@@ -188,6 +199,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -205,26 +217,12 @@
               <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="b2602c69:ProjectViewProjectNode" />
               <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="462c0819:PsiDirectoryNode" />
               <item name="fyp" type="462c0819:PsiDirectoryNode" />
-              <item name="fyp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="462c0819:PsiDirectoryNode" />
-              <item name="fyp" type="462c0819:PsiDirectoryNode" />
               <item name="fyp_webapp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Final-year-project---Twitter-Analysis-using-Machine-Learning" type="462c0819:PsiDirectoryNode" />
-              <item name="fyp" type="462c0819:PsiDirectoryNode" />
-              <item name="fyp_webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="TwitterProcessing" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -269,7 +267,7 @@
     <frame x="65" y="-4" width="1857" height="1092" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14028056" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14016172" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -538,13 +536,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/stopwords.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/admin.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -672,18 +663,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/tasks.py">
+    <entry file="file://$PROJECT_DIR$/fyp/fyp/celery.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="240" column="63" lean-forward="false" selection-start-line="240" selection-start-column="63" selection-end-line="240" selection-end-column="63" />
+        <state relative-caret-position="306">
+          <caret line="24" column="20" lean-forward="true" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fyp/fyp/celery.py">
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/tasks.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="16" column="39" lean-forward="true" selection-start-line="16" selection-start-column="39" selection-end-line="16" selection-end-column="39" />
+        <state relative-caret-position="18">
+          <caret line="103" column="25" lean-forward="true" selection-start-line="103" selection-start-column="25" selection-end-line="103" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fyp/fyp_webapp/stopwords.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="558">
+          <caret line="635" column="3" lean-forward="false" selection-start-line="635" selection-start-column="3" selection-end-line="635" selection-end-column="3" />
           <folding />
         </state>
       </provider>

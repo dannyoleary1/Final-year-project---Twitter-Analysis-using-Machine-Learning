@@ -127,21 +127,21 @@ def check_index():
                         yesterdays_res = median["_source"]["yesterday_res"]
                     for key, value in word_counter.items():
                         current_word = word_counter[key]
-                        if (current_word > 3):
+                        if (current_word > 2):
                             if key in yesterdays_res:
                                 test_var = ((yesterdays_res[key][0]/24)/60)*5
                                 current_word_ratio = current_word/test_var
                                 if (current_word_ratio > 2.0):
                                     print ("The word:   " + str(key) + " is over the current word ratio for the last 5 minutes. The ratio is:    " + str(current_word_ratio) + " . This is for the entry: " + entry +" . Occurences of the word: " + str(current_word))
                         existing_words = median["_source"]["five_min_words_median"]
-                        if (current_word > 3):
+                        if (current_word > 2):
                             if key in existing_words:
                                 existing_val = existing_words[key]
                                 compared_to_monthly_ratio = current_word/existing_val
                                 if (compared_to_monthly_ratio > 1.9):
                                     print ("The word:   " + str(key) + " is over the monthly median for the ratio. The ratio is: " + str(compared_to_monthly_ratio) + " . This is for the entry: " + entry +" . Occurences of the word: " + str(current_word))
-                        #check for yestedays median?
-
+                        if (current_word > 6 and key not in existing_words and key not in yesterdays_res):
+                            print ("The word:    " + str(key) + " has had no previous entry, and is currently on: " + str(current_word) + ". This is for the entry: " + str(entry))
 
 @shared_task(name="fyp_webapp.tasks.clean_indexes", queue='misc')
 def clean_indexes():
@@ -238,7 +238,7 @@ def clean_indexes():
                                 data_set.append(data.split(", ")[0])
                                 terms_all = [data.split(", ")[0]]
                                 total = [data.split(", ")[1]]
-                                total[0] = round((int(total[0])/len(hours)*24),2)
+                                total[0] = round((int(total[0]/len(hours)*24),2))
                                 print (type(terms_all[0]))
                                 if terms_all[0] in totals_array:
                                     dot = "."
