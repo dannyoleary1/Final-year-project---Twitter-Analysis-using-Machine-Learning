@@ -117,6 +117,7 @@ def check_index():
                     res = elastic_utils.iterate_search(entry+"-median")
                     for median in res:
                         breakdown = median["_source"]["five_minute_median"]
+                        print ("breakdown:    " + str(breakdown))
                         if (total_in_five is 0):
                             total_five_ratio = 0
                         elif (breakdown is 0):
