@@ -72,6 +72,6 @@ def aggregate(tweet, topic, start_date):
 	},
 
 	"size": 1
-}) == False:
+}) == True:
         id += 1
     elastic_utils.add_entry(topic, id, dict)
