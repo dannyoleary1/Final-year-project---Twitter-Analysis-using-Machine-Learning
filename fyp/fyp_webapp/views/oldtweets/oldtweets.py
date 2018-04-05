@@ -65,7 +65,7 @@ def aggregate(tweet, topic, start_date):
         dict = {"date": str(start_date), "total": len(tweet), "last_time": "No Tweets",
                 "hour_breakdown": data, 'words': json.dumps(words)}
     id = elastic_utils.last_id(topic)
-    while elastic_utils.check_for_last_id(entry, query={
+    while elastic_utils.check_for_last_id(topic, query={
 	"query":
 	{
 		"match": {"_id": id}
