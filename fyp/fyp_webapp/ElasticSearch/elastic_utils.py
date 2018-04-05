@@ -84,6 +84,16 @@ def last_id(index_name):
     else:
         return res['hits']['total']
 
+""""""
+def check_for_last_id(index_name, query):
+    res = search_index(index_name, query)
+    if (res['hits']['total'] == 0):
+        return False
+    elif (res['hits']['total'] is None):
+        return False
+    else:
+        return True
+
 
 def last_n_in_index(index_name, number):
     query = {

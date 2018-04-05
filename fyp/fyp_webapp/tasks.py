@@ -88,7 +88,6 @@ def check_index():
             if ("median") not in entry:
                 if elastic_utils.check_index_exists(entry + "-latest") is True:
                     total = elastic_utils.last_id(entry + "-latest")
-                    print ("Checking indexes.")
                #     t = datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
                     day_res = elastic_utils.iterate_search(entry + "-latest", query={
                         "query":
@@ -113,11 +112,11 @@ def check_index():
                                                                  stopwords=True, stemming=False, urls=True,
                                                                  singles=True)
                             terms_all = [term for term in words]
+                            terms_all = set(terms_all)
                             word_counter.update(terms_all)
                     res = elastic_utils.iterate_search(entry+"-median")
                     for median in res:
                         breakdown = median["_source"]["five_minute_median"]
-                        print ("breakdown:    " + str(breakdown))
                         if (total_in_five is 0):
                             total_five_ratio = 0
                         elif (breakdown is 0):
@@ -146,11 +145,12 @@ def check_index():
                                 existing_val = existing_words[key]
                                 existing_val = ((existing_val/24)/60)*5
                                 standard_dev_5_mins = ((existing_dev[key]/24)/60)*5
-                                print ("Standard dev:   " + str(standard_dev_5_mins))
-                                print ("Existing val:   " + str(existing_val))
-                                print ("Current word:    " + str(current_word))
                                 compared_to_monthly_ratio = current_word/existing_val
-
+                                if (current_word>(standard_dev_5_mins+existing_val+standard_dev_5_mins)):
+                                    print("The word:   " + str(
+                                        key) + " is over the standard deviation for the ratio. The ratio is: " + str(
+                                        ) + " . This is for the entry: " + entry + " . Occurences of the word: " + str(
+                                        current_word))
                                 if (compared_to_monthly_ratio > 1.9):
                                     print ("The word:   " + str(key) + " is over the monthly median for the ratio. The ratio is: " + str(compared_to_monthly_ratio) + " . This is for the entry: " + entry +" . Occurences of the word: " + str(current_word))
                         if (current_word > 6 and key not in existing_words and key not in yesterdays_res):
