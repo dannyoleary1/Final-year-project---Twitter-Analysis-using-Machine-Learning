@@ -33,6 +33,7 @@
         },
         success: function(result) {
                         if (result.state == "SUCCESS") {
+
                             $("#latest-update").empty();
                             var updatedField = document.getElementById("latest-update")
                             var i = 0
@@ -61,46 +62,46 @@
                                 test += "<div class='column'>"
                                 test +="<div class='card-header'>"+entry+"</div>"
                                 test +="<br>"
-                                    for (a=0; a<(result[entry].last_entries.hits.hits).length; a++){
-                                         if (entry.includes("-latest")){
-                                             console.log("_________")
-                                             console.log(entry)
-                                             if (result[entry].total != 0) {
-                                                 console.log((result[entry].last_entries.hits.hits[a]._source))
-                                                 test += addToEntry(result[entry].last_entries.hits.hits[a]._source)
-                                             }
-                                         }
-                                         else if(result[entry].last_entries.hits.hits[a]._source.last_time == "No Tweets"){
-                                             test += "<div>No Tweets in this index.</div>"
-                                         }
-                                         else{
-                                             test += "<div class='box'>"
-                                             test += "<nav class='level'>"
-                                             test += "<div class='level-item has-text-centered'>"
-                                             test += "<div>"
-                                             test += "<p class='heading'>Tweets</p>"
-                                             test += "<p class='title'>"+result[entry].last_entries.hits.hits[a]._source.total+"</p>"
-                                             test += "</div></div>"
-                                             test += "<div class='level-item has-text-centered'>"
-                                             test += "<div>"
-                                             test += "<p class='heading'>Date</p>"
-                                             test += "<p class='title'>"+result[entry].last_entries.hits.hits[a]._source.date+"</p>"
-                                             test+= "</div></div>"
-                                             test += "</nav>"
-                                             test += "</div>"
+                                    console.log(result[entry])
+                                    if (result[entry].last_entries != "") {
+                                        for (a = 0; a < (result[entry].last_entries.hits.hits).length; a++) {
+                                            if (entry.includes("-latest")) {
+                                                if (result[entry].total != 0) {
+                                                    test += addToEntry(result[entry].last_entries.hits.hits[a]._source)
+                                                }
+                                            }
+                                            else if (result[entry].last_entries.hits.hits[a]._source.last_time == "No Tweets") {
+                                                test += "<div>No Tweets in this index.</div>"
+                                            }
+                                            else {
+                                                test += "<div class='box'>"
+                                                test += "<nav class='level'>"
+                                                test += "<div class='level-item has-text-centered'>"
+                                                test += "<div>"
+                                                test += "<p class='heading'>Tweets</p>"
+                                                test += "<p class='title'>" + result[entry].last_entries.hits.hits[a]._source.total + "</p>"
+                                                test += "</div></div>"
+                                                test += "<div class='level-item has-text-centered'>"
+                                                test += "<div>"
+                                                test += "<p class='heading'>Date</p>"
+                                                test += "<p class='title'>" + result[entry].last_entries.hits.hits[a]._source.date + "</p>"
+                                                test += "</div></div>"
+                                                test += "</nav>"
+                                                test += "</div>"
 
-                                             if (result[entry].last_entries.hits.hits[a]._source.last_time == undefined){
-                                                 test += "work out later";
-                                             }
-                                             if (result[entry].last_entries.hits.hits[a]._source.words == undefined){
+                                                if (result[entry].last_entries.hits.hits[a]._source.last_time == undefined) {
+                                                    test += "work out later";
+                                                }
+                                                if (result[entry].last_entries.hits.hits[a]._source.words == undefined) {
 
-                                             }
-                                             else {
-                                                 for (var b = 0; b<6; b++){
-                                                     test += "<span class=badge badge-dark>"+JSON.parse(result[entry].last_entries.hits.hits[a]._source.words)[b][0]+"</span>"
-                                                 }
-                                             }
-                                         }
+                                                }
+                                                else {
+                                                    for (var b = 0; b < 6; b++) {
+                                                        test += "<span class=badge badge-dark>" + JSON.parse(result[entry].last_entries.hits.hits[a]._source.words)[b][0] + "</span>"
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 test+="</div>"
                                 if(control%2 != 0 && control !=0){
