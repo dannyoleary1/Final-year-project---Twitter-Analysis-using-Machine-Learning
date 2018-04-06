@@ -72,7 +72,7 @@
                                 <div class="huge">
                                     04/04/2018  23:57:04
                                 </div>
-                                <div>Latest Detection</div>
+                                <div>Latest Detection!</div>
                             </div>
                         </div>
                     </div>
@@ -115,7 +115,14 @@
 
         <div class="row">
             <div class="col-lg-8">
-
+                <div class="card">
+                    <div class="card-header card-blue">
+                        <h3>Time Series Chart</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="chart"></div>
+                    </div>
+                </div>
             </div>
             <div class="col-lg-4 ds">
                 <h3>  <i class="fas fa-bell"></i> Notifications</h3>
@@ -165,34 +172,60 @@
         <br>
         <br>
 
-    <div class="row"></div>
-    <br>
-        <div class="row">
-            <div class="col-6">
-                <div class="card">
-                    <div class="card-header">
-                        Current Words
-                    </div>
-                    <div class="card-block">
-                    <div id="chart"></div>
-                        </div>
-                </div>
-            </div>
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-header">
-                            Word Count
-                        </div>
-                        <div class="card-block">
-                            <div id="word-count">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        </div>
+{#    <div class="row"></div>#}
+{#    <br>#}
+{#        <div class="row">#}
+{#            <div class="col-6">#}
+{#                <div class="card">#}
+{#                    <div class="card-header">#}
+{#                        Current Words#}
+{#                    </div>#}
+{#                    <div class="card-block">#}
+{#                    <div id="chart"></div>#}
+{#                        </div>#}
+{#                </div>#}
+{#            </div>#}
+{#                <div class="col-6">#}
+{#                    <div class="card">#}
+{#                        <div class="card-header">#}
+{#                            Word Count#}
+{#                        </div>#}
+{#                        <div class="card-block">#}
+{#                            <div id="word-count">#}
+{##}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#        </div>#}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script type="text/javascript">
+    console.log(c3)
+    var chart = c3.generate({
+    bindto: '#chart',
+         size: {
+        height: 600,
+    },
+    data: {
+        x: 'x',
+      columns: [
+          ['x', '2013-03-31', '2013-04-01', '2013-04-02', '2013-04-03', '2013-04-04'],
+        ['data', 30, 200, 100, 400, 150, ],
+        ['attack', 50, 20, 10, 40, 15, ],
+          ['hacked', 5760, 6526, 6197, 5897, 10575 ]
+      ]
+    },
+        axis: {
+        x: {
+            type: 'timeseries',
+            tick: {
+                format: '%m-%d'
+            }
+        }
+    }
+});
+
+
          var poll_xhr;
    var willstop = 0;
   (function(){

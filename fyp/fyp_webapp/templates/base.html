@@ -10,61 +10,66 @@
         <script src ="{% static 'js/loading-bar.min.js' %}"></script>
         <script src="{% static 'js/fontawesome-all.min.js' %}"></script>
         <script stc="{% static 'js/sb-admin-2-min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/c3.min.css' %}">
+        <script src="{% static 'js/c3.min.js' %}"></script>
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/bootstrap.min-3.css' %}">
         <link rel="stylesheet" href="{% static 'css/fyp.css' %}">
         <link rel="stylesheet" href="{% static 'css/loading-bar.css' %}">
         <link rel="stylesheet" href="{% static 'css/bulma.css' %}">
         <link rel="stylesheet" href="{% static 'css/sb-admin-2.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/c3.min.css' %}">
     </head>
 
     <body>
     <!--
 dark inverse
 -->
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<nav class="navbar navbar-expand-sm navbar-custom">
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar3">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="navbar-collapse collapse" id="navbar3">
+    <div class="navbar-collapse collapse" id="navbarCustom">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item {% if nbar == 'index' %}active{% endif %}">
-                <a class="nav-link" href="/fyp/">Index</a>
+                <a class="nav-link" href="/fyp/"><i class="fas fa-home"></i> Home</a>
             </li>
             <li class="nav-item {% if nbar == 'collect' %}active{% endif %}">
-                <a class="nav-link" href="/fyp/collect">Collect</a>
-            </li>
-            <li class="nav-item {% if nbar == 'trainmodel' %}active{% endif %}">
-                <a class="nav-link" href="/fyp/trainmodel">Train Models</a>
+                <a class="nav-link" href="/fyp/collect"><i class="fas fa-plus-circle"></i> Collect</a>
             </li>
             <li class="nav-item {% if nbar == 'category' %}active{% endif %}">
-                <a class="nav-link" href="/fyp/category">Category</a>
+                <a class="nav-link" href="/fyp/category"><i class="fas fa-database"></i> Category</a>
             </li>
             <li class="nav-item {% if nbar == 'twitteruser' %}active{% endif %}">
-                <a class="nav-link" href="/fyp/twitteruser">Twitter Users</a>
-            </li>
-            <li class="nav-item {% if nbar == 'taskprogress' %}active{% endif %}">
-                <a class="nav-link" href="/fyp/taskprogress">Task Progress</a>
+                <a class="nav-link" href="/fyp/twitteruser"><i class="fas fa-user-plus"></i> Twitter Users</a>
             </li>
             <li class="nav-item {% if nbar == 'timeline' %}active{% endif %}">
-                <a class="nav-link" href="/fyp/timeline">Timeline</a>
+                <a class="nav-link" href="/fyp/timeline"><i class="fas fa-chart-line"></i> Charts</a>
             </li>
             <li class="nav-item {% if nbar == 'oldtweets' %}active{% endif %}">
-                <a class="nav-link" href="/fyp/oldtweets">Old Tweets</a>
+                <a class="nav-link" href="/fyp/oldtweets"><i class="fab fa-twitter"></i> Old Tweets</a>
             </li>
-            <li class="nav-item {% if nbar == 'elasticstats' %}"active{% endif %}">
-                <a class="nav-link" href="/fyp/indexes">Indexes</a>
+            <li class="nav-item {% if nbar == 'elasticstats' %}active{% endif %}">
+            <a class="nav-link" href="/fyp/indexes"><i class="fas fa-sort"></i> Statistics</a>
             </li>
         </ul>
-        <ul class="navbar-nav">
+        <ul class="navbar-nav navbar-right">
             {% if user.is_authenticated %}
                 <li class="nav-item ml-auto float-right">
-                    <a class="nav-link ml-auto float-right">Welcome {{ user.username }}</a>
+                    <a class="nav-link ml-auto float-right">
+                        <span class="fa-layers fa-fw">
+                            <i class="fas fa-bell notify-bell"></i>
+                            <span class="fa-layers-counter notify-number" style="background:#00aced">2</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item ml-auto float-right">
+                    <a class="nav-link ml-auto float-right">Welcome {{ user.username }} <i class="fas fa-user"></i> </a>
                 </li>
             {% endif %}
             <li class="nav-item ml-auto float-right">
-                <a class="nav-link ml-auto float-right" href="/logout">Logout</a>
+                <a class="nav-link ml-auto float-right" href="/logout">Logout <i class="fas fa-sign-out-alt"></i></a>
             </li>
 
         </ul>

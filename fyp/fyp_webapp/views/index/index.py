@@ -30,7 +30,7 @@ def fyp(request):
     else:
         topic = cfg.twitter_credentials['topic']
         job = word_cloud.delay(request.user.id, topic)
-        return HttpResponseRedirect(reverse('fyp_webapp:fyp') + '?job=' + job.id)
+        return HttpResponseRedirect(reverse('fyp_webapp:fyp') + '?job=' + job.id, {'nbar': 'index'})
         #  return render(request, "fyp/index.html", {'jsonData': job, 'category': job}, {'nbar': 'index'})
 
         # Create your views here.
