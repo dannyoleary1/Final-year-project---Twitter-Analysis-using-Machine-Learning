@@ -9,3 +9,53 @@
 .tag-cloud a.size-9 { font-size: 1.9em }
 .tag-cloud a.size-10 { font-size: 2em }
 
+
+.ds{
+    background: #ffffff;
+    padding-top: 20px;
+}
+
+.ds .desc{
+        border-bottom: 1px solid #eaeaea;
+    display: inline-block;
+    padding: 15px 0;
+    width: 100%;
+}
+
+.ds .thumb{
+    width: 30px;
+margin: 0 10px 0 20px;
+display: block;
+float: left;
+}
+
+.ds .details{
+    width: 170px;
+float: left;
+}
+
+.ds p > muted {
+    font-size: 9px;
+    text-transform: uppercase;
+    font-style: italic;
+    color: #666666;
+}
+
+.ds h3{
+    color: #ffffff;
+font-size: 16px;
+padding: 0 10px;
+line-height: 60px;
+height: 60px;
+margin: 0;
+background: #d9534f;
+text-align: center;
+}
+
+.bg-theme {
+    background-color: #d9534f;
+}
+
+.bg-theme-warning {
+    background-color: #f0ad4e;
+}

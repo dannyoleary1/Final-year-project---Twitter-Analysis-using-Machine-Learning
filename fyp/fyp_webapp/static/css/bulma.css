@@ -5611,6 +5611,7 @@ a.tag:hover {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  justify-content: space-between;
 }
 
 .card-footer-item {
@@ -5631,6 +5632,7 @@ a.tag:hover {
       -ms-flex-pack: center;
           justify-content: center;
   padding: 0.75rem;
+  justify-content: space-between;
 }
 
 .card-footer-item:not(:last-child) {
@@ -5799,6 +5801,12 @@ a.dropdown-item.is-active {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+}
+
+.level-item .is-vertical-center{
+  display: flex !important;
+  align-items: center !important;
+
 }
 
 .level-item .title,
