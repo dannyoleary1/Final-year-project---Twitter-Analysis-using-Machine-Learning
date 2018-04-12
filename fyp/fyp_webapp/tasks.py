@@ -103,10 +103,12 @@ def check_index():
                         ]
                     })
                     total_in_five = 0
+                    tweet_list = []
                     for item in day_res:
                         time_of_tweet = item["_source"]["created"]
                         datetime_object = datetime.strptime(time_of_tweet, '%Y-%m-%d %H:%M:%S')
                         if datetime_object > ts:
+                            tweet_list.append(str(item["_source"]["text"]))
                             total_in_five += 1
                             words = preprocessor.filter_multiple(str(item["_source"]["text"]), ats=True, hashtags=True,
                                                                  stopwords=True, stemming=False, urls=True,
@@ -114,7 +116,10 @@ def check_index():
                             terms_all = [term for term in words]
                             terms_all = set(terms_all)
                             word_counter.update(terms_all)
+                        else:
+                            continue #stop iterating through every entry. This will save a lot of time.
                     res = elastic_utils.iterate_search(entry+"-median")
+                    potential_keywords = []
                     for median in res:
                         breakdown = median["_source"]["five_minute_median"]
                         if (total_in_five is 0):
@@ -125,8 +130,8 @@ def check_index():
                             total_five_ratio = 1
                         else: total_five_ratio = total_in_five/breakdown
                         if (total_five_ratio > 2.0):
-                            print ("The total of:    " + entry + " is over the configured ratio of 1.9. The ratio is:   " + str(total_five_ratio) + " . This is for the entry: " + entry )
-                        yesterdays_res = median["_source"]["yesterday_res"]
+                            potential_keywords.append((entry,total_five_ratio,entry,"Monthly"))
+                    yesterdays_res = median["_source"]["yesterday_res"]
 
                     for key, value in word_counter.items():
                         current_word = word_counter[key]
@@ -134,8 +139,12 @@ def check_index():
                             if key in yesterdays_res:
                                 test_var = ((yesterdays_res[key][0]/24)/60)*5
                                 current_word_ratio = current_word/test_var
-                                if (current_word_ratio > 2.0):
-                                    print ("The word:   " + str(key) + " is over the current word ratio for the last 5 minutes. The ratio is:    " + str(current_word_ratio) + " . This is for the entry: " + entry +" . Occurences of the word: " + str(current_word))
+                                if key == entry:
+                                    if (current_word_ratio > 2.5):
+                                        potential_keywords.append((entry,current_word_ratio,key,"Yesterday"))
+                                        continue
+                                elif (current_word_ratio > 2.0):
+                                    potential_keywords.append((entry,current_word_ratio,key,"Yesterday"))
                         existing_words = median["_source"]["day_words_median"]
                         existing_dev = median["_source"]["standard_dev"]
 
@@ -147,16 +156,39 @@ def check_index():
                                 standard_dev_5_mins = ((existing_dev[key]/24)/60)*5
                                 compared_to_monthly_ratio = current_word/existing_val
                                 if (current_word>(standard_dev_5_mins+existing_val+standard_dev_5_mins)):
-                                    print("The word:   " + str(
-                                        key) + " is over the standard deviation for the ratio. The ratio is: " + str(
-                                        ) + " . This is for the entry: " + entry + " . Occurences of the word: " + str(
-                                        current_word))
+                                    potential_keywords.append((entry,current_word,key,"Deviation"))
                                 if (compared_to_monthly_ratio > 1.9):
-                                    print ("The word:   " + str(key) + " is over the monthly median for the ratio. The ratio is: " + str(compared_to_monthly_ratio) + " . This is for the entry: " + entry +" . Occurences of the word: " + str(current_word))
+                                    potential_keywords.append((entry, compared_to_monthly_ratio, key, "Monthly"))
                         if (current_word > 6 and key not in existing_words and key not in yesterdays_res):
-                            print ("The word:    " + str(key) + " has had no previous entry, and is currently on: " + str(current_word) + ". This is for the entry: " + str(entry))
+                            potential_keywords.append((entry, current_word, key, "No Entries"))
+                    check_percentage(entry, tweet_list, potential_keywords)
+
+
+def check_percentage(topic, tweet_list, potential_keywords):
+    #We need to try see if they relate to each other.
+    #How many times do the words appear with each other.
+    with open('file_to_write', 'a') as f:
+        lets_test = []
+
+        for entry in potential_keywords:
+            for test in potential_keywords:
+                #check tweet_list
+                entries_combined_total = 0
+                single = 0
+                for tweet in tweet_list:
+                    if (str(test[2]).lower() and str(entry[2]).lower()) in tweet.lower():
+                        entries_combined_total += 1
+                        single += 1
+                    elif (str(entry[2]).lower() in tweet.lower()):
+                        single += 1
+                lets_test.append((topic, entry[2],test[2],((entries_combined_total/single)*100)))
+        print (lets_test)
+        f.write(str(lets_test)+"\n")
+        f.close()
+    return
 
 def collect_todays_tweets(entry):
+
     count_word_frequency = Counter()
     word_counter = Counter()
     hour_break_dict = {}
