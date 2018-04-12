@@ -177,12 +177,16 @@ def check_percentage(topic, tweet_list, potential_keywords):
                 single = 0
                 for tweet in tweet_list:
                     if (str(test[2]).lower() and str(entry[2]).lower()) in tweet.lower():
+                        print ("--")
+                        print (tweet.lower())
+                        print (test[2].lower())
+                        print (entry[2].lower())
+                        print ("--")
                         entries_combined_total += 1
                         single += 1
                     elif (str(entry[2]).lower() in tweet.lower()):
                         single += 1
                 lets_test.append((topic, entry[2],test[2],((entries_combined_total/single)*100)))
-        print (lets_test)
         f.write(str(lets_test)+"\n")
         f.close()
     return
