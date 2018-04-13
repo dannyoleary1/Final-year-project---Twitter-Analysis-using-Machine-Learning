@@ -156,7 +156,7 @@ def check_index():
                                 standard_dev_5_mins = ((existing_dev[key]/24)/60)*5
                                 compared_to_monthly_ratio = current_word/existing_val
                                 if (current_word>(standard_dev_5_mins+existing_val+standard_dev_5_mins)):
-                                    potential_keywords.append((entry,current_word,key,"Deviation"))
+                                    potential_keywords.append((entry,(current_word-(standard_dev_5_mins+existing_val+standard_dev_5_mins)),key,"Deviation"))
                                 if (compared_to_monthly_ratio > 1.9):
                                     potential_keywords.append((entry, compared_to_monthly_ratio, key, "Monthly"))
                         if (current_word > 6 and key not in existing_words and key not in yesterdays_res):
@@ -169,23 +169,27 @@ def check_percentage(topic, tweet_list, potential_keywords):
     #How many times do the words appear with each other.
     with open('file_to_write', 'a') as f:
         lets_test = []
-
+        combined_words_set = set()
         for entry in potential_keywords:
             for test in potential_keywords:
+                if entry == test:
+                    continue
                 #check tweet_list
                 entries_combined_total = 0
                 single = 0
                 for tweet in tweet_list:
-                    if (str(test[2].lower()) and str(entry[2].lower())) in tweet.lower():
-                        print ("_____")
-                        print (test[2].lower())
-                        print (entry[2].lower())
-                        print (tweet.lower())
+                    if str(test[2]).lower() in tweet.lower() and str(entry[2]).lower() in tweet.lower():
                         entries_combined_total += 1
                         single += 1
                     elif (str(entry[2]).lower() in tweet.lower()):
+                        print ("Never gets here")
                         single += 1
-                lets_test.append((topic, entry[2],test[2],((entries_combined_total/single)*100)))
+                percentage = ((entries_combined_total/single)*100)
+                if percentage > 0:
+                    #temp_set = set([entry[2], test[2]])
+                    combined_words_set.add(entry[2])
+                    combined_words_set.add(test[2])
+        lets_test.append((topic, combined_words_set))
         f.write(str(lets_test)+"\n")
         f.close()
     return
