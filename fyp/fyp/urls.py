@@ -19,6 +19,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
+app_name="fyp_webapp"
+
 urlpatterns = [
     url(r'^fyp/', include('fyp_webapp.urls', namespace='fyp_webapp')),
     url(r'^admin/', admin.site.urls),

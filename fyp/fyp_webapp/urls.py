@@ -11,6 +11,7 @@ from .views.timeline import timeline
 from .views.oldtweets import oldtweets
 from .views.elastic_stats import elasticstats
 
+app_name="fyp_webapp"
 
 urlpatterns = [
     url(r'^$', index.fyp, name='fyp'),

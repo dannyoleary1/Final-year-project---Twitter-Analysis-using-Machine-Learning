@@ -7,7 +7,7 @@ from fyp_webapp.models import TwitterCat
 from django.http import HttpResponse
 from django.views.generic import TemplateView,ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.forms import ModelForm
 from fyp_webapp.ElasticSearch import elastic_utils
 from fyp_webapp.tasks import collect_old_tweets

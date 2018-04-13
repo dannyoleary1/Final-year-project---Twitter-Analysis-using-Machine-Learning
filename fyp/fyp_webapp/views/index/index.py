@@ -14,7 +14,7 @@ from fyp_webapp.TwitterProcessing import preprocessor
 from django.http import JsonResponse
 from celery.result import AsyncResult
 from fyp_webapp.tasks import word_cloud
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 @login_required(login_url="/login/")
 def fyp(request):
