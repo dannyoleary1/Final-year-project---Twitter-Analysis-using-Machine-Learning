@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_static_jquery',
     'fyp_webapp',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +143,5 @@ CELERY_QUEUES = (
 )
 CELERY_TRACK_STARTED = True
 CELERY_SEND_TASK_SENT_EVENT = True
+
+ASGI_APPLICATION = 'fyp.routing.application'
