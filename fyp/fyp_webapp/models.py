@@ -22,3 +22,18 @@ class TwitterUser(models.Model):
     def get_absolute_url(self):
         return reverse('fyp_webapp:twitteruser_edit', kwargs={'pk': self.pk})
 
+class NotificationTracked(models.Model):
+    topic = models.CharField(max_length=30)
+    keywords = models.TextField(null=True)
+
+class NotificationLatest(models.Model):
+    topic = models.CharField(max_length=30)
+    keywords = models.TextField(null=True)
+
+#myModel = MyModel()
+#listIWantToStore = [1,2,3,4,5,'hello']
+#myModel.myList = json.dumps(listIWantToStore)
+#myModel.save()
+
+#jsonDec = json.decoder.JSONDecoder()
+#myPythonList = jsonDec.decode(myModel.myList)
