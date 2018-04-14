@@ -13,6 +13,11 @@ from datetime import datetime
 from collections import Counter
 import tweepy
 import time
+from channels import Group
+import json
+from channels import Channel
+from channels.auth import channel_session_user
+from fyp_webapp import tasks
 
 @shared_task(name="fyp_webapp.tasks.wordcloud", queue='priority_high', track_started=True)
 def word_cloud(id, topic):
@@ -162,6 +167,8 @@ def check_index():
                         if (current_word > 6 and key not in existing_words and key not in yesterdays_res):
                             potential_keywords.append((entry, current_word, key, "No Entries"))
                     check_percentage(entry, tweet_list, potential_keywords)
+    data = json.dumps({'job': "accept"})
+    Group('notifications').send({'text': data})
 
 
 def check_percentage(topic, tweet_list, potential_keywords):
@@ -415,6 +422,11 @@ def elastic_info():
                              }
         current_entry += 1
     return index_dict
+
+@shared_task(name="fyp_webapp.tasks.test_job", queue="priority_high")
+def test_job(reply_channel):
+    data = {"job": "accept"}
+    Group('notifications').send({'text': data})
 
 def add_zeros(data, count):
 #    print ("number of entries:    " + str(len(data)))

@@ -9,7 +9,8 @@
         <script src="{% static 'js/cloud.js'%}"></script>
         <script src ="{% static 'js/loading-bar.min.js' %}"></script>
         <script src="{% static 'js/fontawesome-all.min.js' %}"></script>
-        <script stc="{% static 'js/sb-admin-2-min.js' %}"></script>
+        <script src="{% static 'js/sb-admin-2-min.js' %}"></script>
+        <script src="{% static 'js/reconnecting-websocket.min.js' %}"></script>
         <link rel="stylesheet" href="{% static 'css/c3.min.css' %}">
         <script src="{% static 'js/c3.min.js' %}"></script>
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
@@ -75,17 +76,31 @@ dark inverse
     </div>
 </nav>
     <script>
+        var wsaddr = window.location.host
+        var ws_scheme = window.location.protocol == "https" ? "wss" : "ws";
+        var path = window.location.pathname.replace(/\$/, "");
+        var wsUri = ws_scheme + "://" + wsaddr + path + "/ws/";
+        var websocket;
 
-    var socket = new WebSocket(
-        'ws://' + window.location.host);
+        function setupWebSocket(){
+            websocket = new WebSocket(wsUri)
+            websocket.onopen =  function (evt) { onOpen(evt) }
+            websocket.onmessage = function(evt) { onMessage(evt) };
+        }
 
-    socket.onopen = function open(){
-        console.log("Websockets connection created.");
-    };
 
-    if (socket.readyState == WebSocket.OPEN){
-        socket.onopen();
-    }
+        function onOpen (evt){
+        console.log("Connected to websocket!")
+        }
+
+        function onMessage (evt) {
+            console.log("on message")
+            var data = JSON.parse(evt.data);
+            console.log(data)
+        }
+
+
+        window.addEventListener("load", setupWebSocket, false)
     </script>
     {% block content %}
 
