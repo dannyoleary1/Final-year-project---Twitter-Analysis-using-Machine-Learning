@@ -74,8 +74,22 @@ dark inverse
         </ul>
     </div>
 </nav>
+    <script>
+
+    var socket = new WebSocket(
+        'ws://' + window.location.host);
+
+    socket.onopen = function open(){
+        console.log("Websockets connection created.");
+    };
+
+    if (socket.readyState == WebSocket.OPEN){
+        socket.onopen();
+    }
+    </script>
     {% block content %}
 
     {% endblock content %}
+
     </body>
 </html>

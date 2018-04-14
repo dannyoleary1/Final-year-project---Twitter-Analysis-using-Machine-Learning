@@ -144,4 +144,14 @@ CELERY_QUEUES = (
 CELERY_TRACK_STARTED = True
 CELERY_SEND_TASK_SENT_EVENT = True
 
-ASGI_APPLICATION = 'fyp.routing.application'
+#ASGI_APPLICATION = 'fyp.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'asgi_redis.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+        'ROUTING': 'fyp.routing.channel_routing',
+    }
+}
+
