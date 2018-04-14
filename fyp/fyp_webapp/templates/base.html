@@ -91,7 +91,6 @@ dark inverse
         function onOpen (evt){
         console.log("Connected to websocket!")
         }
-
         function onMessage (evt) {
             var data = JSON.parse(evt.data);
             if (data.job == 0){
