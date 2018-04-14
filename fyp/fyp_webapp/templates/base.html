@@ -88,18 +88,19 @@ dark inverse
             websocket.onmessage = function(evt) { onMessage(evt) };
         }
 
-
         function onOpen (evt){
         console.log("Connected to websocket!")
         }
 
         function onMessage (evt) {
-            console.log("on message")
             var data = JSON.parse(evt.data);
-            console.log(data)
+            if (data.job == 0){
+                $(".notify-number").html("")
+            }
+            else{
+                $(".notify-number").html(data.job)
+            }
         }
-
-
         window.addEventListener("load", setupWebSocket, false)
     </script>
     {% block content %}

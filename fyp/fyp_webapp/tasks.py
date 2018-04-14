@@ -166,8 +166,8 @@ def check_index():
                                     potential_keywords.append((entry, compared_to_monthly_ratio, key, "Monthly"))
                         if (current_word > 6 and key not in existing_words and key not in yesterdays_res):
                             potential_keywords.append((entry, current_word, key, "No Entries"))
-                    check_percentage(entry, tweet_list, potential_keywords)
-    data = json.dumps({'job': "accept"})
+                    notification = check_percentage(entry, tweet_list, potential_keywords)
+    data = json.dumps({'job': notification})
     Group('notifications').send({'text': data})
 
 
@@ -196,10 +196,12 @@ def check_percentage(topic, tweet_list, potential_keywords):
                     #temp_set = set([entry[2], test[2]])
                     combined_words_set.add(entry[2])
                     combined_words_set.add(test[2])
-        lets_test.append((topic, combined_words_set))
+        if len(combined_words_set) != 0:
+            lets_test.append((topic, combined_words_set))
+
         f.write(str(lets_test)+"\n")
         f.close()
-    return
+    return len(lets_test)
 
 def collect_todays_tweets(entry):
 
