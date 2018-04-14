@@ -18,6 +18,8 @@ import json
 from channels import Channel
 from channels.auth import channel_session_user
 from fyp_webapp import tasks
+from fyp_webapp import models
+import ast
 
 @shared_task(name="fyp_webapp.tasks.wordcloud", queue='priority_high', track_started=True)
 def word_cloud(id, topic):
@@ -189,7 +191,6 @@ def check_percentage(topic, tweet_list, potential_keywords):
                         entries_combined_total += 1
                         single += 1
                     elif (str(entry[2]).lower() in tweet.lower()):
-                        print ("Never gets here")
                         single += 1
                 percentage = ((entries_combined_total/single)*100)
                 if percentage > 0:
@@ -198,7 +199,23 @@ def check_percentage(topic, tweet_list, potential_keywords):
                     combined_words_set.add(test[2])
         if len(combined_words_set) != 0:
             lets_test.append((topic, combined_words_set))
-
+            cat = models.NotificationTracked.objects.filter(topic=topic)
+            #models.NotificationTracked.objects.all().delete()
+            if len(cat) is 0 and len(combined_words_set) is not 0:
+                keywords = json.dumps(list(combined_words_set))
+                new_notification = models.NotificationTracked(topic=topic, keywords=keywords)
+                new_notification.save()
+            for mod in cat:
+                uh = json.dumps(mod.keywords)
+                jsonDec = json.decoder.JSONDecoder()
+                myPythonList = jsonDec.decode(uh)
+                x = ast.literal_eval(myPythonList)
+                print (myPythonList)
+                print (x)
+                print (type(x))
+                print (combined_words_set)
+                test = set.intersection(set(x), combined_words_set)
+                print (test)
         f.write(str(lets_test)+"\n")
         f.close()
     return len(lets_test)
