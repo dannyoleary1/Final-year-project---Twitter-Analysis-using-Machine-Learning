@@ -1,0 +1,13 @@
+<head>
+    {% extends "base.html" %}
+</head>
+{% block content %}
+<h1>Trend Topics</h1>
+<ul>
+    {% for result in entries %}
+    <li>({{ result.topic }})
+    <a href="{% url 'fyp_webapp:trends_delete' result.id %}">delete</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock content %}

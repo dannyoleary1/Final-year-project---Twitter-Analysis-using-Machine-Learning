@@ -6,6 +6,12 @@
     {% extends "base.html" %}
 </head>
 <body>
-
+    {% block content %}
+        <ul>
+            {% for result in entries %}
+                <li>{{result.topic}}</li>
+            {% endfor %}
+        </ul>
+    {% endblock content %}
 </body>
 </html>

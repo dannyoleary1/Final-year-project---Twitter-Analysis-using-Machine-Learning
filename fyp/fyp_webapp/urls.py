@@ -39,5 +39,6 @@ urlpatterns = [
     url(r'^indexes', elasticstats.elasticstats, name="elasticstats"),
     url(r'^process_elastic', elasticstats.poll_state, name='process_elastic'),
 
-    url(r'^trends', trends.trends, name="trends")
+    url(r'^trends', trends.trends, name="trends"),
+    url(r'^delete_trends/delete/(?P<pk>\d+)$', trends.trends_delete, name="trends_delete")
 ]
