@@ -10,6 +10,7 @@ from .views.taskprogress import taskprogress
 from .views.timeline import timeline
 from .views.oldtweets import oldtweets
 from .views.elastic_stats import elasticstats
+from .views.trends import trends
 
 app_name="fyp_webapp"
 
@@ -30,7 +31,6 @@ urlpatterns = [
     url(r'^delete-twitteruser/delete/(?P<pk>\d+)$', twitteruser.twitteruser_delete, name='twitteruser_delete'),
     url(r'^suggestcategory-twitteruser', twitteruser.twitteruser_suggest, name='twitteruser_suggest'),
 
-    url(r'^poll_state$', taskprogress.poll_state,name='poll_state'),
 
     url(r'^timeline', timeline.timeline, name='timeline'),
 
@@ -38,4 +38,6 @@ urlpatterns = [
 
     url(r'^indexes', elasticstats.elasticstats, name="elasticstats"),
     url(r'^process_elastic', elasticstats.poll_state, name='process_elastic'),
+
+    url(r'^trends', trends.trends, name="trends")
 ]
