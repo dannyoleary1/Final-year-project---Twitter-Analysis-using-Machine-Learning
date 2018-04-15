@@ -11,6 +11,7 @@ from django.urls import reverse_lazy
 from django.forms import ModelForm
 from fyp_webapp.ElasticSearch import elastic_utils
 from fyp_webapp.tasks import collect_old_tweets
+from fyp_webapp.models import NotificationTracked
 
 @login_required(login_url='/login/')
 def category(request):
@@ -30,6 +31,11 @@ class TwitterCatForm(ModelForm):
 def twittercat_list(request, template_name='fyp/Category/twittercat_list.html'):
     cat = TwitterCat.objects.filter(user=request.user)
     data = {}
+    for entry in cat:
+        tracked = NotificationTracked.objects.filter(topic=entry.category_name)
+        count = elastic_utils.count_entries(entry.category_name+"-latest")["count"]
+        entry.count = count
+        entry.tracked = len(tracked)
     data['object_list'] = cat
     return render(request, template_name, data)
 

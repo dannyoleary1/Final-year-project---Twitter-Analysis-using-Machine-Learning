@@ -2,14 +2,48 @@
     {% extends "base.html" %}
 </head>
 {% block content %}
-<h1>Twitter Categories</h1>
-<ul>
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-success" href="{% url 'fyp_webapp:twittercat_new' %}"><i class="fas fa-plus"></i>Add New Topic</a>
+        </div>
+    </div>
     {% for category in object_list %}
-    <li>{{ category.user }}  ({{ category.category_name }})
-    <a href="{% url 'fyp_webapp:twittercat_edit' category.id %}">edit</a>
-    <a href="{% url 'fyp_webapp:twittercat_delete' category.id %}">delete</a>
-    </li>
+        {% if forloop.counter0|divisibleby:2 %}
+        </div><br>
+            <br>
+            <div class="row">
+        {% endif %}
+            <div class="col-lg-6">
+                <div class="card text-center">
+                    <div class="card-header card-blue text-center">
+                       <a href="{% url 'fyp_webapp:twittercat_edit' category.id %}"> <i class="fas fa-edit fa-2x" style="color:white"></i></a>
+                        <h3 class="text-center"><i class="fas fa-database"></i> {{ category.category_name }}</h3>
+                        <a href="{% url 'fyp_webapp:twittercat_delete' category.id %}" class="pull-right"><i class="fas fa-times fa-2x" style="color:white"></i></a>
+                    </div>
+                    <div class="card-body">
+                        <nav class="level">
+                            <div class="level-item has-text-centered">
+                                <div>
+                                    <p class="heading">Todays Tweets</p>
+                                    <p class="title">{{ category.count }}</p>
+                                </div>
+                            </div>
+                            <div class="level-item has-text-centered">
+                                <div>
+                                    <p class="heading">Number of Entries</p>
+                                    <p class="title">30</p>
+                                </div>
+                            </div>
+                            <div class="level-item has-text-centered">
+                                <div>
+                                    <p class="heading">Current Trends Tracked</p>
+                                    <p class="title">{{ category.tracked }}</p>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
     {% endfor %}
-</ul>
-<a href="{% url 'fyp_webapp:twittercat_new' %}">New</a>
+</div>
 {% endblock content %}
