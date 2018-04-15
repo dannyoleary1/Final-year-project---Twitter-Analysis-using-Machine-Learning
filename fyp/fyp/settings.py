@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_static_jquery',
     'fyp_webapp',
     'channels',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [

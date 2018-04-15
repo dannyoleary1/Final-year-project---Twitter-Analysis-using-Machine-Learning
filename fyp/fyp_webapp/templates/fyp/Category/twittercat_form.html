@@ -2,8 +2,16 @@
     {% extends "base.html" %}
 </head>
 {% block content %}
-<form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
+    {% load crispy_forms_tags %}
+
+    <div class="col-sm-10 offset-sm-1 text-center">
+    <h1 class="title is-1">Add/Edit Topic</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button class="btn btn-lg btn-success" type="submit">
+        Submit <i class="fas fa-chevron-circle-right"></i>
+    </button>
 </form>
+</div>
 {% endblock content %}
