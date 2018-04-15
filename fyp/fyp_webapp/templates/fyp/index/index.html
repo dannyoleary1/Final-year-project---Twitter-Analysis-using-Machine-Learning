@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% extends "base.html" %}
+
     <meta charset="UTF-8">
     <title>Title</title>
-
+    {% extends "base.html" %}
 </head>
 <body>
     {% block content %}
@@ -198,7 +198,7 @@
 {#                    </div>#}
 {#                </div>#}
 {#        </div>#}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+{#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>#}
     <script type="text/javascript">
     console.log(c3)
     var chart = c3.generate({
@@ -226,152 +226,152 @@
 });
 
 
-         var poll_xhr;
-   var willstop = 0;
-  (function(){
-    var poll = function(){
-      var json_dump = "{{ data }}";
-      var task_id = "{{task_id}}";
-      console.log(task_id);
-      poll_xhr = $.ajax({
-        url:'poll_state',
-        type: 'POST',
-        data: {
-            task_id: task_id,
-            csrfmiddlewaretoken: "{{csrf_token}}",
-        },
-        success: function(result) {
-                        if (result.current_results == null || result.current_results == undefined) {
-                            willstop = 1;
-                        }
-                        else{
-                            $( "#chart" ).empty();
-                            var word_count = result.current_results
-                            var words = result.current_categories
-                            drawWordCloud(words,word_count)
-                            $("#word-count").empty();
-                            for (var key in result.current_results) {
-                                var item = document.createElement("div")
-                                item.className += "list-group-item"
-                                var span = document.createElement("span")
-                                span.className += "badge badge-pill badge-success float-right"
-                                var text = document.createTextNode(result.current_results[key])
-                                var t = document.createTextNode(key)
-                                item.append(t)
-                                span.append(text)
-                                item.appendChild(span)
-                                document.getElementById("word-count").appendChild(item)
-                            }
-                        }
-                    }
-      });
-    };
-    var refreshIntervalId = setInterval(function() {
-      poll();
-      if(willstop == 1){
-        clearInterval(refreshIntervalId);
-      }
-    },500);
-  })();
-
-
-
-
-      function drawWordCloud(words, word_count){
-        console.log(words)
-          console.log(word_count)
-        var svg_location = "#chart";
-        var width = $(document).width()/2;
-        var height = $(document).height()/1.2;
-
-        var fill = d3.scale.category20();
-
-        var word_entries = d3.entries(word_count);
-        console.log(word_entries)
-
-        var xScale = d3.scale.linear()
-           .domain([0, d3.max(word_entries, function(d) {
-              return d.value;
-            })
-           ])
-           .range([10,100]);
-
-        d3.layout.cloud().size([width, height])
-          .timeInterval(20)
-          .words(word_entries)
-          .fontSize(function(d) { return xScale(+d.value); })
-          .text(function(d) { return d.key; })
-          .rotate(function() { return ~~(Math.random() * 2) * 90; })
-          .font("Impact")
-          .on("end", draw)
-          .start();
-
-        function draw(words) {
-          d3.select(svg_location).append("svg")
-              .attr("width", width)
-              .attr("height", height)
-            .append("g")
-              .attr("transform", "translate(" + [width >> 1, height >> 1] + ")")
-            .selectAll("text")
-              .data(words)
-            .enter().append("text")
-              .style("font-size", function(d) { return xScale(d.value) + "px"; })
-              .style("font-family", "Impact")
-              .style("fill", function(d, i) { return fill(i); })
-              .attr("text-anchor", "middle")
-              .attr("onclick", "myFunction(this)")
-              .attr("transform", function(d) {
-                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-              })
-              .attr("class", "currentWord")
-              .attr("id", function(d) { return d.key; })
-              .text(function(d) { return d.key; });
-
-        }
-
-        d3.layout.cloud().stop();
-      }
-
-      function myFunction(d){
-          console.log(d.id);
-          var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-           $.ajax({
-               type: 'POST',
-            url: "{% url 'fyp_webapp:fyp' %}",
-               data: d.id,
-            success: function(data) {
-                   $( "#chart" ).empty();
-                   drawWordCloud(data.category, JSON.parse(data.jsonData));
-            }
-            });
-      }
-
-function getCookie(name)
-{
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-$.ajaxSetup({
-     beforeSend: function(xhr, settings) {
-         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-             // Only send the token to relative URLs i.e. locally.
-             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-         }
-     }
-});
+{#         var poll_xhr;#}
+{#   var willstop = 0;#}
+{#  (function(){#}
+{#    var poll = function(){#}
+{#      var json_dump = "{{ data }}";#}
+{#      var task_id = "{{task_id}}";#}
+{#      console.log(task_id);#}
+{#      poll_xhr = $.ajax({#}
+{#        url:'poll_state',#}
+{#        type: 'POST',#}
+{#        data: {#}
+{#            task_id: task_id,#}
+{#            csrfmiddlewaretoken: "{{csrf_token}}",#}
+{#        },#}
+{#        success: function(result) {#}
+{#                        if (result.current_results == null || result.current_results == undefined) {#}
+{#                            willstop = 1;#}
+{#                        }#}
+{#                        else{#}
+{#                            $( "#chart" ).empty();#}
+{#                            var word_count = result.current_results#}
+{#                            var words = result.current_categories#}
+{#                            drawWordCloud(words,word_count)#}
+{#                            $("#word-count").empty();#}
+{#                            for (var key in result.current_results) {#}
+{#                                var item = document.createElement("div")#}
+{#                                item.className += "list-group-item"#}
+{#                                var span = document.createElement("span")#}
+{#                                span.className += "badge badge-pill badge-success float-right"#}
+{#                                var text = document.createTextNode(result.current_results[key])#}
+{#                                var t = document.createTextNode(key)#}
+{#                                item.append(t)#}
+{#                                span.append(text)#}
+{#                                item.appendChild(span)#}
+{#                                document.getElementById("word-count").appendChild(item)#}
+{#                            }#}
+{#                        }#}
+{#                    }#}
+{#      });#}
+{#    };#}
+{#    var refreshIntervalId = setInterval(function() {#}
+{#      poll();#}
+{#      if(willstop == 1){#}
+{#        clearInterval(refreshIntervalId);#}
+{#      }#}
+{#    },500);#}
+{#  })();#}
+{##}
+{##}
+{##}
+{##}
+{#      function drawWordCloud(words, word_count){#}
+{#        console.log(words)#}
+{#          console.log(word_count)#}
+{#        var svg_location = "#chart";#}
+{#        var width = $(document).width()/2;#}
+{#        var height = $(document).height()/1.2;#}
+{##}
+{#        var fill = d3.scale.category20();#}
+{##}
+{#        var word_entries = d3.entries(word_count);#}
+{#        console.log(word_entries)#}
+{##}
+{#        var xScale = d3.scale.linear()#}
+{#           .domain([0, d3.max(word_entries, function(d) {#}
+{#              return d.value;#}
+{#            })#}
+{#           ])#}
+{#           .range([10,100]);#}
+{##}
+{#        d3.layout.cloud().size([width, height])#}
+{#          .timeInterval(20)#}
+{#          .words(word_entries)#}
+{#          .fontSize(function(d) { return xScale(+d.value); })#}
+{#          .text(function(d) { return d.key; })#}
+{#          .rotate(function() { return ~~(Math.random() * 2) * 90; })#}
+{#          .font("Impact")#}
+{#          .on("end", draw)#}
+{#          .start();#}
+{##}
+{#        function draw(words) {#}
+{#          d3.select(svg_location).append("svg")#}
+{#              .attr("width", width)#}
+{#              .attr("height", height)#}
+{#            .append("g")#}
+{#              .attr("transform", "translate(" + [width >> 1, height >> 1] + ")")#}
+{#            .selectAll("text")#}
+{#              .data(words)#}
+{#            .enter().append("text")#}
+{#              .style("font-size", function(d) { return xScale(d.value) + "px"; })#}
+{#              .style("font-family", "Impact")#}
+{#              .style("fill", function(d, i) { return fill(i); })#}
+{#              .attr("text-anchor", "middle")#}
+{#              .attr("onclick", "myFunction(this)")#}
+{#              .attr("transform", function(d) {#}
+{#                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";#}
+{#              })#}
+{#              .attr("class", "currentWord")#}
+{#              .attr("id", function(d) { return d.key; })#}
+{#              .text(function(d) { return d.key; });#}
+{##}
+{#        }#}
+{##}
+{#        d3.layout.cloud().stop();#}
+{#      }#}
+{##}
+{#      function myFunction(d){#}
+{#          console.log(d.id);#}
+{#          var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();#}
+{#           $.ajax({#}
+{#               type: 'POST',#}
+{#            url: "{% url 'fyp_webapp:fyp' %}",#}
+{#               data: d.id,#}
+{#            success: function(data) {#}
+{#                   $( "#chart" ).empty();#}
+{#                   drawWordCloud(data.category, JSON.parse(data.jsonData));#}
+{#            }#}
+{#            });#}
+{#      }#}
+{##}
+{#function getCookie(name)#}
+{#{#}
+{#    var cookieValue = null;#}
+{#    if (document.cookie && document.cookie != '') {#}
+{#        var cookies = document.cookie.split(';');#}
+{#        for (var i = 0; i < cookies.length; i++) {#}
+{#            var cookie = jQuery.trim(cookies[i]);#}
+{#            // Does this cookie string begin with the name we want?#}
+{##}
+{#            if (cookie.substring(0, name.length + 1) == (name + '=')) {#}
+{#                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));#}
+{#                break;#}
+{#            }#}
+{#        }#}
+{#    }#}
+{#    return cookieValue;#}
+{#}#}
+{##}
+{#$.ajaxSetup({#}
+{#     beforeSend: function(xhr, settings) {#}
+{#         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {#}
+{#             // Only send the token to relative URLs i.e. locally.#}
+{#             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));#}
+{#         }#}
+{#     }#}
+//{);#}
 
     </script>
     {% endblock content %}

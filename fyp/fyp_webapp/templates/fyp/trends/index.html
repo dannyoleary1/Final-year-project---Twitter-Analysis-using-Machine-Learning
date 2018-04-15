@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% extends "base.html" %}
+</head>
+<body>
+    {% block content %}
+        <ul>
+            {% for result in entries %}
+                <li>{{result.topic}}</li>
+            {% endfor %}
+        </ul>
+    {% endblock content %}
+</body>
+</html>

@@ -18,6 +18,8 @@ import json
 from channels import Channel
 from channels.auth import channel_session_user
 from fyp_webapp import tasks
+from fyp_webapp import models
+import ast
 
 @shared_task(name="fyp_webapp.tasks.wordcloud", queue='priority_high', track_started=True)
 def word_cloud(id, topic):
@@ -87,6 +89,7 @@ def collect_old_tweets(topic, number_of_days):
 def check_index():
     index = elastic_utils.list_all_indexes()
     ts = datetime.now() - timedelta(minutes=5)
+    total_count = 0
     for entry in index:
         word_counter = Counter()
         if ("-latest") not in entry:
@@ -167,41 +170,74 @@ def check_index():
                         if (current_word > 6 and key not in existing_words and key not in yesterdays_res):
                             potential_keywords.append((entry, current_word, key, "No Entries"))
                     notification = check_percentage(entry, tweet_list, potential_keywords)
-    data = json.dumps({'job': notification})
+
+                    if "total" in  notification:
+                        print ("--------")
+                        print (notification)
+                        print (notification["total"])
+                        total_count += notification["total"]
+    data = json.dumps({'job': total_count})
     Group('notifications').send({'text': data})
 
 
 def check_percentage(topic, tweet_list, potential_keywords):
     #We need to try see if they relate to each other.
     #How many times do the words appear with each other.
-    with open('file_to_write', 'a') as f:
-        lets_test = []
-        combined_words_set = set()
-        for entry in potential_keywords:
-            for test in potential_keywords:
-                if entry == test:
-                    continue
-                #check tweet_list
-                entries_combined_total = 0
-                single = 0
-                for tweet in tweet_list:
-                    if str(test[2]).lower() in tweet.lower() and str(entry[2]).lower() in tweet.lower():
-                        entries_combined_total += 1
-                        single += 1
-                    elif (str(entry[2]).lower() in tweet.lower()):
-                        print ("Never gets here")
-                        single += 1
-                percentage = ((entries_combined_total/single)*100)
-                if percentage > 0:
-                    #temp_set = set([entry[2], test[2]])
-                    combined_words_set.add(entry[2])
-                    combined_words_set.add(test[2])
-        if len(combined_words_set) != 0:
-            lets_test.append((topic, combined_words_set))
+    lets_test = []
+    combined_words_set = set()
+    total = 0
+    json_obj = {}
+    for entry in potential_keywords:
+        for test in potential_keywords:
+            if entry == test:
+                continue
+            #check tweet_list
+            entries_combined_total = 0
+            single = 0
+            for tweet in tweet_list:
+                if str(test[2]).lower() in tweet.lower() and str(entry[2]).lower() in tweet.lower():
+                    entries_combined_total += 1
+                    single += 1
+                elif (str(entry[2]).lower() in tweet.lower()):
+                    single += 1
+            percentage = ((entries_combined_total/single)*100)
+            if percentage > 0:
+                #temp_set = set([entry[2], test[2]])
+                combined_words_set.add(entry[2])
+                combined_words_set.add(test[2])
+    if len(combined_words_set) != 0:
+        lets_test.append((topic, combined_words_set))
+        cat = models.NotificationTracked.objects.filter(topic=topic)
+        #models.NotificationTracked.objects.all().delete()
+        if len(cat) is 0 and len(combined_words_set) is not 0:
+            keywords = json.dumps(list(combined_words_set))
+            new_notification = models.NotificationTracked(topic=topic, keywords=keywords)
+            total+=1
+            new_notification.save()
+        else:
+            for mod in cat:
+                uh = json.dumps(mod.keywords)
+                jsonDec = json.decoder.JSONDecoder()
+                myPythonList = jsonDec.decode(uh)
+                x = ast.literal_eval(myPythonList)
+                print (x)
+                print (combined_words_set)
+                test = set.intersection(set(x), combined_words_set)
+                percentage = (len(x)/len(combined_words_set)*100)
+                if percentage > 45:
+                    temp = set(x).union(combined_words_set)
+                    keywords = json.dumps(list(temp))
+                    total += 1
+                    mod.keywords = keywords
+                    mod.save()
+                else:
+                    keywords = json.dumps(list(combined_words_set))
+                    new_mod = models.NotificationTracked(topic=topic, keywords=keywords)
+                    total+=1
+                    new_mod.save()
+        json_obj = {"topic": topic, "keywords":keywords, "total":total}
 
-        f.write(str(lets_test)+"\n")
-        f.close()
-    return len(lets_test)
+    return json_obj
 
 def collect_todays_tweets(entry):
 
