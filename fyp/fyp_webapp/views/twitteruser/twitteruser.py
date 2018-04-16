@@ -16,12 +16,14 @@ from collections import Counter
 from fyp_webapp.models import TwitterCat
 from fyp_webapp.tasks import collect_old_tweets
 from fyp_webapp.ElasticSearch import elastic_utils
+import tweepy
+from fyp_webapp import config as cfg
 
 class TwitterUserForm(ModelForm):
     class Meta:
         model = TwitterUser
-        fields = ['user', 'twitter_username']
-        exclude = ['user']
+        fields = ['user', 'twitter_username', 'image', 'username', 'description']
+        exclude = ['user', 'image', 'username', 'description']
 
 @login_required(login_url='/login/')
 def twitteruser_list(request, template_name='fyp/twitteruser/twitteruser_list.html'):
@@ -36,6 +38,14 @@ def twitteruser_create(request, template_name='fyp/twitteruser/twitteruser_form.
     test = form.save(commit=False)
     test.user = request.user
     if form.is_valid():
+        username = form.cleaned_data['twitter_username']
+        auth = tweepy.OAuthHandler(cfg.twitter_credentials["consumer_key"], cfg.twitter_credentials['consumer_secret'])
+        auth.set_access_token(cfg.twitter_credentials['access_token'], cfg.twitter_credentials['access_token_secret'])
+        api = tweepy.API(auth)
+        user = api.get_user(username)
+        test.image = user.profile_image_url
+        test.username = user.screen_name
+        test.description = user.description
         form.save()
         return redirect('fyp_webapp:twitteruser_list')
     return render(request, template_name, {'form':form})
@@ -77,7 +87,7 @@ def twitteruser_suggest(request, template_name='fyp/twitteruser/twitteruser_sugg
                 all_text.extend(text)
                 terms_all = [term for term in text]
                 count_word_frequency.update(terms_all)
-            suggestions = count_word_frequency.most_common(75)
+            suggestions = count_word_frequency.most_common(25)
             print (suggestions)
             cat = TwitterUser.objects.filter(user=request.user)
             data = {}

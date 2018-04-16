@@ -15,6 +15,9 @@ class TwitterCat(models.Model):
 class TwitterUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     twitter_username = models.CharField(max_length=30)
+    image = models.TextField(null=True)
+    description = models.TextField(null=True)
+    username = models.TextField(null=True)
 
     def __unicode__(self):
         return self.name

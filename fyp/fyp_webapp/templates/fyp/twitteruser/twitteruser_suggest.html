@@ -2,34 +2,75 @@
     {% extends "base.html" %}
 </head>
 {% block content %}
-<h1>Twitter Users</h1>
 <div class="row">
     <div class="col-6">
         <form id="twituser-form" action="{% url 'fyp_webapp:twitteruser_suggest' %}" method="post">
         {% csrf_token %}
         <br>
         <input type="checkbox" id="select_all"/>Select All</td>
+        <button class="btn btn-success" type="submit" name="twitteruser-form">Submit <i class="fas fa-chevron-circle-right"></i></button>
         <br>
         <br>
-        {% for category in object_list %}
-        <input type="checkbox" name="suggest-user" value={{ category.twitter_username }}>{{ category.user }}  ({{ category.twitter_username }})</input>
-        </br>
-        {% endfor %}
+{#        {% for category in object_list %}#}
+{#        <input type="checkbox" name="suggest-user" value={{ category.twitter_username }}>{{ category.user }}  ({{ category.twitter_username }})</input>#}
+{#        </br>#}
+{#        {% endfor %}#}
 
-        <button type="submit" name="twitteruser-form">Submit</button>
+            {% for category in object_list %}
+            <div class="row">
+
+
+                <div class="col-lg-6">
+
+                <div class="box">
+                    <input id={{ category.twitter_username }} type="checkbox" name="suggest-user" value="{{ category.twitter_username }}"/>
+                <article class="media">
+
+                    <figure class="media-left">
+                        <p class="image is-64x64">
+                            <img src={{ category.image }}>
+                        </p>
+                    </figure>
+                    <div class="media-content">
+                        <div class="content">
+                            <p>
+                                <strong>{{ category.username }}</strong> <small>@{{ category.username }}</small>
+                                <br>
+                                {{ category.description }}
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            </div>
+
+        </div>
+                <br>
+    {% endfor %}
+{#    {% endfor %}#}
+
+
         </form>
     </div>
+    {% if suggestions %}
     <div clas="col-6">
-        <form id="suggestcat-form" action="{% url 'fyp_webapp:twitteruser_suggest' %}" method="post">
-             {% csrf_token %}
+    <div class="card text-center">
+                    <div class="card-header card-blue text-center">
+                        <h3 class="text-center">Keywords</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="suggestcat-form" action="{% url 'fyp_webapp:twitteruser_suggest' %}" method="post">
+                             {% csrf_token %}
         {% for entry in suggestions %}
         <input type="checkbox" name="suggest-category" value={{entry}}>{{ entry }}</input>
         <br>
         {% endfor %}
-
-            <button type="submit" name="suggestcat-form">Submit</button>
+                            <button type="submit" name="suggestcat-form">Submit <i class="fas fa-chevron-circle-right"></i></button>
             </form>
+                    </div>
+                </div>
     </div>
+{% endif %}
     </div>
 </div>
 <script>
