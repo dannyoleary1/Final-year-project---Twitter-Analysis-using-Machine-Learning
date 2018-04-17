@@ -11,6 +11,7 @@ from .views.timeline import timeline
 from .views.oldtweets import oldtweets
 from .views.elastic_stats import elasticstats
 from .views.trends import trends
+from .views.charts import charts
 
 app_name="fyp_webapp"
 
@@ -40,5 +41,8 @@ urlpatterns = [
     url(r'^process_elastic', elasticstats.poll_state, name='process_elastic'),
 
     url(r'^trends', trends.trends, name="trends"),
-    url(r'^delete_trends/delete/(?P<pk>\d+)$', trends.trends_delete, name="trends_delete")
+    url(r'^delete_trends/delete/(?P<pk>\d+)$', trends.trends_delete, name="trends_delete"),
+
+    url(r'^charts', charts.charts, name="charts"),
+    url(r'^async_charts', charts.poll_state, name="async_charts")
 ]

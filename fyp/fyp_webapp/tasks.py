@@ -495,3 +495,41 @@ def add_zeros(data, count):
                 temp_arr[item] = data[item]
                 dev_arr[item] = day_stdev
     return (temp_arr,dev_arr)
+
+@shared_task(name="fyp_webapp.tasks.setup_charts", queue="priority_high")
+def setup_charts(cat):
+    tot = len(cat)
+    entries_arrays = []
+    i = 0
+    for mod in cat:
+        current_entry = []
+        current_entry.append(mod)
+        res = elastic_utils.iterate_search(index_name=mod, query={
+            "query":
+                {
+                    "match_all": {}
+                },
+            "sort": [
+                {
+                    "last_time": {
+                        "order": "desc"
+                    }
+                }
+            ],
+            "size": 20,
+        })
+        i+=1
+        for entry in res:
+            current_entry.append(entry["_source"]["total"])
+        if i != (tot-1):
+            current_task.update_state(state='PROGRESS',
+                                      meta={'current_percentage': (i / tot) * 100, 'current_entry': mod,
+                                            "chart_data": entries_arrays})
+        else:
+            current_task.update_state(state='PROGRESS',
+                                      meta={'current_percentage': (i / tot) * 100, 'current_entry': mod,
+                                            "chart_data": entries_arrays, "latest_chart_data": current_entry, "test": 'Finished'})
+
+        entries_arrays.append(current_entry)
+    print ("task finished.")
+    return entries_arrays

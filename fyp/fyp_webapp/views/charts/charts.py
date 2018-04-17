@@ -1,3 +1,9 @@
+from django.shortcuts import get_object_or_404, render, render_to_response, HttpResponseRedirect
+from fyp_webapp.ElasticSearch import elastic_utils
+from django.contrib.auth.decorators import login_required
+from fyp_webapp import config as cfg
+from fyp_webapp.models import TwitterCat
+from fyp_webapp.tasks import setup_charts
 from django.shortcuts import get_object_or_404, render, render_to_response
 from django.contrib.auth.decorators import login_required
 from fyp_webapp.tasks import elastic_info
@@ -12,30 +18,29 @@ import ast
 from fyp_webapp.TwitterProcessing import termsfrequency
 from collections import Counter
 
-@login_required(login_url='/login/')
-def elasticstats(request):
+@login_required(login_url="/login/")
+def charts(request):
+    cat = TwitterCat.objects.filter(user=request.user)
     if 'job' in request.GET:
+        print ("in job")
         job_id = request.GET['job']
         job = AsyncResult(job_id)
         data = job.result or job.state
         context = {
             'data': data,
             'task_id': job_id,
-            'state': job.state,
+            'total': range(len(cat))
         }
-        unsorted_list = []
-        for key, value in count_word_frequency.items():
-            unsorted_list.append((key, value, other_frequency[key]))
-        sorted_list = sorted(unsorted_list,
-                             key=lambda x: ((x[1], -x[2])))
-        print("---------")
-        print (totals_array)
-        print ("_________")
-        print (sorted_list)
-        return render(request, "fyp/elasticstats/index.html", context)
+        return render(request, "fyp/charts/index.html", context)
     else:
-        job = elastic_info.delay()
-        return HttpResponseRedirect(reverse('fyp_webapp:elasticstats') + '?job=' + job.id)
+
+        topic_list = []
+        for mod in cat:
+            topic_list.append(mod.category_name)
+        job = setup_charts.delay(topic_list)
+        print (job)
+        data = {}
+        return HttpResponseRedirect(reverse('fyp_webapp:charts') + '?job=' + job.id)
 
 def poll_state(request):
     """ A view to report the progress to the user """
@@ -49,6 +54,5 @@ def poll_state(request):
             data = 'No task_id in the request'
     else:
         data = 'This is not an ajax request'
-    data['state'] = task.state
     json_data = json.dumps(data)
     return HttpResponse(json_data, content_type='application/json')
