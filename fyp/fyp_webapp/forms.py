@@ -36,6 +36,9 @@ class OldTweetsForm(forms.Form):
                                                 "%d/%m/%Y",        #25/10/2006
                                                 "%Y/%m/%d",     # 2006/10/25
                                                   ])
+    widgets = {
+        'start_date': forms.DateInput(attrs={'class': 'datepicker'})
+    }
 
 
 

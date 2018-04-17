@@ -7,12 +7,21 @@
 </head>
 <body>
 {% block content %}
+    {% load crispy_forms_tags %}
+    <div class="col-sm-10 offset-sm-1 text-center">
+    <h1 class="title is-1">Collect Old Tweets</h1>
     <form method="post">
-        {% csrf_token %}
-        {{oldtweetsform.as_p}}
+           {% csrf_token %}
+    {{ oldtweetsform|crispy }}
         <button type="submit">Submit</button>
     </form>
+    </div>
 
+    <script>
+      $( function() {
+    $( ".dateinput" ).datepicker({ dateFormat: 'yy-mm-dd' });
+  } );
+    </script>
 {% endblock content %}
 </body>
 </html>
