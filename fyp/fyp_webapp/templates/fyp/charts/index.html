@@ -84,6 +84,14 @@
 
                         }
                         else if (result.current_percentage == undefined) {
+                             var dates = [];
+                             dates.push('x')
+    for (var i=0; i<20; i++) {
+        var d = new Date();
+        d.setDate(d.getDate() - i);
+        dates.push( formatDate(d) )
+    }
+    console.log(dates)
                             var i = 0
                             result.forEach(function (value) {
                                  this['chart'+i] = c3.generate({
@@ -94,8 +102,7 @@
                                     data: {
                                         x: 'x',
                                         columns: [
-                                            ['x', '2013-03-31', '2013-04-01', '2013-04-02', '2013-04-03', '2013-04-04', '2013-04-05', '2013-04-06', '2013-04-07', '2013-04-08', '2013-04-09', '2013-04-10', '2013-04-11',
-                                                '2013-04-12', '2013-04-13', '2013-04-14', '2013-04-15', '2013-04-16', '2013-04-17', '2013-04-18', '2013-04-19'],
+                                            dates,
                                             value
                                         ]
                                     },
@@ -103,7 +110,7 @@
                                         x: {
                                             type: 'timeseries',
                                             tick: {
-                                                format: '%m-%d'
+                                                format: '%d-%m-%Y'
                                             }
                                         }
                                     }
@@ -150,6 +157,15 @@
         function transformLine(id){
             this['chart'+id].transform('line')
         }
+        function formatDate(date){
+    var dd = date.getDate();
+    var mm = date.getMonth()+1;
+    var yyyy = date.getFullYear();
+    if(dd<10) {dd='0'+dd}
+    if(mm<10) {mm='0'+mm}
+    date = yyyy+'-'+mm+'-'+dd;
+    return date
+ }
         function hideChart(id) {
 
     if (this['chart-body'+id].style.display === "none") {
