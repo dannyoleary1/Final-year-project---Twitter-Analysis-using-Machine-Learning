@@ -30,6 +30,89 @@
 
         </script>
 <br></br>
+     <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                {{ name }}
+                            </div>
+                            <div class="col-xs-9 text-right">
+                            <form method="post">
+                            {% csrf_token %}
+                                <select style="color:black" name="dropdown">
+                                    {% for entry in cats %}
+                                        <option class="category-option" value={{ entry.category_name }}>{{ entry.category_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#">
+                            <div class="panel-footer">
+                                <button class="btn btn-lg btn-success" type="submit">
+        Submit <i class="fas fa-chevron-circle-right"></i>
+    </button>
+                                <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        </a>
+                </div>
+            </div>
+     <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="far fa-hourglass fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">
+                                    {{ hour_med_tresh }}
+                                </div>
+                                <div>Hour Treshold!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+     <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fas fa-calendar-alt fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">
+                                    {{ day_med_tresh }}
+                                </div>
+                                <div>Day Threshold!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+     <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fas fa-clock fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">
+                                    {{ minute_med_tresh }}
+                                </div>
+                                <div>Minute Treshold!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+     </div>
+    <br>
     <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -49,7 +132,14 @@
     <tr>
       <th scope="row">{{k}}</th>
         {% for key,value in v.items %}
-            <td>{{value}}</td>
+            {% if  value  <  hour_med_tresh  %}
+                <td>{{ value }}</td>
+            {% elif value > hour_med_tresh %}
+                <td class="text-danger">{{ value }}</td>
+            {% else %}
+                <td class="text-warning">{{ value }}</td>
+            {% endif %}
+
         {% endfor %}
         {% if v.items|length < 24 %}
             {% for value in v.items|length|range:24 %}

@@ -9,6 +9,9 @@
 .tag-cloud a.size-9 { font-size: 1.9em }
 .tag-cloud a.size-10 { font-size: 2em }
 
+.category-option{
+    color: black;
+}
 
 .ds{
     background: #ffffff;
