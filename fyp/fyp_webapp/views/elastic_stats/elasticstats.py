@@ -11,9 +11,11 @@ import json
 import ast
 from fyp_webapp.TwitterProcessing import termsfrequency
 from collections import Counter
+from fyp_webapp.models import TwitterCat
 
 @login_required(login_url='/login/')
 def elasticstats(request):
+    cat = TwitterCat.objects.filter(user=request.user)
     if 'job' in request.GET:
         job_id = request.GET['job']
         job = AsyncResult(job_id)
@@ -21,20 +23,14 @@ def elasticstats(request):
         context = {
             'data': data,
             'task_id': job_id,
-            'state': job.state,
+            'total': range(len(cat))
         }
-        unsorted_list = []
-        for key, value in count_word_frequency.items():
-            unsorted_list.append((key, value, other_frequency[key]))
-        sorted_list = sorted(unsorted_list,
-                             key=lambda x: ((x[1], -x[2])))
-        print("---------")
-        print (totals_array)
-        print ("_________")
-        print (sorted_list)
         return render(request, "fyp/elasticstats/index.html", context)
     else:
-        job = elastic_info.delay()
+        topic_list = []
+        for mod in cat:
+            topic_list.append(mod.category_name)
+        job = elastic_info.delay(topic_list)
         return HttpResponseRedirect(reverse('fyp_webapp:elasticstats') + '?job=' + job.id)
 
 def poll_state(request):
@@ -49,6 +45,5 @@ def poll_state(request):
             data = 'No task_id in the request'
     else:
         data = 'This is not an ajax request'
-    data['state'] = task.state
     json_data = json.dumps(data)
     return HttpResponse(json_data, content_type='application/json')

@@ -33,7 +33,6 @@ def charts(request):
         }
         return render(request, "fyp/charts/index.html", context)
     else:
-
         topic_list = []
         for mod in cat:
             topic_list.append(mod.category_name)

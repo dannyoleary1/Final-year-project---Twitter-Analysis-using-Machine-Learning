@@ -104,7 +104,7 @@ def check_index():
                             },
                         "sort": [
                             {
-                                "last_time": {
+                                "created.keyword": {
                                     "order": "desc"
                                 }
                             }
@@ -438,26 +438,49 @@ def clean_indexes():
 
 
 @shared_task(name="fyp_webapp.tasks.elastic_info", queue="priority_high")
-def elastic_info():
-    index = elastic_utils.list_all_indexes()
-    index_list = []
-    for entry in index:
-        index_list.append(entry)
-    index_list.sort()
+def elastic_info(index_list):
     index_dict = {}
-    current_entry = 1
+    current_entry = 0
     for entry in index_list:
-        current_task.update_state(state='PROGRESS',
-                                  meta={'entry': entry, 'current_results': index_dict, 'current_entry': current_entry, 'last_entry': len(index_list)})
-        latest_entry_number = elastic_utils.last_id(entry)
-        print (entry)
-        print (latest_entry_number)
-        if latest_entry_number != 0:
-            latest_tweets = elastic_utils.last_n_in_index(entry, 5)
-        else:
-            latest_tweets = ""
-        index_dict[entry] = {"total": latest_entry_number, "last_entries": latest_tweets, 'current_entry': current_entry, 'last_entry': len(index_list),
-                             }
+        print (current_entry)
+        if current_entry is 0:
+            current_task.update_state(state='PROGRESS',
+                                      meta={'current_percentage': 0, "current_entry":entry})
+        # current_task.update_state(state='PROGRESS',
+        #                           meta={'entry': entry, 'current_results': index_dict, 'current_entry': current_entry, 'last_entry': len(index_list),
+        #                                 'current_percentage': (current_entry/len(index_list))*100})
+        res = elastic_utils.iterate_search(entry)
+        total_res = 0
+        for current in res:
+            print (current["_source"])
+            date = current["_source"]["date"]
+            total = current["_source"]["total"]
+            last_collected = current["_source"]["last_time"]
+            total_res+=1
+        res_median = elastic_utils.iterate_search(entry+"-median")
+        for median in res_median:
+            print ("")
+        res_latest = elastic_utils.search_index(entry+"-latest", query={
+                        "query":
+                            {
+                                "match_all": {}
+                            },
+                        "sort": [
+                            {
+                                "created.keyword": {
+                                    "order": "desc"
+                                }
+                            }
+                        ],
+            "size":10
+                    })
+
+        for item in res_latest:
+            print ("")
+        if current_entry is not 0:
+            current_task.update_state(state='PROGRESS', meta={
+                'current_percentage': (current_entry/len(index_list))*100, 'current_entry':entry
+            })
         current_entry += 1
     return index_dict
 
