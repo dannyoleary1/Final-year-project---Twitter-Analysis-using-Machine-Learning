@@ -213,6 +213,7 @@ def check_percentage(topic, tweet_list, potential_keywords):
             keywords = json.dumps(list(combined_words_set))
             new_notification = models.NotificationTracked(topic=topic, keywords=keywords)
             total+=1
+            print (keywords)
             new_notification.save()
         else:
             for mod in cat:
@@ -234,6 +235,7 @@ def check_percentage(topic, tweet_list, potential_keywords):
                     keywords = json.dumps(list(combined_words_set))
                     new_mod = models.NotificationTracked(topic=topic, keywords=keywords)
                     total+=1
+                    print (keywords)
                     new_mod.save()
         json_obj = {"topic": topic, "keywords":keywords, "total":total}
 
@@ -439,27 +441,51 @@ def clean_indexes():
 
 @shared_task(name="fyp_webapp.tasks.elastic_info", queue="priority_high")
 def elastic_info(index_list):
-    index_dict = {}
+    final_res = []
     current_entry = 0
+    all_entries = []
     for entry in index_list:
-        print (current_entry)
+        index_dict = {}
+        all_entries.append(entry)
+        index_dict["name"] = {}
+        index_dict["current_entry"] = entry
         if current_entry is 0:
             current_task.update_state(state='PROGRESS',
                                       meta={'current_percentage': 0, "current_entry":entry})
-        # current_task.update_state(state='PROGRESS',
-        #                           meta={'entry': entry, 'current_results': index_dict, 'current_entry': current_entry, 'last_entry': len(index_list),
-        #                                 'current_percentage': (current_entry/len(index_list))*100})
-        res = elastic_utils.iterate_search(entry)
-        total_res = 0
-        for current in res:
-            print (current["_source"])
-            date = current["_source"]["date"]
-            total = current["_source"]["total"]
-            last_collected = current["_source"]["last_time"]
-            total_res+=1
-        res_median = elastic_utils.iterate_search(entry+"-median")
+
+        res = elastic_utils.search_index(entry, query={
+                        "query":
+                            {
+                                "match_all": {}
+                            },
+                        "sort": [
+                            {
+                                "date": {
+                                    "order": "desc"
+                                }
+                            }
+                        ],
+            "size":10
+                    })
+
+        current_array = []
+        for current in res["hits"]["hits"]:
+            test = {}
+            test["date"] = current["_source"]["date"]
+            test["total"] = current["_source"]["total"]
+            test["last_collected"] = current["_source"]["last_time"]
+            current_array.append(test)
+        index_dict["name"]["current"] = current_array
+
+        median_array = []
+        res_median = elastic_utils.iterate_search(entry + "-median")
         for median in res_median:
-            print ("")
+            med = {}
+            med["day_median"] = median["_source"]["day_median"]
+            med["hour_median"] = median["_source"]["hour_median"]
+            med["minute_median"] = median["_source"]["minute_median"]
+            median_array.append(med)
+        index_dict["name"]["median"] = median_array
         res_latest = elastic_utils.search_index(entry+"-latest", query={
                         "query":
                             {
@@ -475,14 +501,26 @@ def elastic_info(index_list):
             "size":10
                     })
 
-        for item in res_latest:
-            print ("")
+        latest_array = []
+        for item in res_latest["hits"]["hits"]:
+            cur_entry = {}
+            cur_entry["created"] = item["_source"]["created"]
+            cur_entry["text"] = item["_source"]["text"]
+            cur_entry["image"] = item["_source"]["profile_picture"]
+            cur_entry["name"] = item["_source"]["name"]
+            latest_array.append(cur_entry)
+
+        index_dict["name"]["latest"] = latest_array
+
+        all_entries.append(latest_array)
         if current_entry is not 0:
             current_task.update_state(state='PROGRESS', meta={
-                'current_percentage': (current_entry/len(index_list))*100, 'current_entry':entry
+                'current_percentage': (current_entry/len(index_list))*100, 'current_entry':entry, 'final_res': final_res
             })
         current_entry += 1
-    return index_dict
+        final_res.append(index_dict)
+    print (len(final_res))
+    return final_res
 
 @shared_task(name="fyp_webapp.tasks.test_job", queue="priority_high")
 def test_job(reply_channel):

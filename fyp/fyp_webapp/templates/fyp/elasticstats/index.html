@@ -33,9 +33,26 @@
                 </div>
             </div>
         </div>
+     {% for i in total %}
+        <div id="topic-row{{ i }}" class="row hide">
+            <div id="topic-col{{ i }}" class="col">
+                <div class='card text-center'>
+                    <div class='card-header card-blue text-center'>
+                        <h3 class='text-center'>test</h3>
+                    </div>
+                    <div id="topic-body{{ i }}" class="card-body">
+
+                    </div>
+                </div>
+            </div>
+            <div id="median-col{{ i }}" class="col"></div>
+            <div id="latest-col{{ i }}" class="col"></div>
+        </div>
+    {% endfor %}
     <script>
                var poll_xhr;
    var willstop = 0;
+   var test = 0;
   (function(){
     var poll = function(){
       var json_dump = "{{ data }}";
@@ -49,20 +66,38 @@
             csrfmiddlewaretoken: "{{csrf_token}}",
         },
         success: function(result) {
+
             if (result.current_percentage == 100){
-                console.log(result)
                  $("#progress-bar").empty();
                  $("#latest-update").empty();
                   willstop = 1;
             }
-            else if(result.current_percentage == undefined){
-                console.log(result)
-                 $("#progress-bar").empty();
-                 $("#latest-update").empty();
-                  willstop = 1;
+            else if(result.current_percentage == undefined) {
+                if (test < 6) {
+                    console.log(test)
+                    willstop = 1;
+                    $("#progress-bar").empty();
+                    $("#latest-update").empty();
+                    var i = 0
+                    // $("#chart-row" + String(i)).removeClass("hide")
+                    result.forEach(function (value) {
+                        console.log(value)
+                        var current = value.name.current;
+                        current.forEach(function (value2) {
+                            var html = setUpCurrent(value2, "test")
+                            $("#topic-body" + String(i)).append(html)
+                        })
+
+                        $("#topic-row" + String(i)).removeClass("hide")
+
+                        var median = value.name.median;
+                        var latest = value.name.latest;
+                        i++;
+                        test++
+                    })
+                }
             }
             else{
-                console.log(result)
                 var bar2 = document.getElementById('current-progress').ldBar;
                                 bar2.set(result.current_percentage);
                                 $("#update-status").text("Currently on: " + result.current_entry)
@@ -77,6 +112,24 @@
       }
     },500);
   })();
+  function setUpCurrent(data, name){
+      var entry =
+                        "<nav class='level'>\n"+
+                            "<div class='level-item has-text-centered'>\n"+
+                                "<div>\n"+
+                                    "<p class='heading'>Date</p>\n"+
+                                    "<p class='title'>"+data.date+"</p>\n"+
+                                "</div>\n"+
+                            "</div>\n"+
+                            "<div class='level-item has-text-centered'>\n"+
+                                "<div>\n"+
+                                    "<p class='heading'>Total</p>\n"+
+                                    "<p class='title'>"+data.total+"</p>\n"+
+                                "</div>\n"+
+                            "</div>\n"+
+                        "</nav>"
+      return entry
+  }
   function addToEntry(data){
       var name = data.name
       var time = data.created

@@ -23,7 +23,7 @@ def elasticstats(request):
         context = {
             'data': data,
             'task_id': job_id,
-            'total': range(len(cat))
+            'total': range(len(cat)),
         }
         return render(request, "fyp/elasticstats/index.html", context)
     else:
@@ -31,6 +31,7 @@ def elasticstats(request):
         for mod in cat:
             topic_list.append(mod.category_name)
         job = elastic_info.delay(topic_list)
+        print ("wat")
         return HttpResponseRedirect(reverse('fyp_webapp:elasticstats') + '?job=' + job.id)
 
 def poll_state(request):
