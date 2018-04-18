@@ -17,15 +17,20 @@ from fyp_webapp.tasks import word_cloud
 from django.urls import reverse
 from fyp_webapp.models import NotificationTracked
 from django.shortcuts import get_object_or_404, render, render_to_response, redirect
+import ast
 
 @login_required(login_url="/login/")
 def trends(request):
     print ("in here")
     mod = NotificationTracked.objects.all()
     for entry in mod:
-        print ("_________")
-        print (entry.topic)
-        print (entry.keywords)
+        uh = json.dumps(entry.keywords)
+        jsonDec = json.decoder.JSONDecoder()
+        myPythonList = jsonDec.decode(uh)
+        x = ast.literal_eval(myPythonList)
+        entry.ls = x
+        print (type(entry.ls))
+        print (entry.ls)
     return render(request, "fyp/trends/trends_list.html", {"entries":mod},
                   {'nbar': 'trends'})  # TODO change to a template
 

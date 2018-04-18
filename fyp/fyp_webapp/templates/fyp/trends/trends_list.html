@@ -2,12 +2,25 @@
     {% extends "base.html" %}
 </head>
 {% block content %}
-<h1>Trend Topics</h1>
-<ul>
     {% for result in entries %}
-    <li>({{ result.topic }})
-    <a href="{% url 'fyp_webapp:trends_delete' result.id %}">delete</a>
-    </li>
+          {% if forloop.counter0|divisibleby:2 %}
+        </div><br>
+            <br>
+            <div class="row">
+        {% endif %}
+        <div class="col-lg-6">
+                <div class="card text-center">
+                    <div class="card-header card-blue text-center">
+                        <h3 class="text-center"><i class="fas fa-chart-line"></i>  {{ result.topic }} </h3>
+                        <a href="{% url 'fyp_webapp:trends_delete' result.id %}" class="pull-right"><i class="fas fa-times fa-2x" style="color:white"></i></a>
+                    </div>
+                <div class="card-body">
+                {% for val in result.ls %}
+                        <div class="badge badge-pill bg-success">{{ val }}</div>
+                {% endfor %}
+                </div>
+                </div>
+        </div>
     {% endfor %}
-</ul>
+</div>
 {% endblock content %}
