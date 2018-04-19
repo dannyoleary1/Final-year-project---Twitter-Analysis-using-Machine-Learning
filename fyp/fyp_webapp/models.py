@@ -28,6 +28,7 @@ class TwitterUser(models.Model):
 class NotificationTracked(models.Model):
     topic = models.CharField(max_length=30)
     keywords = models.TextField(null=True)
+    date = models.TextField(null=True)
 
 class NotificationLatest(models.Model):
     topic = models.CharField(max_length=30)

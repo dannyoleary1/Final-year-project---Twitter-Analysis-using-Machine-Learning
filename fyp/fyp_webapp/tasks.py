@@ -189,6 +189,7 @@ def check_percentage(topic, tweet_list, potential_keywords):
     #We need to try see if they relate to each other.
     #How many times do the words appear with each other.
     lets_test = []
+    datetime_object = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     combined_words_set = set()
     total = 0
     json_obj = {}
@@ -216,7 +217,7 @@ def check_percentage(topic, tweet_list, potential_keywords):
         #models.NotificationTracked.objects.all().delete()
         if len(cat) is 0 and len(combined_words_set) is not 0:
             keywords = json.dumps(list(combined_words_set))
-            new_notification = models.NotificationTracked(topic=topic, keywords=keywords)
+            new_notification = models.NotificationTracked(topic=topic, keywords=keywords, date=datetime_object)
             total+=1
             print (keywords)
             new_notification.save()
@@ -238,7 +239,7 @@ def check_percentage(topic, tweet_list, potential_keywords):
                     mod.save()
                 else:
                     keywords = json.dumps(list(combined_words_set))
-                    new_mod = models.NotificationTracked(topic=topic, keywords=keywords)
+                    new_mod = models.NotificationTracked(topic=topic, keywords=keywords, date=datetime_object)
                     total+=1
                     print (keywords)
                     new_mod.save()

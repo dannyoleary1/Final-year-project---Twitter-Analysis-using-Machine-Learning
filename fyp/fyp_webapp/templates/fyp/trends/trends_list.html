@@ -11,8 +11,10 @@
         <div class="col-lg-6">
                 <div class="card text-center">
                     <div class="card-header card-blue text-center">
+                        <a href="{% url 'fyp_webapp:trends_delete' result.id %}" class="pull-left"><i class="fas fa-times fa-2x" style="color:white"></i></a>
                         <h3 class="text-center"><i class="fas fa-chart-line"></i>  {{ result.topic }} </h3>
-                        <a href="{% url 'fyp_webapp:trends_delete' result.id %}" class="pull-right"><i class="fas fa-times fa-2x" style="color:white"></i></a>
+
+                        <div class="text-white text-right">Detection Time: {{ result.date }}</div>
                     </div>
                 <div class="card-body">
                 {% for val in result.ls %}
