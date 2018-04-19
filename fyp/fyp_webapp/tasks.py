@@ -504,7 +504,7 @@ def elastic_info(index_list):
                                 }
                             }
                         ],
-            "size":10
+            "size":5
                     })
 
         latest_array = []

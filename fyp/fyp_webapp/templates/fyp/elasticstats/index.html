@@ -45,8 +45,26 @@
                     </div>
                 </div>
             </div>
-            <div id="median-col{{ i }}" class="col"></div>
-            <div id="latest-col{{ i }}" class="col"></div>
+            <div id="median-col{{ i }}" class="col">
+                 <div class='card text-center'>
+                    <div class='card-header card-blue text-center'>
+                        <h3 class='text-center'>test</h3>
+                    </div>
+                    <div id="median-body{{ i }}" class="card-body">
+
+                    </div>
+                </div>
+            </div>
+            <div id="latest-col{{ i }}" class="col">
+                 <div class='card text-center'>
+                    <div class='card-header card-blue text-center'>
+                        <h3 class='text-center'>test</h3>
+                    </div>
+                    <div id="latest-body{{ i }}" class="card-body">
+
+                    </div>
+                </div>
+            </div>
         </div>
     {% endfor %}
     <script>
@@ -91,11 +109,12 @@
                         $("#topic-row" + String(i)).removeClass("hide")
 
                         var median = value.name.median;
-                        median.forEach(function (value2) {
-                            var html = addToEntry(value2)
-                            $("#median-col" + String(i)).append(html)
-                        })
+
                         var latest = value.name.latest;
+                         latest.forEach(function (value2) {
+                            var html = addToEntry(value2)
+                            $("#latest-body" + String(i)).append(html)
+                        })
                         i++;
                         test++
                     })
@@ -135,6 +154,7 @@
       return entry
   }
   function addToEntry(data){
+      console.log(data)
       var name = data.name
       var time = data.created
       var minutes = 0
@@ -163,7 +183,7 @@
           }
       }
       var text = data.text
-      var profile = data.profile_picture
+      var profile = data.image
       if (profile == undefined){
           profile = "https://bulma.io/images/placeholders/128x128.png"
       }
