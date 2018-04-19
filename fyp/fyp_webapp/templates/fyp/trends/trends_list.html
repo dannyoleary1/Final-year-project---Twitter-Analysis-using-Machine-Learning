@@ -16,7 +16,7 @@
                     </div>
                 <div class="card-body">
                 {% for val in result.ls %}
-                        <div class="badge badge-pill bg-success">{{ val }}</div>
+                    <a href="https://twitter.com/search?f=tweets&q={{ result.topic }}%20{{ val }}&src=typd"><div class="badge badge-pill bg-success">{{ val }}</div></a>
                 {% endfor %}
                 </div>
                 </div>

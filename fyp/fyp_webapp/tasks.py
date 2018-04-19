@@ -112,20 +112,25 @@ def check_index():
                     })
                     total_in_five = 0
                     tweet_list = []
+                    name = []
                     for item in day_res:
-                        time_of_tweet = item["_source"]["created"]
-                        datetime_object = datetime.strptime(time_of_tweet, '%Y-%m-%d %H:%M:%S')
-                        if datetime_object > ts:
-                            tweet_list.append(str(item["_source"]["text"]))
-                            total_in_five += 1
-                            words = preprocessor.filter_multiple(str(item["_source"]["text"]), ats=True, hashtags=True,
+                            time_of_tweet = item["_source"]["created"]
+                            datetime_object = datetime.strptime(time_of_tweet, '%Y-%m-%d %H:%M:%S')
+                            if datetime_object > ts:
+                                if name.count(item["_source"]["name"]) < 3:
+                                    print ("in here")
+                                    print (name)
+                                    name.append(item["_source"]["name"])
+                                    tweet_list.append(str(item["_source"]["text"]))
+                                    total_in_five += 1
+                                    words = preprocessor.filter_multiple(str(item["_source"]["text"]), ats=True, hashtags=True,
                                                                  stopwords=True, stemming=False, urls=True,
                                                                  singles=True)
-                            terms_all = [term for term in words]
-                            terms_all = set(terms_all)
-                            word_counter.update(terms_all)
-                        else:
-                            continue #stop iterating through every entry. This will save a lot of time.
+                                    terms_all = [term for term in words]
+                                    terms_all = set(terms_all)
+                                    word_counter.update(terms_all)
+                                else:
+                                    break #stop iterating through every entry. This will save a lot of time.
                     res = elastic_utils.iterate_search(entry+"-median")
                     potential_keywords = []
                     for median in res:
@@ -224,8 +229,8 @@ def check_percentage(topic, tweet_list, potential_keywords):
                 print (x)
                 print (combined_words_set)
                 test = set.intersection(set(x), combined_words_set)
-                percentage = (len(x)/len(combined_words_set)*100)
-                if percentage > 45:
+                percentage = (len(test)/len(combined_words_set)*100)
+                if percentage > 60:
                     temp = set(x).union(combined_words_set)
                     keywords = json.dumps(list(temp))
                     total += 1
