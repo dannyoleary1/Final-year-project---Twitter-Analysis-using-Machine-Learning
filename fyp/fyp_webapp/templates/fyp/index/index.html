@@ -22,13 +22,13 @@
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">
-                                    15
+                                    {{ topics }}
                                 </div>
                                 <div>Current Topics!</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
+                    <a href="/fyp/category">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fas fa-arrow-alt-circle-right"></i></span>
@@ -46,13 +46,13 @@
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">
-                                    326189
+                                    {{ tweet_total }}
                                 </div>
                                 <div>Todays Tweet Total!</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
+                    <a href="/fyp/indexes">
                             <div class="panel-footer">
                                 <span class="pull-left">View Breakdown</span>
                                 <span class="pull-right"><i class="fas fa-arrow-alt-circle-right"></i></span>
@@ -70,13 +70,13 @@
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">
-                                    04/04/2018  23:57:04
+                                    {{ latest_detection_date }}
                                 </div>
                                 <div>Latest Detection!</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
+                    <a href="/fyp/trends">
                             <div class="panel-footer">
                                 <span class="pull-left">View Latest Detection</span>
                                 <span class="pull-right"><i class="fas fa-arrow-alt-circle-right"></i></span>
@@ -94,13 +94,13 @@
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">
-                                    2
+                                    {{ tracked }}
                                 </div>
                                 <div>New Trends!</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
+                    <a href="/fyp/trends">
                             <div class="panel-footer">
                                 <span class="pull-left">View Unseen Trends</span>
                                 <span class="pull-right"><i class="fas fa-arrow-alt-circle-right"></i></span>
@@ -126,34 +126,21 @@
             </div>
             <div class="col-lg-4 ds">
                 <h3>  <i class="fas fa-bell"></i> Notifications</h3>
+                {% for entry in latest_tracked %}
                 <div class="desc">
                     <div class="thumb">
                         <span class="badge bg-theme"><i class="fas fa-exclamation-circle"></i></span>
                     </div>
                     <div class="details">
-                        <a href="#">
+                        <a href="/fyp/trends">
                         <p>
-                            <muted>1h ago</muted>
                             <br>
-                            Youtube shooting
+                            {{ entry.topic }}
                         </p>
                             </a>
                     </div>
                 </div>
-                <div class="desc">
-                    <div class="thumb">
-                        <span class="badge bg-theme-warning"><i class="fas fa-exclamation-circle"></i></span>
-                    </div>
-                    <div class="details">
-                        <a href="#">
-                        <p>
-                            <muted>6h ago</muted>
-                            <br>
-                            Data breach MyFitnessPal
-                        </p>
-                            </a>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
 

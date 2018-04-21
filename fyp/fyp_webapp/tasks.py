@@ -219,8 +219,8 @@ def check_percentage(topic, tweet_list, potential_keywords):
             keywords = json.dumps(list(combined_words_set))
             new_notification = models.NotificationTracked(topic=topic, keywords=keywords, date=datetime_object)
             total+=1
-            print (keywords)
-            new_notification.save()
+            if len(models.NotificationTracked.objects.filter(keywords=keywords))>0:
+                new_notification.save()
         else:
             for mod in cat:
                 uh = json.dumps(mod.keywords)
@@ -236,13 +236,15 @@ def check_percentage(topic, tweet_list, potential_keywords):
                     keywords = json.dumps(list(temp))
                     total += 1
                     mod.keywords = keywords
-                    mod.save()
+                    if len(models.NotificationTracked.objects.filter(keywords=keywords)) > 0:
+                        mod.save()
                 else:
                     keywords = json.dumps(list(combined_words_set))
                     new_mod = models.NotificationTracked(topic=topic, keywords=keywords, date=datetime_object)
                     total+=1
                     print (keywords)
-                    new_mod.save()
+                    if len(models.NotificationTracked.objects.filter(keywords=keywords)) > 0:
+                        new_mod.save()
         json_obj = {"topic": topic, "keywords":keywords, "total":total}
 
     return json_obj
