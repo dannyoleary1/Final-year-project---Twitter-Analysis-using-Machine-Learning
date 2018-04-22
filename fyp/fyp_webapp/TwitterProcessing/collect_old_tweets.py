@@ -3,7 +3,7 @@ from fyp_webapp.ElasticSearch import elastic_utils as es
 
 
 def run(query_search, start_date, end_date, max_tweets=500000):
-
+    """Runs a collection of old tweets for a query. It needs both a start date and an end date in the following format: 2018-mm-dd"""
     def printTweet(descr, t):
         print(descr)
         print(type(t))

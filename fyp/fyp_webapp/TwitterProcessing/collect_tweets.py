@@ -39,6 +39,7 @@ def check_topic_index(topic):
         return topic
 
 def create_stream(user, topics, end_loop=False):
+    """The tweepy stream listener being created."""
     #assign user to the variable so we can pass to aggregate words in the stream.
     global current_user
     current_user = user

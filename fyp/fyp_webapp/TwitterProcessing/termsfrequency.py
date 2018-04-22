@@ -17,6 +17,7 @@ punctuation = list(string.punctuation)
 stop = stopwords.words('english') + punctuation + ['rt', 'via', '…', 'I', '’', 'The', '!']
 
 def count_words(data, number_word_frequency_results=40):
+    """Counts the top 40 words for a data set."""
     current_max_sentence_size = 0
     count_word_frequency = Counter()
     for entry in data:

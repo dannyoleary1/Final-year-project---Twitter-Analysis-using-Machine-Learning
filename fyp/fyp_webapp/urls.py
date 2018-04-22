@@ -15,6 +15,7 @@ from .views.charts import charts
 
 app_name="fyp_webapp"
 
+"""All the urls will go here. This is where the web applications links will be provided."""
 urlpatterns = [
     url(r'^$', index.fyp, name='fyp'),
     url(r'^collect', collect.tweetcollector, name='tweetcollector'),

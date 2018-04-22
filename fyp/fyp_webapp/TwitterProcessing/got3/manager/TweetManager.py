@@ -1,3 +1,7 @@
+"""NOTE this is not my code. This has been ported from Python2 to work with this project.
+    The link to this project can be found here: https://github.com/Jefferson-Henrique/GetOldTweets-python"""
+
+
 from fyp_webapp.TwitterProcessing.got3 import models
 import urllib.request, urllib.parse, urllib.error, urllib.request, urllib.error, urllib.parse, json, re, datetime, sys, \
     http.cookiejar

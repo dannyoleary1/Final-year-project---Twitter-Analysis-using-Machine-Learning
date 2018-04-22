@@ -23,6 +23,7 @@ import ast
 
 @shared_task(name="fyp_webapp.tasks.wordcloud", queue='priority_high', track_started=True)
 def word_cloud(id, topic):
+    """The word cloud task creates a word cloud from the data."""
     item = {}
     category = []
     cat = TwitterCat.objects.filter(user_id=id)
@@ -43,6 +44,7 @@ def word_cloud(id, topic):
 
 @shared_task(name="fyp_webapp.tasks.aggregate_words")
 def aggregate_words(user_id,status):
+    """The aggregate_words task adds Tweets to Elasticsearch live from the Celery Queue."""
     cat = TwitterCat.objects.filter(user_id=user_id)
     assigned_cat = False
     for entry in cat:
@@ -61,6 +63,7 @@ def aggregate_words(user_id,status):
 
 @shared_task(name="fyp_webapp.tasks.collect_old_tweets", queue='old_tweets')
 def collect_old_tweets(topic, number_of_days):
+    """Collect Old Tweets task will run the old_tweets function to collect a series of old tweets for a new topic."""
     todays_date = datetime.now().date()
     start_date = todays_date - timedelta(days=number_of_days)
     while start_date != todays_date:
@@ -68,18 +71,6 @@ def collect_old_tweets(topic, number_of_days):
         print ("Entry:  " + topic)
         print ("Currently on date:  " + str(start_date))
         print ("------------------------------------------")
- #   auth = tweepy.OAuthHandler(cfg.twitter_credentials["consumer_key"], cfg.twitter_credentials['consumer_secret'])
- #   auth.set_access_token(cfg.twitter_credentials['access_token'], cfg.twitter_credentials['access_token_secret'])
- #   api = tweepy.API(auth, wait_on_rate_limit=True)
- #   for status in tweepy.Cursor(api.search, q=topic, since="2018-03-22", until="2018-03-28", lang="en").items():
- #       if hasattr(status, 'retweeted_status'):
- #           continue #this filters out retweets
- #       else:
- #           try:
- #               text = status.extended_tweet["full_text"]
- #           except AttributeError:
- #               text = status.text
- #       print (status.created_at)
         tweets = oldtweets.collect_tweets(topic, start_date, (start_date + timedelta(days=1)))
         oldtweets.aggregate(tweets, topic, start_date)
         start_date += timedelta(days=1)
@@ -87,6 +78,7 @@ def collect_old_tweets(topic, number_of_days):
 
 @shared_task(name="fyp_webapp.tasks.check_index", queue='misc')
 def check_index():
+    """Check index is the main algorithm. It will detect trends in real time. This task runs every 5 minutes."""
     index = elastic_utils.list_all_indexes()
     ts = datetime.now() - timedelta(minutes=5)
     total_count = 0
@@ -186,6 +178,7 @@ def check_index():
 
 
 def check_percentage(topic, tweet_list, potential_keywords):
+    """Checks if the current entry breaks the threshold."""
     #We need to try see if they relate to each other.
     #How many times do the words appear with each other.
     lets_test = []
@@ -250,7 +243,7 @@ def check_percentage(topic, tweet_list, potential_keywords):
     return json_obj
 
 def collect_todays_tweets(entry):
-
+    """Collects todays tweets for every topic."""
     count_word_frequency = Counter()
     word_counter = Counter()
     hour_break_dict = {}
@@ -301,7 +294,7 @@ def collect_todays_tweets(entry):
 
 
 def get_median(entry):
-
+        """Calculates the median for every topic."""
         # Now get yesterdays entries
         #I need to keep track of the value for words over each day, and also need day/hour breakdowns for each entry.
         day_breakdown = []
@@ -433,6 +426,7 @@ def get_median(entry):
 
 @shared_task(name="fyp_webapp.tasks.clean_indexes", queue='misc')
 def clean_indexes():
+    """Purges the index at night."""
     print ("Started cleaning and median collection.")
     index = elastic_utils.list_all_indexes()
     for entry in index:
@@ -449,6 +443,7 @@ def clean_indexes():
 
 @shared_task(name="fyp_webapp.tasks.elastic_info", queue="priority_high")
 def elastic_info(index_list):
+    """Displays statistics from the topics."""
     final_res = []
     current_entry = 0
     all_entries = []
@@ -532,10 +527,12 @@ def elastic_info(index_list):
 
 @shared_task(name="fyp_webapp.tasks.test_job", queue="priority_high")
 def test_job(reply_channel):
+    """Test job, can probably be deleted now"""
     data = {"job": "accept"}
     Group('notifications').send({'text': data})
 
 def add_zeros(data, count):
+    """Adds zeroes to the arrays."""
 #    print ("number of entries:    " + str(len(data)))
     temp_arr = {}
     dev_arr = {}
@@ -567,6 +564,7 @@ def add_zeros(data, count):
 
 @shared_task(name="fyp_webapp.tasks.setup_charts", queue="priority_high")
 def setup_charts(cat):
+    """Sets up the data for the charts on the front end."""
     tot = len(cat)
     entries_arrays = []
     i = 0
