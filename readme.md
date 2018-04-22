@@ -1,29 +1,54 @@
-# Twitter Analysis using Machine Learning
+#8. Setup
 
-## Twitter API
-Using the Twitter API to collect a series of tweets that can be configured in a config file. This can be used to collect whatever type of tweets as live data for whatever search query you want. For example this can be done to collect tweets on “Security Breaches” which should give back the latest tweets for “Security Breaches”. The data can be stored using ElasticSearch when aggregated or to a JSON file for later processing. 
+Setup for this project is relatively simple. It can be setup on any operating system that has Python3 installed. In this section, it will go through a sample installation using a Google Cloud Engine Instance. The first step for installation is to pull the project from the existing Github repository.
 
-## Data Pre-Processing with Python, NLTK and Pandas
-When the data has been collected using either ElasticSearch or a JSON file, the next step is to pre process the data. This will involve getting the data into the right format for analysis with TensorFlow. NLTK is a python library that will be important for this since this will be used to process the tweets into a more managable format. It could filter out for example specific characters or emoji’s. Pandas may also be useful in this to make the tweets into a more managable format for analysis.
+        `git pull  https://github.com/dannyoleary1/Final-year-project---Twitter-Analysis-using-Machine-Learning`
+        
+The next step involves setting up a virtual environment. This step is important so that the dependencies of this project can stay separate from the ones stored on the machine. This can potentially become an issue when using different versions. An example of where this happens is if you downloaded this project which uses Django 2.0. Later, you want to update the version of Django to 3.0 (Django 2.0 is the latest at time of writing) and this in turn breaks this project. By installing it with a virtual environment, it ensures Django 2.0 will always be used. The first step of installing a virtual environment is to run the install command from the root directory of the project:
 
-## Type of Analysis
-The plan for this is to carry out analysis on tweets that are very generic and could potentially cause issues with Machine Learning aspects. Some of the ideas I have for this are to be able to do analysis to detect new activities from the tweets collected, an example of this would be being able to see when security breaches have just happened based on the new activity in tweets. For further analysis, I plan to do sentiment analysis to see if the tweets are either positive or negative. ADD MORE?
+`sudo pip3 install virtualenv`
 
-## Supervised or Unsupervised Learning
-When using Machine Learning techniques, it will be important to distinguish between doing analysis on supervised or unsupervised learning. For this I plan on giving the option for both, so a user can pick if there data is labelled or not. Semi-Supervised may also be supported.
+Next step is to activate the virtual environment:
 
-## Tensorflow for analysis
-Using tensorflow as the library for Machine Learning. This will be responsible for taking the data after it has been pre-processed and performing the analysis on it. This will need to support many different algorithms and supervised, unsupervised, and semi-supervised learning mechanisms to do so. 
+`source Final-year-project---Twitter-Analysis-using-Machine-Learning/bin/activate`
 
-## Django as a web application framework
-Django will be used as the web application framework and will be responsible for providing a place to view all the analysis that has been carried out. The breakdown of this will be discussed further below just as a blueprint to aim for.
+Now that the virtual environment is installed, it is possible to install all the dependencies that are needed for the project. The requirements.txt contains a list of all the dependencies that are needed by the project:
+
+`pip3 install -r requirements.txt`
+
+Now that all the dependencies are installed, the last steps are setting some of these dependencies up. The first that needs to be done is redis-server. This is needed for Django Channels which is dealing with sending live notifications to the user, and it’s also needed for Celery which is dealing with background tasks.
+redis-server
+Next up to run is the Celery workers. The celery workers are used for asynchronous background tasks, and the amount set for the concurrency here can vary on the expected amount of traffic. The concurrency parameter sets up a new thread on the machine for parallel processing. There’s 4 different Celery workers that need to be setup:
+1.	Default: The default Celery worker is responsible for collecting tweets live and processing them to the relevant Elasticsearch index.
+2.	Misc: The misc Celery worker is responsible for running the notifications background task which sends notifications about the latest trends to the user. It runs tasks based on a schedule. One runs every 5 minutes (To detect real time trends), and one at midnight to purge the latest index.
+3.	Priority_high: The priority_high Celery worker is responsible for page loads in an asynchronous matter. It shows a loading page until completion and then displayed the actual content. This takes priority over the other queues.
+4.	Old_tweets: The old_tweets Celery worked is responsible for collecting old tweets for a specific instance when added or ran individually.
+To be ran from the /fyp folder
+
+`nohup celery -A fyp worker –concurrency=15 -Q default -n “default”& > default.out&`
+
+`nohup celery -A fyp worker –concurrency=4 -Q misc -n “misc”& > misc.out&`
+
+`nohup celery -A fyp worker –concurrency=4 -Q priority_high -n “priority_high”& > priority.out&`
+
+`nohup celery -A fyp worker –concurrency=4 -Q old_tweets -n ”old_tweets”&>old.out&`
+
+`nohup celery -A fyp beat &`
 
 
+Note that nohup is used to keep the commands running outside of SSH and the logs are being outputted to separate files. The last command is responsible for letting Celery know about the schedule.
+The last thing that needs to be setup is the server itself. From the root of the project, the settings file needs to be configured:
 
-List of current technologies that need to be installed. This will be updated as I go and also will include installation links:
-Django
-Python3
-Tensorflow
-NLTK
-ElasticSearch/Elasticpy
-Jquery
+`cd fyp`
+
+`nano settings.py`
+
+Inside the settings file should be a list called ALLOWED_HOSTS
+
+The IP address of the instance needs to be entered in here. After this, the project is now runnable. From the fyp folder run:
+
+`python3 manage.py runserver 0.0.0.0:8000`
+
+Now all that needs to be done is that a topic needs to be added, and the application will automatically start to detect trends.
+
+
