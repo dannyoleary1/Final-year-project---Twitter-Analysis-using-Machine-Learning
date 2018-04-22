@@ -33,6 +33,12 @@ def twittercat_list(request, template_name='fyp/Category/twittercat_list.html'):
     data = {}
     for entry in cat:
         tracked = NotificationTracked.objects.filter(topic=entry.category_name)
+        if "whois" in entry.category_name:
+            tracked.delete()
+        if "story" in entry.category_name:
+            tracked.delete()
+        elastic_utils.create_index(entry.category_name)
+        elastic_utils.create_index(entry.category_name+"-latest")
         count = elastic_utils.count_entries(entry.category_name+"-latest")["count"]
         entry.count = count
         entry.tracked = len(tracked)
@@ -52,11 +58,12 @@ def twittercat_create(request, template_name='fyp/Category/twittercat_form.html'
     test = form.save(commit=False)
     test.user = request.user
     if form.is_valid():
+        print ("in here?")
         form.save()
         topic = form.cleaned_data['category_name'] + "-latest"
         elastic_utils.create_index(topic)
         elastic_utils.create_index(form.cleaned_data['category_name'])
-        collect_old_tweets.delay(form.cleaned_data['category_name'], 30)
+       # collect_old_tweets.delay(form.cleaned_data['category_name'], 30)
         return redirect('fyp_webapp:twittercat_list')
     return render(request, template_name, {'form':form})
 

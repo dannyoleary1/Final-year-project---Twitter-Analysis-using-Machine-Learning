@@ -15,6 +15,7 @@ import json
 
 @login_required(login_url="/login/")
 def oldtweets(request):
+    words = []
     if request.POST:
         completed_form = forms.OldTweetsForm(request.POST)
         if completed_form.is_valid():
@@ -28,11 +29,11 @@ def oldtweets(request):
                 elastic_utils.create_index(index_name)
             while start_date != end_date:
                 tweets = collect_tweets(search_query, start_date, (start_date+datetime.timedelta(days=1)))
-                aggregate(tweets, index_name, start_date)
+                words = aggregate(tweets, index_name, start_date)
                 start_date += datetime.timedelta(days=1)
 
     es_index_form = forms.OldTweetsForm()
-    return render(request, "fyp/oldtweets/index.html", {"oldtweetsform": es_index_form})
+    return render(request, "fyp/oldtweets/index.html", {"oldtweetsform": es_index_form, "words": words})
 
 def collect_tweets(index, start, end):
     tweet = collect_old_tweets.run(query_search=index, start_date=str(start), end_date=str(end))
@@ -75,3 +76,4 @@ def aggregate(tweet, topic, start_date):
 }) == True:
         id += 1
     elastic_utils.add_entry(topic, id, dict)
+    return words

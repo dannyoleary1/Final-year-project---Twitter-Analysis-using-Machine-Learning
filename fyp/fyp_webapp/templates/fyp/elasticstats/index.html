@@ -38,7 +38,7 @@
             <div id="topic-col{{ i }}" class="col">
                 <div class='card text-center'>
                     <div class='card-header card-blue text-center'>
-                        <h3 class='text-center'>test</h3>
+                        <h3 id="topic-header{{ i }}" class='text-center'></h3>
                     </div>
                     <div id="topic-body{{ i }}" class="card-body">
 
@@ -48,7 +48,7 @@
             <div id="median-col{{ i }}" class="col">
                  <div class='card text-center'>
                     <div class='card-header card-blue text-center'>
-                        <h3 class='text-center'>test</h3>
+                        <h3 id="median-header{{ i }}" class='text-center'></h3>
                     </div>
                     <div id="median-body{{ i }}" class="card-body">
 
@@ -58,7 +58,7 @@
             <div id="latest-col{{ i }}" class="col">
                  <div class='card text-center'>
                     <div class='card-header card-blue text-center'>
-                        <h3 class='text-center'>test</h3>
+                        <h3 id="latest-header{{ i }}" class='text-center'></h3>
                     </div>
                     <div id="latest-body{{ i }}" class="card-body">
 
@@ -92,14 +92,15 @@
             }
             else if(result.current_percentage == undefined) {
                 if (test < 6) {
-                    console.log(test)
                     willstop = 1;
                     $("#progress-bar").empty();
                     $("#latest-update").empty();
                     var i = 0
                     // $("#chart-row" + String(i)).removeClass("hide")
                     result.forEach(function (value) {
-                        console.log(value)
+                        $("#topic-header"+String(i)).text(value.current_entry)
+                        $("#median-header"+String(i)).text(value.current_entry)
+                        $("#latest-header"+String(i)).text(value.current_entry)
                         var current = value.name.current;
                         current.forEach(function (value2) {
                             var html = setUpCurrent(value2, "test")
@@ -109,7 +110,8 @@
                         $("#topic-row" + String(i)).removeClass("hide")
 
                         var median = value.name.median;
-
+                        var medHtml = setupMedian(median)
+                        $("#median-body"+String(i)).append(medHtml)
                         var latest = value.name.latest;
                          latest.forEach(function (value2) {
                             var html = addToEntry(value2)
@@ -153,8 +155,31 @@
                         "</nav>"
       return entry
   }
+  function setupMedian(data){
+      data = data[0]
+      var entry = "<nav class='level'>\n"+
+                            "<div class='level-item has-text-centered'>\n"+
+                                "<div>\n"+
+                                    "<p class='heading'>Day Median</p>\n"+
+                                    "<p class='title'>"+data.day_median.toFixed(2)+"</p>\n"+
+                                "</div>\n"+
+                            "</div>\n"+
+                            "<div class='level-item has-text-centered'>\n"+
+                                "<div>\n"+
+                                    "<p class='heading'>Hour Median</p>\n"+
+                                    "<p class='title'>"+data.hour_median.toFixed(2)+"</p>\n"+
+                                "</div>\n"+
+                            "</div>\n"+
+                            "<div class='level-item has-text-centered'>\n"+
+                                "<div>\n"+
+                                    "<p class='heading'>Minute Median</p>\n"+
+                                    "<p class='title'>"+data.minute_median.toFixed(2)+"</p>\n"+
+                                "</div>\n"+
+                            "</div>\n"+
+                        "</nav>"
+      return entry
+  }
   function addToEntry(data){
-      console.log(data)
       var name = data.name
       var time = data.created
       var minutes = 0

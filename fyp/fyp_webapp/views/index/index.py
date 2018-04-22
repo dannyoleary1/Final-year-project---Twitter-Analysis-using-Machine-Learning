@@ -21,7 +21,10 @@ from fyp_webapp import models
 def fyp(request):
         topics = models.TwitterCat.objects.all()
         tracked = models.NotificationTracked.objects.all()
-        latest_detection_date = (models.NotificationTracked.objects.all()[models.NotificationTracked.objects.count()-1]).date
+        if models.NotificationTracked.objects.count() > 0:
+            latest_detection_date = (models.NotificationTracked.objects.all()[models.NotificationTracked.objects.count()-1]).date
+        else:
+            latest_detection_date = "N/A"
         latest_tracked = models.NotificationTracked.objects.all().order_by('-pk')[:5]
         tweet_total = 0
         for cat in topics:
