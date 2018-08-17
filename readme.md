@@ -1,5 +1,20 @@
 # Semi-Autonomous Trend Detection Using Real-Time Twitter Data
 
+The way Twitter has done trends is fantastic for what they are trying to achieve. However, it has some drawbacks. Twitter breaks it down into 3 different categories: global trends, local trends, and tailored trends. Each of these categories has only the 10 most popular trends for that given time. It is important to talk about how the tailored trends work because that is what this project is closely based off. The aim of tailored trends is to give trends based on your location and who you follow. This causes a problem when you may not be interested in a lot of the topics that the people you are following are interested in e.g. You follow a person for their opinion on football, but they also tweet a lot about fishing which you have no interest in. This makes it so that a lot of the tailored trends that are being detected are not relevant to you. 
+Another issue with the way Twitter does trends is the fact it only has 10 entries and isn’t followed over time. Following a story over time can lead to a more accurate representation of what it is that is going on.
+
+The idea behind this project is to develop a web application which a user can use to detect trends on the topics they are interested in. The web app will work in a semi-autonomous way where it will do detection of trends in the background. It will detect trends in real time. The trend can be monitored over time and isn’t removed until the user wants it removed. This opens the usefulness open to a much different category of people. 
+Some of the features of the web application include:
+1.	Semi-Autonomous trend detection on real time Twitter data.
+2.	Adding the topics to detect trends for based on the user’s preference. 
+3.	Adding followers/Twitter users to detect topics that you may wish to include. A user of the web application can add Twitter users that they are interested in to help with picking the right topics for them. This feature will report back a list of potential topics which can then be added/declined.
+4.	Collect old tweets based on a topic to detect what some of the keywords on a topic were. An example of this would be to collect tweets on ‘youtube’ after it has had an outage. This feature will return the most popular words based on this, which may be: ‘down’, ‘outage’, or ‘hacked’. This gives a user a suggestion on what topics may be useful to get a broad range of trends e.g. outage would be a good topic to include if you were interested in telling when websites go down.
+5.	Table views. This is a table view of the data that has been collected over time with the potential trends displayed in red. The table can be changed based on the topic you want.
+6.	Display information on charts. The charts that are currently supported are: spline, line, bar, area, and area spline.
+
+# Sample Use Case
+
+# Sample Images
 
 # Setup
 
