@@ -14,7 +14,24 @@ Some of the features of the web application include:
 
 # Sample Use Case
 
+![Screenshot](Sample_Pictures/Use_case.png)
+
 # Sample Images
+
+## Dashboard
+![Screenshot](Sample_Pictures/Dashboard.png)
+
+## Trend Found
+![Screenshot](Sample_Pictures/trend_detection.png)
+
+## Keyword Collection
+![Screenshot](Sample_Pictures/Keyword_collection.png)
+
+## Graph
+![Screenshot](Sample_Pictures/graph_example.png)
+
+## User list
+![Screenshot](Sample_Pictures/User_collection.png)
 
 # Setup
 
