@@ -1,8 +1,11 @@
-#8. Setup
+# Semi-Autonomous Trend Detection Using Real-Time Twitter Data
+
+
+# Setup
 
 Setup for this project is relatively simple. It can be setup on any operating system that has Python3 installed. In this section, it will go through a sample installation using a Google Cloud Engine Instance. The first step for installation is to pull the project from the existing Github repository.
 
-        `git pull  https://github.com/dannyoleary1/Final-year-project---Twitter-Analysis-using-Machine-Learning`
+        git pull  https://github.com/dannyoleary1/Final-year-project---Twitter-Analysis-using-Machine-Learning
         
 The next step involves setting up a virtual environment. This step is important so that the dependencies of this project can stay separate from the ones stored on the machine. This can potentially become an issue when using different versions. An example of where this happens is if you downloaded this project which uses Django 2.0. Later, you want to update the version of Django to 3.0 (Django 2.0 is the latest at time of writing) and this in turn breaks this project. By installing it with a virtual environment, it ensures Django 2.0 will always be used. The first step of installing a virtual environment is to run the install command from the root directory of the project:
 
