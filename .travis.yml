@@ -1,0 +1,9 @@
+language: python
+python:
+  - "3.6"
+# command to install dependencies
+install:
+  - pip install -r fyp/requirements.txt
+# command to run tests
+script:
+  - python fyp/manage.py test fyp_webapp
