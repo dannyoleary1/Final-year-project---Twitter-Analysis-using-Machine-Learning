@@ -18,4 +18,3 @@ langdetect==1.0.7
 channels==1.1.8
 asgi_redis==1.4.3
 django-crispy-forms==1.7.2
-numpy
