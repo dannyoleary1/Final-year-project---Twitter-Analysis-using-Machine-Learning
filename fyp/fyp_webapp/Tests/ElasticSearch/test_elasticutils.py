@@ -10,6 +10,7 @@ class ElasticUtilsTest(TestCase):
         time.sleep(1)
         es.delete_index("test")
 
+
     def test_create_index(self):
         self.assertIn(" \'index\': \'testcase\'", es.create_index("testcase")) #An index is made
         time.sleep(1)
@@ -67,3 +68,4 @@ class ElasticUtilsTest(TestCase):
         self.assertIn('test', res['hits']['hits'][0]['_source']['name'])
         es.delete_index("searching")
 
+#TODO iterate_search and last_n_in_index tests have not been added. Add asap.
