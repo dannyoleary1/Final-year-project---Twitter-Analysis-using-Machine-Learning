@@ -1,5 +1,4 @@
 # Semi-Autonomous Trend Detection Using Real-Time Twitter Data 
-[![Build Status](https://travis-ci.org/dannyoleary1/Final-year-project---Twitter-Analysis-using-Machine-Learning.svg?branch=master)](https://travis-ci.org/dannyoleary1/Final-year-project---Twitter-Analysis-using-Machine-Learning)
 
 
 The way Twitter has done trends is fantastic for what they are trying to achieve. However, it has some drawbacks. Twitter breaks it down into 3 different categories: global trends, local trends, and tailored trends. Each of these categories has only the 10 most popular trends for that given time. It is important to talk about how the tailored trends work because that is what this project is closely based off. The aim of tailored trends is to give trends based on your location and who you follow. This causes a problem when you may not be interested in a lot of the topics that the people you are following are interested in e.g. You follow a person for their opinion on football, but they also tweet a lot about fishing which you have no interest in. This makes it so that a lot of the tailored trends that are being detected are not relevant to you. 
