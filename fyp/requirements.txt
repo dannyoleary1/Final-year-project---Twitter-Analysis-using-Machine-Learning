@@ -10,7 +10,7 @@ numpy==1.13.3
 pyquery==1.4.0
 scikit-learn==0.19.1
 scipy==1.0.0
-tensorflow==1.10.0
+tensorflow==1.15.2
 tweepy==3.5.0
 urllib3==1.22
 redis==2.10.6
