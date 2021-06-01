@@ -12,7 +12,7 @@ scikit-learn==0.19.1
 scipy==1.0.0
 tensorflow==1.10.0
 tweepy==3.5.0
-urllib3==1.22
+urllib3==1.26.5
 redis==2.10.6
 langdetect==1.0.7
 channels==1.1.8
