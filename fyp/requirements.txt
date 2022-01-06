@@ -1,4 +1,4 @@
-celery==4.1.0
+celery==5.2.2
 Django==2.0.8
 django-extensions==1.9.9
 django-static-jquery==2.1.4
