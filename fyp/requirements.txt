@@ -4,7 +4,7 @@ django-extensions==1.9.9
 django-static-jquery==2.1.4
 elasticsearch==6.0.0
 gensim==3.2.0
-html5lib==0.9999999
+html5lib==0.999999999
 nltk==3.2.4
 numpy==1.13.3
 pyquery==1.4.0
